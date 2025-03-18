@@ -1,10 +1,12 @@
 rules:
   - name: "Include grilleEvaluation"
     match:
-      # Indiquez le chemin exact de votre fichier. 
-      # S'il est à la racine, vous mettriez "grilleEvaluation.md"
       - "parametrage/grilleEvaluation.md"
-    # ou, si vous voulez matcher plusieurs fichiers, vous pouvez lister ou utiliser un pattern
     actions:
-      # L'action la plus simple serait d'injecter tel quel le fichier
+      - includeInPrompt
+
+  - name: "Include consignes"
+    match:
+      - "parametrage/consignes.md"
+    actions:
       - includeInPrompt
