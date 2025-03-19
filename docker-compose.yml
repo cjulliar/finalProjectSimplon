@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # Service principal Python
+  app:
+    build: 
+      context: .
+      dockerfile: docker/app/Dockerfile
+    volumes:
+      - ./src:/app/src
+      - ./docs:/app/docs
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=bankreports
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - db
+
+  # Base de données PostgreSQL
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=bankreports
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+
+  # API FastAPI
+  api:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=bankreports
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  # Monitoring Prometheus
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./docker/prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+
+  # Dashboard Grafana
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+volumes:
+  postgres_data:
+  prometheus_data:
+  grafana_data: 

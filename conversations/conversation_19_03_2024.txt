@@ -1,0 +1,6 @@
+Conversation du 19/03/2024 - 09:00
+
+User: Je veux que tu prennes le fichiers consignes.md qui explique le contexte de mon projet et que tu completes ce fichier avec les technologies et les etapes à faire dans grilleEvaluation. 
+Par exemple si dans grilleEvaluation il faut créer un docker, alors je veux voir apparaitre dans les consignes le moment ou il faudra mettre docker et structurer le projet en fonction de docker. 
+Je veux que tu fasses ce travail pour tous les points ennonce dans grilleEvaluation. 
+Je veux que tu comprenes ce que je veux faire du projet explique dans consignes. 
