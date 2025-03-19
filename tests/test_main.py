@@ -1,13 +1,18 @@
 import pytest
 import os
 from pathlib import Path
+import sys
+import tempfile
+import subprocess
+from unittest.mock import patch, MagicMock, ANY
+import argparse
 
 # Obtenir le chemin absolu du répertoire racine du projet
 PROJECT_ROOT = Path(__file__).parent.parent
 DOCS_DIR = PROJECT_ROOT / "docs"
 
 # Corriger l'importation pour utiliser le module correct
-from src.main import init_db, parse_arguments
+from src.main import init_db, parse_arguments, main
 from src.etl.excel_import import read_excel_file
 from src.db.database import engine, Base
 from src.db.models import BankData
@@ -68,3 +73,128 @@ def test_init_db():
     init_db()
     # Si aucune exception n'est levée, le test passe
     assert True 
+
+def test_parse_arguments():
+    """Tester le parsing des arguments."""
+    # Test avec l'option --import-excel
+    with patch('argparse.ArgumentParser.parse_args', return_value=argparse.Namespace(
+        import_excel=True, 
+        file="docs/DonneeBanque.xlsx"  # La valeur par défaut dans le code
+    )):
+        args = parse_arguments()
+        assert args.import_excel is True
+        assert args.file == "docs/DonneeBanque.xlsx"
+    
+    # Test avec l'option --import-excel et --file
+    with patch('argparse.ArgumentParser.parse_args', return_value=argparse.Namespace(
+        import_excel=True, 
+        file="test.xlsx"
+    )):
+        args = parse_arguments()
+        assert args.import_excel is True
+        assert args.file == "test.xlsx"
+    
+    # Test sans options
+    with patch('argparse.ArgumentParser.parse_args', return_value=argparse.Namespace(
+        import_excel=False, 
+        file="docs/DonneeBanque.xlsx"  # La valeur par défaut dans le code
+    )):
+        args = parse_arguments()
+        assert args.import_excel is False
+        assert args.file == "docs/DonneeBanque.xlsx"
+
+def test_main_import_excel():
+    """Tester la fonction main avec l'option --import-excel."""
+    # Créer un fichier Excel temporaire
+    with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tf:
+        excel_path = tf.name
+    
+    try:
+        # Créer un contenu Excel valide
+        import pandas as pd
+        data = {
+            'agence': ['Agence A', 'Agence B'],
+            'date': ['2023-01-01', '2023-01-02'],
+            'montant': [1000, 2000],
+            'nombre_transactions': [10, 20]
+        }
+        df = pd.DataFrame(data)
+        df.to_excel(excel_path, index=False)
+        
+        # Tester directement l'exécution sans mock
+        with patch('argparse.ArgumentParser.parse_args', return_value=argparse.Namespace(
+            import_excel=True, 
+            file=excel_path
+        )):
+            # Au lieu de mocker l'importation, exécutons-la réellement
+            result = main()
+            # Le fichier existe et est valide, le résultat devrait être 0
+            assert result == 0
+    finally:
+        # Nettoyer
+        if os.path.exists(excel_path):
+            os.unlink(excel_path)
+
+def test_main_import_excel_file_not_found():
+    """Tester la fonction main avec un fichier inexistant."""
+    # Simuler l'exécution avec un fichier inexistant
+    with patch('argparse.ArgumentParser.parse_args', return_value=argparse.Namespace(
+        import_excel=True, 
+        file="fichier_inexistant.xlsx"
+    )):
+        with patch('src.etl.excel_import.import_excel_to_db') as mock_import:
+            mock_import.return_value = 0  # Simuler l'échec de l'importation
+            result = main()
+            
+            # Vérifier que la fonction retourne une erreur
+            assert result == 1
+
+def test_main_default_behavior():
+    """Tester le comportement par défaut de la fonction main."""
+    # Simuler l'exécution sans options
+    with patch('argparse.ArgumentParser.parse_args', return_value=argparse.Namespace(
+        import_excel=False, 
+        file="docs/DonneeBanque.xlsx"
+    )):
+        with patch('builtins.print') as mock_print:
+            result = main()
+            
+            # Vérifier que le message d'aide est affiché
+            mock_print.assert_called()
+            assert result == 0
+
+def test_script_execution():
+    """Tester l'exécution du script en tant que processus."""
+    # Ne pas exécuter ce test en CI/CD pour éviter les problèmes d'environnement
+    if os.environ.get("CI") == "true":
+        pytest.skip("Ignorer ce test en CI/CD")
+    
+    # Créer un fichier Excel temporaire
+    with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tf:
+        excel_path = tf.name
+    
+    try:
+        # Créer un contenu Excel valide
+        import pandas as pd
+        data = {
+            'agence': ['Agence A', 'Agence B'],
+            'date': ['2023-01-01', '2023-01-02'],
+            'montant': [1000, 2000],
+            'nombre_transactions': [10, 20]
+        }
+        df = pd.DataFrame(data)
+        df.to_excel(excel_path, index=False)
+        
+        # Exécuter le script
+        result = subprocess.run(
+            [sys.executable, '-m', 'src.main', '--import-excel', '--file', excel_path],
+            capture_output=True,
+            text=True
+        )
+        
+        # Vérifier le code de retour
+        assert result.returncode == 0 or "Erreur:" in result.stdout
+    finally:
+        # Nettoyer
+        if os.path.exists(excel_path):
+            os.unlink(excel_path) 

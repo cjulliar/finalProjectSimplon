@@ -1,0 +1,25 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Installation des dépendances
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copie du code source
+COPY src /app/src
+COPY docs /app/docs
+COPY tests /app/tests
+
+# Créer les répertoires nécessaires
+RUN mkdir -p /app/data
+
+# Installation du package en mode développement
+COPY setup.py .
+RUN pip install -e .
+
+# Exposer le port
+EXPOSE 8000
+
+# Commande par défaut (peut être remplacée dans docker-compose.yml)
+CMD ["python", "-m", "src.scripts.run_api", "--host", "0.0.0.0"] 

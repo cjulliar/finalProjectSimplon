@@ -32,11 +32,11 @@
 - [ ] La documentation RGPD est versionnée.
 
 ### C5. Développer une API mettant à disposition le jeu de données…
-- [ ] La documentation technique de l'API (REST) couvre tous les points de terminaisons.
-- [ ] La documentation technique couvre les règles d'authentification et/ou d'autorisation de l'API.
-- [ ] La documentation technique respecte les standards du modèle choisi (par exemple OpenAPI*).
-- [ ] L'API REST est fonctionnelle pour l'accès aux données du projet : elle restreint par une autorisation (ou authentification) l'accès aux données.
-- [ ] L'API REST est fonctionnelle pour la mise à disposition : elle permet la récupération de l'ensemble des données nécessaires au projet, comme prévu selon les spécifications données.
+- [X] La documentation technique de l'API (REST) couvre tous les points de terminaisons.
+- [X] La documentation technique couvre les règles d'authentification et/ou d'autorisation de l'API.
+- [X] La documentation technique respecte les standards du modèle choisi (par exemple OpenAPI*).
+- [X] L'API REST est fonctionnelle pour l'accès aux données du projet : elle restreint par une autorisation (ou authentification) l'accès aux données.
+- [X] L'API REST est fonctionnelle pour la mise à disposition : elle permet la récupération de l'ensemble des données nécessaires au projet, comme prévu selon les spécifications données.
 
 ---
 

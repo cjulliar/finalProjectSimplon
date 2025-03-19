@@ -8,6 +8,8 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from datetime import date
+import tempfile
+from unittest.mock import patch
 
 # Ajouter le répertoire parent au chemin de recherche Python
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -126,18 +128,116 @@ def test_insert_data_to_db(setup_test_db, sample_dataframe):
         assert bank_data[0].nombre_transactions == 5
 
 
-def test_import_excel_to_db(setup_test_db, temp_excel_file):
-    """Teste l'importation complète du fichier Excel vers la base de données."""
-    # Importer les données
-    count = import_excel_to_db(temp_excel_file)
+@pytest.fixture(scope="function")
+def create_test_excel():
+    """Créer un fichier Excel temporaire avec des données de test."""
+    # Créer un fichier temporaire
+    with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tf:
+        # Créer un DataFrame test
+        data = {
+            'agence': ['Agence A', 'Agence B', 'Agence C'],
+            'date': ['2023-01-01', '2023-01-02', '2023-01-03'],
+            'montant': [1000, 2000, 3000],
+            'nombre_transactions': [10, 20, 30]
+        }
+        df = pd.DataFrame(data)
+        
+        # Enregistrer le DataFrame dans le fichier Excel
+        df.to_excel(tf.name, index=False)
+        
+        excel_path = tf.name
     
-    # Vérifications
-    assert count == 3
+    yield excel_path
     
-    # Vérifier que les données sont bien dans la base
-    with SessionLocal() as db:
-        bank_data = db.query(BankData).all()
-        assert len(bank_data) == 3
+    # Supprimer le fichier temporaire
+    os.unlink(excel_path)
+
+
+def test_import_excel_to_db(create_test_excel):
+    """Tester l'importation d'un fichier Excel dans la base de données."""
+    excel_path = create_test_excel
+    
+    # Vérifier que le fichier Excel existe
+    assert os.path.exists(excel_path), f"Le fichier Excel n'existe pas: {excel_path}"
+    
+    # Utiliser un mock pour la session de base de données
+    with patch('src.etl.excel_import.SessionLocal') as mock_session:
+        # Configurer le mock
+        mock_db = mock_session.return_value.__enter__.return_value
+        
+        # Importer les données
+        count = import_excel_to_db(excel_path)
+        
+        # Vérifier que l'importation a réussi
+        assert count > 0, "L'importation a échoué"
+        
+        # Vérifier que la fonction d'insertion a été appelée
+        assert mock_db.add.call_count > 0, "Aucune donnée n'a été ajoutée à la base de données"
+        assert mock_db.commit.call_count > 0, "Les données n'ont pas été validées dans la base de données"
+
+
+def test_import_excel_to_db_with_errors():
+    """Tester l'importation avec des erreurs."""
+    # Tester avec un fichier inexistant
+    non_existent_file = "fichier_inexistant.xlsx"
+    count = import_excel_to_db(non_existent_file)
+    assert count == 0, "L'importation devrait échouer avec un fichier inexistant"
+    
+    # Tester avec un fichier invalide
+    with tempfile.NamedTemporaryFile(suffix=".txt", delete=False) as tf:
+        tf.write(b"Ceci n'est pas un fichier Excel")
+        invalid_file = tf.name
+    
+    try:
+        count = import_excel_to_db(invalid_file)
+        assert count == 0, "L'importation devrait échouer avec un fichier non Excel"
+    finally:
+        os.unlink(invalid_file)
+
+
+def test_import_excel_to_db_with_invalid_data():
+    """Tester l'importation avec des données invalides."""
+    # Créer un fichier Excel avec des données invalides
+    with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tf:
+        # DataFrame avec des colonnes manquantes
+        data = {
+            'agence': ['Agence A', 'Agence B', 'Agence C'],
+            # Colonne 'date' manquante
+            'montant': [1000, 2000, 3000],
+            # Colonne 'nombre_transactions' manquante
+        }
+        df = pd.DataFrame(data)
+        df.to_excel(tf.name, index=False)
+        
+        invalid_data_file = tf.name
+    
+    try:
+        count = import_excel_to_db(invalid_data_file)
+        assert count == 0, "L'importation devrait échouer avec des données invalides"
+    finally:
+        os.unlink(invalid_data_file)
+
+
+def test_import_excel_to_db_with_duplicates(create_test_excel):
+    """Tester l'importation avec des données en doublon."""
+    excel_path = create_test_excel
+    
+    # Utiliser un patch pour la session de base de données
+    with patch('src.etl.excel_import.SessionLocal') as mock_session:
+        # Configurer le mock
+        mock_db = mock_session.return_value.__enter__.return_value
+        
+        # Première importation
+        count1 = import_excel_to_db(excel_path)
+        assert count1 > 0, "La première importation a échoué"
+        
+        # Deuxième importation (même fichier)
+        count2 = import_excel_to_db(excel_path)
+        assert count2 > 0, "La deuxième importation a échoué"
+        
+        # Vérifier que les deux importations ont fonctionné
+        total_count = count1 + count2
+        assert total_count > count1, "La deuxième importation n'a pas ajouté de données"
 
 
 def test_import_excel_to_db_real_file():

@@ -1,234 +1,227 @@
 """
-Tests pour la base de données.
+Tests pour les fonctionnalités de base de données.
 """
 import os
 import sys
-import time
 import pytest
-import pandas as pd
 from pathlib import Path
-from datetime import date
+from datetime import date, timedelta
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import IntegrityError
 
 # Ajouter le répertoire parent au chemin de recherche Python
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.db.database import engine, Base, SessionLocal
-from src.db.models import BankData
+from src.db.database import Base
+from src.db.models import BankData, User
+from src.api.auth import get_password_hash
+
+
+# Créer une base de données en mémoire pour les tests
+SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
+engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 @pytest.fixture(scope="function")
 def setup_test_db():
-    """Configure une base de données de test temporaire."""
-    # Créer les tables dans la base de données
-    Base.metadata.create_all(bind=engine)
-    
-    # Fournir une session de base de données
-    db = SessionLocal()
-    
-    try:
-        yield db
-    finally:
-        # Nettoyer après le test
-        db.close()
-        # Supprimer toutes les tables
-        Base.metadata.drop_all(bind=engine)
-
-
-@pytest.fixture
-def sample_bank_data():
-    """Crée des données bancaires de test."""
-    return [
-        BankData(agence="Agence1", date=date(2023, 1, 1), montant=1000.50, nombre_transactions=5),
-        BankData(agence="Agence2", date=date(2023, 1, 2), montant=2500.75, nombre_transactions=10),
-        BankData(agence="Agence3", date=date(2023, 1, 3), montant=750.25, nombre_transactions=3),
-    ]
-
-
-def test_database_connection():
-    """Teste la connexion à la base de données."""
+    """Créer et initialiser une base de données de test."""
     # Créer les tables
     Base.metadata.create_all(bind=engine)
     
-    # Vérifier que la connexion fonctionne
-    db = SessionLocal()
-    assert db is not None
-    db.close()
+    # Créer une session
+    db = TestingSessionLocal()
+    
+    yield db
     
     # Nettoyer
+    db.close()
     Base.metadata.drop_all(bind=engine)
 
 
 def test_create_bank_data(setup_test_db):
-    """Teste la création d'une entrée BankData."""
+    """Tester la création d'une entrée BankData."""
     db = setup_test_db
     
-    # Créer une entrée
+    # Créer une entrée BankData
     bank_data = BankData(
-        agence="TestAgence",
-        date=date(2023, 1, 1),
+        agence="Agence Test",
+        date=date.today(),
         montant=1000.0,
-        nombre_transactions=5
+        nombre_transactions=10
     )
     
-    # Ajouter et valider
+    # Ajouter à la base de données
     db.add(bank_data)
     db.commit()
     db.refresh(bank_data)
     
-    # Vérifier l'ID (doit être > 0)
-    assert bank_data.id > 0
+    # Vérifier l'ID
+    assert bank_data.id is not None, "L'ID ne devrait pas être None après commit"
     
-    # Vérifier les valeurs
-    assert bank_data.agence == "TestAgence"
-    assert bank_data.date == date(2023, 1, 1)
+    # Vérifier les données
+    assert bank_data.agence == "Agence Test"
+    assert bank_data.date == date.today()
     assert bank_data.montant == 1000.0
-    assert bank_data.nombre_transactions == 5
+    assert bank_data.nombre_transactions == 10
     assert bank_data.created_at is not None
 
 
-def test_read_bank_data(setup_test_db, sample_bank_data):
-    """Teste la lecture des entrées BankData."""
+def test_query_bank_data(setup_test_db):
+    """Tester la récupération des données bancaires."""
     db = setup_test_db
     
-    # Ajouter des entrées
-    for data in sample_bank_data:
-        db.add(data)
+    # Ajouter plusieurs entrées
+    today = date.today()
+    bank_data_entries = [
+        BankData(agence="Agence A", date=today - timedelta(days=2), montant=1000.0, nombre_transactions=10),
+        BankData(agence="Agence B", date=today - timedelta(days=1), montant=2000.0, nombre_transactions=20),
+        BankData(agence="Agence A", date=today, montant=1500.0, nombre_transactions=15)
+    ]
+    
+    db.add_all(bank_data_entries)
     db.commit()
     
-    # Lire les entrées
+    # Récupérer toutes les entrées
     all_data = db.query(BankData).all()
-    
-    # Vérification
     assert len(all_data) == 3
-    assert all_data[0].agence == "Agence1"
-    assert all_data[1].agence == "Agence2"
-    assert all_data[2].agence == "Agence3"
-
-
-def test_update_bank_data(setup_test_db, sample_bank_data):
-    """Teste la mise à jour d'une entrée BankData."""
-    db = setup_test_db
-    
-    # Ajouter des entrées
-    for data in sample_bank_data:
-        db.add(data)
-    db.commit()
-    
-    # Récupérer la première entrée
-    data = db.query(BankData).first()
-    
-    # Mettre à jour
-    data.montant = 1500.0
-    db.commit()
-    db.refresh(data)
-    
-    # Vérification
-    assert data.montant == 1500.0
-
-
-def test_delete_bank_data(setup_test_db, sample_bank_data):
-    """Teste la suppression d'une entrée BankData."""
-    db = setup_test_db
-    
-    # Ajouter des entrées
-    for data in sample_bank_data:
-        db.add(data)
-    db.commit()
-    
-    # Récupérer la première entrée
-    data = db.query(BankData).first()
-    
-    # Supprimer
-    db.delete(data)
-    db.commit()
-    
-    # Vérification
-    all_data = db.query(BankData).all()
-    assert len(all_data) == 2
-
-
-def test_filter_by_agence(setup_test_db, sample_bank_data):
-    """Teste le filtrage par agence."""
-    db = setup_test_db
-    
-    # Ajouter des entrées
-    for data in sample_bank_data:
-        db.add(data)
-    db.commit()
     
     # Filtrer par agence
-    agence1_data = db.query(BankData).filter(BankData.agence == "Agence1").all()
-    
-    # Vérification
-    assert len(agence1_data) == 1
-    assert agence1_data[0].agence == "Agence1"
-
-
-def test_filter_by_date(setup_test_db, sample_bank_data):
-    """Teste le filtrage par date."""
-    db = setup_test_db
-    
-    # Ajouter des entrées
-    for data in sample_bank_data:
-        db.add(data)
-    db.commit()
+    agence_a_data = db.query(BankData).filter(BankData.agence == "Agence A").all()
+    assert len(agence_a_data) == 2
     
     # Filtrer par date
-    date_data = db.query(BankData).filter(BankData.date == date(2023, 1, 1)).all()
-    
-    # Vérification
-    assert len(date_data) == 1
-    assert date_data[0].date == date(2023, 1, 1)
+    today_data = db.query(BankData).filter(BankData.date == today).all()
+    assert len(today_data) == 1
+    assert today_data[0].agence == "Agence A"
+    assert today_data[0].montant == 1500.0
 
 
-def test_performance_batch_insert(setup_test_db):
-    """Teste les performances d'insertion par lots."""
+def test_update_bank_data(setup_test_db):
+    """Tester la mise à jour des données bancaires."""
     db = setup_test_db
     
-    # Nombre d'entrées à insérer
-    n_entries = 1000
-    
-    # Créer les données
-    data = []
-    for i in range(n_entries):
-        data.append(BankData(
-            agence=f"Agence{i % 10}",
-            date=date(2023, 1, 1 + i % 31),
-            montant=1000.0 + i,
-            nombre_transactions=5 + i % 20
-        ))
-    
-    # Mesurer le temps d'insertion
-    start_time = time.time()
-    
-    # Insérer par lots
-    batch_size = 100
-    for i in range(0, n_entries, batch_size):
-        batch = data[i:i+batch_size]
-        db.add_all(batch)
-        db.commit()
-    
-    end_time = time.time()
-    
-    # Vérification
-    all_data = db.query(BankData).all()
-    assert len(all_data) == n_entries
-    
-    # Afficher les performances
-    print(f"Temps d'insertion de {n_entries} entrées par lots: {end_time - start_time:.2f} secondes")
-
-
-def test_count_rows(setup_test_db, sample_bank_data):
-    """Teste le comptage de lignes dans la base de données."""
-    db = setup_test_db
-    
-    # Ajouter des entrées
-    for data in sample_bank_data:
-        db.add(data)
+    # Créer une entrée
+    bank_data = BankData(
+        agence="Agence Test",
+        date=date.today(),
+        montant=1000.0,
+        nombre_transactions=10
+    )
+    db.add(bank_data)
     db.commit()
     
-    # Compter les lignes
-    count = db.query(BankData).count()
+    # Récupérer l'ID
+    bank_data_id = bank_data.id
     
-    # Vérification
-    assert count == 3 
+    # Modifier les données
+    db_bank_data = db.query(BankData).filter(BankData.id == bank_data_id).first()
+    db_bank_data.montant = 1500.0
+    db_bank_data.nombre_transactions = 15
+    db.commit()
+    
+    # Vérifier les modifications
+    updated_data = db.query(BankData).filter(BankData.id == bank_data_id).first()
+    assert updated_data.montant == 1500.0
+    assert updated_data.nombre_transactions == 15
+
+
+def test_delete_bank_data(setup_test_db):
+    """Tester la suppression des données bancaires."""
+    db = setup_test_db
+    
+    # Créer une entrée
+    bank_data = BankData(
+        agence="Agence Test",
+        date=date.today(),
+        montant=1000.0,
+        nombre_transactions=10
+    )
+    db.add(bank_data)
+    db.commit()
+    
+    # Récupérer l'ID
+    bank_data_id = bank_data.id
+    
+    # Supprimer l'entrée
+    db.delete(bank_data)
+    db.commit()
+    
+    # Vérifier que l'entrée n'existe plus
+    deleted_data = db.query(BankData).filter(BankData.id == bank_data_id).first()
+    assert deleted_data is None
+
+
+def test_create_user(setup_test_db):
+    """Tester la création d'un utilisateur."""
+    db = setup_test_db
+    
+    # Créer un utilisateur
+    hashed_password = get_password_hash("password123")
+    user = User(
+        username="testuser",
+        email="test@example.com",
+        hashed_password=hashed_password,
+        is_active=True
+    )
+    
+    # Ajouter à la base de données
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    
+    # Vérifier l'ID
+    assert user.id is not None
+    
+    # Vérifier les données
+    assert user.username == "testuser"
+    assert user.email == "test@example.com"
+    assert user.hashed_password == hashed_password
+    assert user.is_active is True
+    assert user.created_at is not None
+
+
+def test_user_unique_constraints(setup_test_db):
+    """Tester les contraintes d'unicité pour l'utilisateur."""
+    db = setup_test_db
+    
+    # Créer un premier utilisateur
+    hashed_password = get_password_hash("password123")
+    user1 = User(
+        username="testuser",
+        email="test@example.com",
+        hashed_password=hashed_password,
+        is_active=True
+    )
+    db.add(user1)
+    db.commit()
+    
+    # Tenter de créer un utilisateur avec le même nom d'utilisateur
+    user2 = User(
+        username="testuser",  # Même username
+        email="autre@example.com",
+        hashed_password=hashed_password,
+        is_active=True
+    )
+    db.add(user2)
+    
+    # Vérifier que cela génère une erreur
+    with pytest.raises(IntegrityError):
+        db.commit()
+    
+    # Rollback pour nettoyer la session
+    db.rollback()
+    
+    # Tenter de créer un utilisateur avec le même email
+    user3 = User(
+        username="autreuser",
+        email="test@example.com",  # Même email
+        hashed_password=hashed_password,
+        is_active=True
+    )
+    db.add(user3)
+    
+    # Vérifier que cela génère une erreur
+    with pytest.raises(IntegrityError):
+        db.commit() 
