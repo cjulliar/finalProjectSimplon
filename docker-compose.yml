@@ -17,17 +17,12 @@ services:
     depends_on:
       - db
 
-  # Base de données PostgreSQL
+  # Base de données SQLite (pour le développement)
   db:
-    image: postgres:15
+    image: alpine:latest
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=bankreports
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - "5432:5432"
+      - ./data:/data
+    command: sh -c "mkdir -p /data && echo 'SQLite database directory' > /data/README.txt"
 
   # API FastAPI
   api:
@@ -46,7 +41,7 @@ services:
 
   # Monitoring Prometheus
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:latest
     volumes:
       - ./docker/prometheus:/etc/prometheus
       - prometheus_data:/prometheus
@@ -55,7 +50,7 @@ services:
 
   # Dashboard Grafana
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:latest
     volumes:
       - grafana_data:/var/lib/grafana
     ports:
@@ -64,6 +59,5 @@ services:
       - prometheus
 
 volumes:
-  postgres_data:
   prometheus_data:
   grafana_data: 
