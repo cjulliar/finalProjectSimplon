@@ -7,7 +7,7 @@ SQLALCHEMY_DATABASE_URL = "sqlite:///./bankreports.db"
 
 # Création du moteur SQLite avec support des clés étrangères
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, 
+    SQLALCHEMY_DATABASE_URL,
     connect_args={"check_same_thread": False}
 )
 
@@ -17,8 +17,9 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 # Création de la base pour les modèles
 Base = declarative_base()
 
-# Fonction pour obtenir une session de base de données
+
 def get_db():
+    """Fonction pour obtenir une session de base de données"""
     db = SessionLocal()
     try:
         yield db
