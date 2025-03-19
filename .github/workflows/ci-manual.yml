@@ -1,4 +1,4 @@
-name: CI/CD
+name: CI/CD (Installation manuelle)
 
 on:
   push:
@@ -45,19 +45,16 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    # Configuration de Docker
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-    
-    # Une autre méthode pour installer Docker Compose
-    - name: Set up Docker Compose
-      uses: ndeloof/install-compose-action@v0.0.1
-      with:
-        version: v2.23.3
+    # Installation manuelle de Docker Compose v2
+    - name: Install Docker Compose
+      run: |
+        mkdir -p ~/.docker/cli-plugins/
+        curl -SL https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+        chmod +x ~/.docker/cli-plugins/docker-compose
+        docker compose version
     
     - name: Build Docker images
       run: |
-        docker compose version
         docker compose build
 
   deploy-staging:
@@ -81,4 +78,4 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: Deploy to production
-      run: echo "Deploying to production environment (simulation)"
+      run: echo "Deploying to production environment (simulation)" 
