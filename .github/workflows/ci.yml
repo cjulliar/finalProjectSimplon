@@ -15,17 +15,23 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.11'
+        python-version: '3.10'
     
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pytest pytest-cov flake8
+        pip install -e .
+    
+    - name: Create test directories and files
+      run: |
+        mkdir -p docs
+        touch docs/.gitkeep
     
     - name: Run tests
       run: |
-        pytest tests/ --cov=src/ --cov-report=term-missing
+        python -m pytest tests/ -v --cov=src/ --cov-report=term-missing
     
     - name: Lint with flake8
       run: |
@@ -37,6 +43,9 @@ jobs:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
     
     - name: Build Docker images
       run: docker-compose build
@@ -62,4 +71,4 @@ jobs:
     - uses: actions/checkout@v2
     
     - name: Deploy to production
-      run: echo "Deploying to production..." 
+      run: echo "Deploying to production..."

@@ -1,6 +1,11 @@
 import pytest
 import os
 from pathlib import Path
+
+# Obtenir le chemin absolu du répertoire racine du projet
+PROJECT_ROOT = Path(__file__).parent.parent
+DOCS_DIR = PROJECT_ROOT / "docs"
+
 from main import read_excel_data
 from db.database import engine, Base
 from db.models import BankData
@@ -18,9 +23,8 @@ def setup_test_data(tmp_path):
     """Crée un fichier Excel de test"""
     import pandas as pd
     
-    # Créer le dossier docs s'il n'existe pas
-    docs_path = Path("docs")
-    docs_path.mkdir(exist_ok=True)
+    # S'assurer que le dossier docs existe
+    DOCS_DIR.mkdir(exist_ok=True)
     
     # Créer un DataFrame de test
     test_data = {
@@ -32,7 +36,7 @@ def setup_test_data(tmp_path):
     df = pd.DataFrame(test_data)
     
     # Sauvegarder en Excel
-    excel_path = docs_path / "DonneeBanque.xlsx"
+    excel_path = DOCS_DIR / "DonneeBanque.xlsx"
     df.to_excel(excel_path, index=False)
     yield
     # Nettoyage : supprimer le fichier de test
@@ -41,7 +45,7 @@ def setup_test_data(tmp_path):
 
 def test_excel_file_exists():
     """Vérifie que le fichier Excel existe"""
-    excel_path = Path("docs/DonneeBanque.xlsx")
+    excel_path = DOCS_DIR / "DonneeBanque.xlsx"
     assert excel_path.exists(), "Le fichier Excel n'existe pas"
 
 def test_read_excel_data(setup_database):
