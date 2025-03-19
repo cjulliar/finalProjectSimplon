@@ -6,9 +6,11 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).parent.parent
 DOCS_DIR = PROJECT_ROOT / "docs"
 
-from main import read_excel_data
-from db.database import engine, Base
-from db.models import BankData
+# Corriger l'importation pour utiliser le module correct
+from src.main import init_db, parse_arguments
+from src.etl.excel_import import read_excel_file
+from src.db.database import engine, Base
+from src.db.models import BankData
 
 @pytest.fixture(scope="session")
 def setup_database():
@@ -48,12 +50,21 @@ def test_excel_file_exists():
     excel_path = DOCS_DIR / "DonneeBanque.xlsx"
     assert excel_path.exists(), "Le fichier Excel n'existe pas"
 
-def test_read_excel_data(setup_database):
+def test_read_excel_file(setup_database):
     """Teste la lecture des données Excel"""
-    data = read_excel_data()
+    excel_path = DOCS_DIR / "DonneeBanque.xlsx"
+    data = read_excel_file(str(excel_path))
     assert data is not None, "La lecture des données a échoué"
     assert len(data) > 0, "Le fichier Excel est vide"
     assert "agence" in data.columns, "La colonne 'agence' est manquante"
     assert "date" in data.columns, "La colonne 'date' est manquante"
     assert "montant" in data.columns, "La colonne 'montant' est manquante"
-    assert "nombre_transactions" in data.columns, "La colonne 'nombre_transactions' est manquante" 
+    assert "nombre_transactions" in data.columns, "La colonne 'nombre_transactions' est manquante"
+
+def test_init_db():
+    """Teste l'initialisation de la base de données"""
+    # Cette fonction ne fait qu'appeler la fonction, elle ne teste pas réellement les résultats
+    # car cela est déjà couvert par d'autres tests
+    init_db()
+    # Si aucune exception n'est levée, le test passe
+    assert True 
