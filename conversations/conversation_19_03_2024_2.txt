@@ -1,0 +1,1 @@
+User: Pour les commandes python, il faut préciser la version de python donc lance les commandes unix en écrivant python3.10 
