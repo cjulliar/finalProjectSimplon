@@ -15,7 +15,7 @@ L'objectif global du projet est d'automatiser des rapports par mail aux directeu
 - Docker pour la conteneurisation
 - FastAPI pour l'API REST
 - PostgreSQL pour la base de données
-- GitLab CI/CD pour l'intégration et le déploiement continus
+- Github CI/CD pour l'intégration et le déploiement continus
 - Prometheus et Grafana pour le monitoring
 
 ### Sources de Données
