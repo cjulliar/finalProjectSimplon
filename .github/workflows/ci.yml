@@ -116,7 +116,7 @@ jobs:
         mv admin_credentials.txt ./credentials/
     
     - name: Upload credentials as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: staging-credentials
         path: ./credentials/
