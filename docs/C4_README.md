@@ -102,6 +102,14 @@ Pour assurer la conformité RGPD, les mesures suivantes ont été prises :
 3. **Traçabilité** : La date d'insertion est enregistrée pour chaque entrée.
 4. **Rétention limitée** : Un mécanisme de purge des données anciennes sera implémenté dans une version future.
 
+Pour une documentation complète concernant la conformité RGPD de ce projet, veuillez consulter :
+- [Documentation RGPD principale](./RGPD_README.md) - Index de la documentation RGPD
+- [Documentation détaillée](./RGPD_DOCUMENTATION.md) - Document principal sur les mesures RGPD
+- [Registre des traitements](./RGPD_REGISTRE_TRAITEMENT.md) - Registre conformément à l'Article 30 du RGPD
+- [Politique de confidentialité](./RGPD_POLITIQUE_CONFIDENTIALITE.md) - Politique interne de confidentialité
+
+Ces documents sont versionnés dans le système de gestion de versions du code source, assurant ainsi leur traçabilité et leur mise à jour régulière.
+
 ## Dépendances
 
 Ce module dépend des bibliothèques suivantes :

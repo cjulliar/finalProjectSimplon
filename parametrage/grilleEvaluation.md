@@ -28,8 +28,8 @@
 - [X] Le script d'import fourni est fonctionnel.
 - [X] La procédure d'installation a correctement été reproduite.
 - [X] La documentation du script d'import est versionnée.
-- [ ] La démarche RGPD est appliquée.
-- [ ] La documentation RGPD est versionnée.
+- [X] La démarche RGPD est appliquée.
+- [X] La documentation RGPD est versionnée.
 
 ### C5. Développer une API mettant à disposition le jeu de données…
 - [X] La documentation technique de l'API (REST) couvre tous les points de terminaisons.
