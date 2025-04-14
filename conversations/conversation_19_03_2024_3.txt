@@ -1,5 +1,0 @@
-User: J'ai l'impression que le fichier conversation ne se met pas a jour, peut etre est-il plus simple d'ecrire un fichier pour chaque echanges que nous avons ?
-Ensuite la partie execution d'appli main.py est passé. mais la partie test avec pytest a mis 1 warning et 1 error.
-Je ne sais pas si tu es en mesure de lire le terminal pour voir les retour apres l'execution de commande ?
-J'ai profiter pour push tout ce qu'on a sur github, il est important de faire des sauvegarde à chaque avancé plus ou moins stable.
-Essayons de refaire les tests pour voir ce qui n'a pas marche et essayer de le corriger. 

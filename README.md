@@ -147,4 +147,9 @@ Le déploiement est automatisé via GitHub Actions :
 
 ## Documentation
 
-La documentation complète est disponible dans le dossier `docs/`.
+La documentation complète est disponible dans le dossier `docs/` :
+
+- [Documentation API](docs/API_README.md) - Détails sur l'API REST
+- [Documentation C4](docs/C4_README.md) - Informations sur la base de données et l'importation
+- [Documentation RGPD](docs/RGPD_README.md) - Conformité avec le RGPD
+- [Technologies](docs/TECHNOLOGIES.md) - Justification des choix technologiques
