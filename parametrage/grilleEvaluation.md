@@ -57,19 +57,19 @@
   - l'information peut être confirmée par d'autres sites de confiance
 
 ### C7. Identifier des services d'intelligence artificielle préexistants…
-- [ ] L'expression de besoin est reformulée et présente les objectifs et les contraintes du projet d'intégration d'une solution d'intelligence artificielle.
-- [ ] Le benchmark liste les services étudiés et les services non étudiés.
-- [ ] Les raisons pour écarter un service sont explicitées.
-- [ ] Le benchmark détaille le niveau d'adéquation du service étudié pour chaque ensemble fonctionnel souhaité par le commanditaire.
+- [X] L'expression de besoin est reformulée et présente les objectifs et les contraintes du projet d'intégration d'une solution d'intelligence artificielle.
+- [X] Le benchmark liste les services étudiés et les services non étudiés.
+- [X] Les raisons pour écarter un service sont explicitées.
+- [X] Le benchmark détaille le niveau d'adéquation du service étudié pour chaque ensemble fonctionnel souhaité par le commanditaire.
 - [ ] Le benchmark détaille le niveau de la démarche éco-responsable du service étudié, en fonction des informations disponibles.
-- [ ] Le benchmark détaille les principales contraintes techniques et les prérequis pour chaque solution.
-- [ ] Les conclusions délimitent clairement les services répondant aux besoins, avec leurs avantages et leurs inconvénients, des services ne couvrant pas les besoins du commanditaire.
+- [X] Le benchmark détaille les principales contraintes techniques et les prérequis pour chaque solution.
+- [X] Les conclusions délimitent clairement les services répondant aux besoins, avec leurs avantages et leurs inconvénients, des services ne couvrant pas les besoins du commanditaire.
 
 ### C8. Paramétrer un service d'intelligence artificielle…
-- [ ] Le service installé est accessible, avec une éventuelle authentification.
-- [ ] Le service est configuré correctement, il répond aux besoins fonctionnels et aux contraintes techniques du projet.
-- [ ] Le monitorage disponible du service est opérationnel.
-- [ ] La documentation couvre la gestion des accès à la solution, les procédures d'installation et de test, les éventuelles dépendances et interconnexions avec d'autres solutions, les données impliquées dans l'utilisation de la solution.
+- [X] Le service installé est accessible, avec une éventuelle authentification.
+- [X] Le service est configuré correctement, il répond aux besoins fonctionnels et aux contraintes techniques du projet.
+- [X] Le monitorage disponible du service est opérationnel.
+- [X] La documentation couvre la gestion des accès à la solution, les procédures d'installation et de test, les éventuelles dépendances et interconnexions avec d'autres solutions, les données impliquées dans l'utilisation de la solution.
 - [ ] La documentation est communiquée aux parties prenantes dans un format qui respecte les recommandations d'accessibilité (par exemples celles de l'association Valentin Haüy ou de Atalan -AcceDe).
 
 ---
@@ -77,28 +77,27 @@
 ## E3 : « Mettre à disposition l'IA »
 
 ### C9. Développer une API exposant un modèle d'IA…
-- [ ] L'API restreint l'accès au modèle d'intelligence artificielle avec un moyen d'authentification.
-- [ ] L'API permet l'accès aux fonctions du modèle, comme attendu selon les spécifications.
-- [ ] Les recommandations de sécurisation d'une API du top 10 OWASP sont intégrées quand nécessaires.
-- [ ] Les sources sont versionnées et accessibles depuis un dépôt Git distant.
-- [ ] Les tests couvrent tous les points de terminaison dans le respect des spécifications.
-- [ ] Les tests s'exécutent sans bug.
-- [ ] Les résultats des tests sont correctement interprétés.
-- [ ] La documentation couvre l'architecture et tous les points de terminaisons de l'API.
-- [ ] La documentation couvre les règles d'authentification et/ou d'autorisation d'accès à l'API.
-- [ ] La documentation et l'API respectent les standards d'un modèle choisi (par exemple OpenAPI*).
+- [X] L'API restreint l'accès au modèle d'intelligence artificielle avec un moyen d'authentification.
+- [X] L'API permet l'accès aux fonctions du modèle, comme attendu selon les spécifications.
+- [X] Les recommandations de sécurisation d'une API du top 10 OWASP sont intégrées quand nécessaires.
+- [X] Les sources sont versionnées et accessibles depuis un dépôt Git distant.
+- [X] Les tests couvrent tous les points de terminaison dans le respect des spécifications.
+- [X] Les tests s'exécutent sans bug.
+- [X] Les résultats des tests sont correctement interprétés.
+- [X] La documentation couvre l'architecture et tous les points de terminaisons de l'API.
+- [X] La documentation couvre les règles d'authentification et/ou d'autorisation d'accès à l'API.
+- [X] La documentation et l'API respectent les standards d'un modèle choisi (par exemple OpenAPI*).
 - [ ] La documentation est communiquée dans un format qui respecte les recommandations d'accessibilité (par exemple celles de l'association Valentin Haüy ou de Microsoft).
 
 ### C10. Intégrer l'API d'un modèle ou d'un service d'IA…
-- [ ] L'application de départ est installée et fonctionnelle en environnement de développement.
-- [ ] La communication avec l'API depuis l'application fonctionne.
-- [ ] Les éventuelles étapes d'authentification et de renouvellement de l'authentification (expiration des jetons par exemple) sont intégrées correctement en suivant la documentation de l'API.
-- [ ] Tous les points de terminaison de l'API concernés par le projet sont intégrés à l'application selon les spécifications fonctionnelles et techniques.
-- [ ] Les adaptations d'interfaces nécessaires et en accord avec les spécifications sont intégrées à l'application.
-- [ ] Les tests d'intégration couvrent tous les points de terminaison exploités.
-- [ ] Les tests s'exécutent en totalité : il n'y a pas de bug dans les programmes des tests en eux-mêmes.
-- [ ] Les tests s'exécutent en totalité : il n'y a pas de bug dans les programmes des tests en eux-mêmes.
-- [ ] Les sources sont versionnées et accessibles depuis le dépôt Git de l'application.
+- [X] L'application de départ est installée et fonctionnelle en environnement de développement.
+- [X] La communication avec l'API depuis l'application fonctionne.
+- [X] Les éventuelles étapes d'authentification et de renouvellement de l'authentification (expiration des jetons par exemple) sont intégrées correctement en suivant la documentation de l'API.
+- [X] Tous les points de terminaison de l'API concernés par le projet sont intégrés à l'application selon les spécifications fonctionnelles et techniques.
+- [X] Les adaptations d'interfaces nécessaires et en accord avec les spécifications sont intégrées à l'application.
+- [X] Les tests d'intégration couvrent tous les points de terminaison exploités.
+- [X] Les tests s'exécutent en totalité : il n'y a pas de bug dans les programmes des tests en eux-mêmes.
+- [X] Les sources sont versionnées et accessibles depuis le dépôt Git de l'application.
 
 ### C11. Monitorer un modèle d'IA…
 - [ ] Les métriques faisant l'objet du monitorage du modèle sont expliquées sans erreur d'interprétation.
@@ -112,12 +111,12 @@
 - [ ] La documentation est communiquée dans un format qui respecte les recommandations d'accessibilité (par exemple celles de l'association Valentin Haüy ou de Microsoft).
 
 ### C12. Programmer les tests automatisés d'un modèle d'IA…
-- [ ] L'ensemble des cas à tester sont listés et définis : la partie du modèle visée par le test, le périmètre du test et la stratégie de test.
-- [ ] Les outils de test (framework, bibliothèque, etc.) choisis sont cohérent avec l'environnement technique du projet.
-- [ ] Les tests sont intégrés et respectent la couverture souhaitée établie.
-- [ ] Les tests s'exécutent sans problème technique en environnement de test.
-- [ ] Les sources sont versionnées et accessibles depuis un dépôt Git distant (DVC, Gitlab...).
-- [ ] La documentation couvre la procédure d'installation de l'environnement de test, les dépendances installées, la procédure d'exécution des tests et de calcul de la couverture.
+- [X] L'ensemble des cas à tester sont listés et définis : la partie du modèle visée par le test, le périmètre du test et la stratégie de test.
+- [X] Les outils de test (framework, bibliothèque, etc.) choisis sont cohérent avec l'environnement technique du projet.
+- [X] Les tests sont intégrés et respectent la couverture souhaitée établie.
+- [X] Les tests s'exécutent sans problème technique en environnement de test.
+- [X] Les sources sont versionnées et accessibles depuis un dépôt Git distant (DVC, Gitlab...).
+- [X] La documentation couvre la procédure d'installation de l'environnement de test, les dépendances installées, la procédure d'exécution des tests et de calcul de la couverture.
 - [ ] La documentation est communiquée dans un format qui respecte les recommandations d'accessibilité (par exemple celles de l'association Valentin Haüy ou de Microsoft).
 
 ### C13. Créer une chaîne de livraison continue d'un modèle d'IA…
@@ -135,7 +134,7 @@
 ## E4 : « Développer une app »
 
 ### C14. Analyser le besoin d'application…
-- [ ] La modélisation des données respecte un formalisme : Merise, entités-relations, etc.
+- [X] La modélisation des données respecte un formalisme : Merise, entités-relations, etc.
 - [ ] La modélisation des parcours utilisateurs respecte un formalisme : schéma fonctionnel, wireframes, etc.
 - [X] Chaque spécification fonctionnelle couvre le contexte, les scénarios d'utilisation et les critères de validation.
 - [ ] Les objectifs d'accessibilités sont directement intégrés aux critères d'acceptation des user stories.
@@ -158,9 +157,9 @@
 - [X] L'environnement de développement installé respecte les spécifications techniques du projet.
 - [ ] Les interfaces sont intégrées et respectent les maquettes.
 - [ ] Les comportements des composants d'interface (validation formulaire, animations, etc.) et la navigation respectent les spécifications fonctionnelles.
-- [ ] Les composants métier sont développés et fonctionnent comme prévu par les spécifications techniques et fonctionnelles.
-- [ ] La gestion des droits d'accès à l'application ou à certains espaces de l'application est développée et respecte les spécifications fonctionnelles.
-- [ ] Les flux de données sont intégrés dans le respect des spécifications techniques et fonctionnelles.
+- [X] Les composants métier sont développés et fonctionnent comme prévu par les spécifications techniques et fonctionnelles.
+- [X] La gestion des droits d'accès à l'application ou à certains espaces de l'application est développée et respecte les spécifications fonctionnelles.
+- [X] Les flux de données sont intégrés dans le respect des spécifications techniques et fonctionnelles.
 - [ ] Les développements sont réalisés dans le respect des bonnes pratiques d'éco-conception d'une application (Les recommandations d'éco-index ou Green IT par exemple).
 - [ ] Les préconisations du top 10 d'OWASP sont implémentées dans l'application quand nécessaire.
 - [X] Des tests d'intégration ou unitaires couvrent au moins les composants métier et la gestion des accès.
@@ -169,21 +168,21 @@
 - [ ] La documentation est communiquée dans un format qui respecte les recommandations d'accessibilité (par exemple celles de l'association Valentin Haüy ou de Microsoft).
 
 ### C18. Automatiser les phases de tests du code source…
-- [ ] La documentation pour l'utilisation de la chaîne couvre les outils, toutes les étapes, les tâches et tous les déclencheurs de la chaîne.
+- [X] La documentation pour l'utilisation de la chaîne couvre les outils, toutes les étapes, les tâches et tous les déclencheurs de la chaîne.
 - [X] Un outil de configuration et d'exécution d'une chaîne d'intégration continue est sélectionné de façon cohérente avec l'environnement technique du projet.
-- [ ] La chaîne intègre toutes les étapes nécessaires et préalables à l'exécution des tests de l'application (build, configurations...).
-- [ ] La chaîne exécute les tests de l'application disponibles lors de son déclenchement.
+- [X] La chaîne intègre toutes les étapes nécessaires et préalables à l'exécution des tests de l'application (build, configurations...).
+- [X] La chaîne exécute les tests de l'application disponibles lors de son déclenchement.
 - [X] Les configuration sont versionnées avec les sources du projet d'application, sur un dépôt Git distant.
-- [ ] La documentation de la chaîne d'intégration continue couvre la procédure d'installation, de configuration et de test de la chaîne.
+- [X] La documentation de la chaîne d'intégration continue couvre la procédure d'installation, de configuration et de test de la chaîne.
 - [ ] La documentation est communiquée dans un format qui respecte les recommandations d'accessibilité (par exemple celles de l'association Valentin Haüy ou de Microsoft).
 
 ### C19. Créer un processus de livraison continue d'une application…
-- [ ] La documentation pour l'utilisation de la chaîne couvre toutes les étapes de la chaîne, les tâches et tous les déclencheurs disponibles.
+- [X] La documentation pour l'utilisation de la chaîne couvre toutes les étapes de la chaîne, les tâches et tous les déclencheurs disponibles.
 - [X] Le ou les fichiers de configuration de la chaîne sont correctement reconnus et exécutés par le système.
-- [ ] La ou les étapes de packaging (compilation, minification, build de containers, etc.) de l'application sont intégrées à la chaîne et s'exécutent sans erreur.
-- [ ] L'étape de livraison (pull request par exemple) est intégrée et exécutée une fois la ou les étapes de packaging validées.
+- [X] La ou les étapes de packaging (compilation, minification, build de containers, etc.) de l'application sont intégrées à la chaîne et s'exécutent sans erreur.
+- [X] L'étape de livraison (pull request par exemple) est intégrée et exécutée une fois la ou les étapes de packaging validées.
 - [X] Les sources de la chaîne sont versionnées et accessibles depuis le dépôt Git distant du projet d'application.
-- [ ] La documentation de la chaîne de livraison continue couvre la procédure d'installation, de configuration et de test de la chaîne.
+- [X] La documentation de la chaîne de livraison continue couvre la procédure d'installation, de configuration et de test de la chaîne.
 - [ ] La documentation est communiquée dans un format qui respecte les recommandations d'accessibilité (par exemple celles de l'association Valentin Haüy ou de Microsoft).
 
 ---
@@ -202,6 +201,6 @@
 ### C21. Résoudre les incidents techniques…
 - [X] La ou les causes du problème sont identifiées correctement.
 - [X] Le problème est reproduit en environnement de développement.
-- [ ] La procédure de débogage du code est documentée depuis l'outil de suivi.
-- [ ] La solution documentée explicite chaque étape de la résolution et de son implémentation.
+- [X] La procédure de débogage du code est documentée depuis l'outil de suivi.
+- [X] La solution documentée explicite chaque étape de la résolution et de son implémentation.
 - [X] La solution est versionnée dans le dépôt Git du projet d'application (par exemple avec une merge request).
