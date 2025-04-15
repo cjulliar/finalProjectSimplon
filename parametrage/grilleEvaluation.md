@@ -43,12 +43,12 @@
 ## E2 : « Veille service IA »
 
 ### C6. Organiser et réaliser une veille technique et réglementaire…
-- [ ] La thématique de veille choisie porte sur un outil et/ou une réglementation mobilisée dans la mise en situation.
-- [ ] Les temps de veille sont planifiés régulièrement (à minima une récurrence d'une heure hebdomadaire).
-- [ ] Le choix des outils d'agrégation est cohérent avec les sources d'informations visées et le budget disponible (flux RSS, flux réseaux sociaux, agrégation newsletter, etc.).
-- [ ] Les synthèses sont communiquées aux parties prenantes dans un format qui respecte les recommandations d'accessibilité (par exemples celles de l'association Valentin Haüy ou de Atalan - AcceDe).
-- [ ] Les informations partagées dans la synthèse répondent à la thématique de veille choisie.
-- [ ] Les sources et flux identifiés répondent aux critères de fiabilité :  
+- [X] La thématique de veille choisie porte sur un outil et/ou une réglementation mobilisée dans la mise en situation.
+- [X] Les temps de veille sont planifiés régulièrement (à minima une récurrence d'une heure hebdomadaire).
+- [X] Le choix des outils d'agrégation est cohérent avec les sources d'informations visées et le budget disponible (flux RSS, flux réseaux sociaux, agrégation newsletter, etc.).
+- [X] Les synthèses sont communiquées aux parties prenantes dans un format qui respecte les recommandations d'accessibilité (par exemples celles de l'association Valentin Haüy ou de Atalan - AcceDe).
+- [X] Les informations partagées dans la synthèse répondent à la thématique de veille choisie.
+- [X] Les sources et flux identifiés répondent aux critères de fiabilité :  
   - L'auteur de la page est identifié  
   - Des informations sur l'auteur sont disponibles et confirment ses compétences, sa notoriété et l'absence d'intérêts personnels  
   - l'analyse du contenu est valable (date de publication récente, sources de l'information indiquées, niveau de langue correct)  

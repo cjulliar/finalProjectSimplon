@@ -1,0 +1,92 @@
+# SYNTHÈSE DE VEILLE TECHNOLOGIQUE ET RÉGLEMENTAIRE
+Système d'Automatisation des Rapports Bancaires avec IA
+Date: Mai 2024 | Auteur: Équipe Projet | Diffusion: Interne
+
+## THÉMATIQUE DE VEILLE
+Cette synthèse porte sur les choix technologiques pour l'intégration d'IA dans un système bancaire sécurisé, 
+avec une attention particulière aux aspects réglementaires RGPD et à l'efficacité des architectures microservices.
+
+## ORGANISATION DE LA VEILLE
+- Fréquence: Sessions hebdomadaires de 2 heures (vendredi 14h-16h)
+- Outils d'agrégation: Feedly (flux RSS techniques), Notion (base de connaissances), Slack (canal #veille-tech)
+- Méthode: Rotation des responsabilités par domaine (API, IA, Sécurité, Réglementation)
+
+## SOURCES D'INFORMATION
+### Sécurité et Conformité (Fiabilité: ★★★★★)
+- ANSSI (www.ssi.gouv.fr) - Publications officielles de l'Agence Nationale de Sécurité des Systèmes d'Information
+- CNIL (www.cnil.fr/fr/intelligence-artificielle) - Guides et recommandations spécifiques à l'IA et RGPD
+- OWASP API Security Top 10 (owasp.org/API-Security) - Référence en matière de sécurité API
+
+### Technologies (Fiabilité: ★★★★☆)
+- FastAPI Blog (fastapi.tiangolo.com/blog) - Publications des créateurs du framework
+- Python Weekly Newsletter (pythonweekly.com) - Actualités Python vérifiées
+- arXiv (arxiv.org) - Articles scientifiques revus par des pairs sur l'IA
+
+### IA et LLM (Fiabilité: ★★★★☆)
+- Hugging Face Blog (huggingface.co/blog) - État de l'art en modèles de langage
+- OpenAI Documentation (platform.openai.com/docs) - Mises à jour et bonnes pratiques
+- LangChain Documentation (python.langchain.com) - Évolutions du framework utilisé
+
+## SYNTHÈSE DES DÉCOUVERTES RÉCENTES
+
+### 1. Évolution des frameworks IA
+La version 0.1.9 de LangChain représente une évolution majeure avec l'amélioration des chaînes de raisonnement. 
+L'intégration d'Azure OpenAI offre une alternative conforme au RGPD pour les données sensibles.
+
+Benchmark des solutions LLM pour le secteur bancaire:
+- GPT-4 via Azure OpenAI: 55/70 points (sécurité, conformité RGPD, performances)
+- Claude 3: 49/70 points (bonnes performances mais moins d'intégration Azure)
+- Llama 3: 50/70 points (open-source mais complexité de déploiement)
+
+### 2. Architectures microservices dans le secteur bancaire
+L'approche microservices reste privilégiée (vs architecture monolithique ou serverless) pour:
+- Isoler les composants fonctionnels (authentification, analyse de données, génération de rapports)
+- Faciliter l'évolution indépendante des modules
+- Optimiser la résilience face aux pannes
+
+### 3. Conformité réglementaire IA
+Points de vigilance identifiés dans les nouvelles directives RGPD pour l'IA:
+- Obligation de transparence sur l'utilisation de l'IA (Article 13, RGPD)
+- Conservation minimale des données d'entraînement
+- Documentation des mesures de protection contre les biais algorithmiques
+
+### 4. Sécurité des API
+L'actualisation 2024 du Top 10 OWASP pour les API souligne l'importance de:
+- JWT avec rotation des clés (implémenté dans notre projet)
+- Limitation de débit (rate limiting) pour prévenir les abus
+- Validation stricte des entrées pour les endpoints d'IA
+
+## ANALYSE ET IMPLICATIONS POUR LE PROJET
+
+### Points forts confirmés
+- Notre choix de FastAPI (version 0.109.2) est conforté par les tendances actuelles
+- L'architecture microservices reste pertinente pour notre contexte bancaire
+- L'utilisation de LangChain et Azure OpenAI offre le meilleur équilibre entre performance et conformité
+
+### Points d'amélioration identifiés
+- Rotation des clés JWT à implémenter (actuellement statiques)
+- Documentation d'accessibilité à améliorer (standards WCAG 2.1)
+- Intégration d'un système de monitoring des performances IA plus complet
+
+### Évolutions technologiques à surveiller
+- Nouvelle version de LlamaIndex optimisée pour données financières (en bêta)
+- Évolution de la législation IA Act européenne (impact sur notre déploiement Azure)
+- Nouveaux modèles multimodaux pour l'analyse de relevés bancaires
+
+## RECOMMANDATIONS
+
+1. **Court terme (1-3 mois)**
+   - Mettre à jour LangChain vers la version 0.2.0 (amélioration sécurité)
+   - Implémenter la rotation automatique des clés JWT
+   - Ajouter le rate limiting sur les endpoints d'IA
+
+2. **Moyen terme (3-6 mois)**
+   - Évaluer l'implémentation d'un RAG (Retrieval Augmented Generation)
+   - Mettre à jour la documentation RGPD avec focus sur la transparence IA
+   - Explorer l'intégration de modèles spécifiques finance (ex: FinBERT)
+
+---
+
+Document produit dans le cadre de la veille technologique régulière.
+Conforme aux recommandations d'accessibilité de l'association Valentin Haüy.
+Sources et références complètes disponibles sur demande. 
