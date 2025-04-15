@@ -18,6 +18,7 @@ TEST_MODULES = [
     "tests/test_database.py",
     "tests/test_excel_import.py",
     "tests/test_main.py",
+    "tests/test_ia_service.py",  # Ajout du test pour le service d'IA
     # "tests/test_api.py"  # Commenté car nécessite des dépendances supplémentaires
 ]
 
