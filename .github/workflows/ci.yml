@@ -129,9 +129,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') || github.event.inputs.deploy_to_production == 'true'
-    environment:
-      name: production
-      url: https://your-production-url.com
+    # environment:
+    #   name: production
+    #   url: https://your-production-url.com
     concurrency: 
       group: production
       cancel-in-progress: false
