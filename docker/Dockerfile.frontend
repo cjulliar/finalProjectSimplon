@@ -1,0 +1,27 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Installation des dépendances système
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copie des fichiers de dépendances
+COPY frontend/requirements.txt .
+
+# Installation des dépendances Python
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copie du code source
+COPY frontend/ ./frontend/
+
+# Configuration des variables d'environnement
+ENV PYTHONUNBUFFERED=1 \
+    DJANGO_SETTINGS_MODULE=frontend.settings
+
+# Exposition du port
+EXPOSE 8080
+
+# Point d'entrée
+CMD ["sh", "-c", "cd frontend && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn frontend.wsgi:application --bind 0.0.0.0:8080"] 

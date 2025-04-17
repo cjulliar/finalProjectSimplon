@@ -36,17 +36,38 @@ services:
       - ./data:/app/data
     environment:
       - DATABASE_URL=sqlite:///data/bankdata.db
-      - API_SECRET_KEY=${API_SECRET_KEY:-secret-key-change-in-production}
+      - API_SECRET_KEY=secret-key-change-in-production
       - API_ALGORITHM=HS256
       - API_ACCESS_TOKEN_EXPIRE_MINUTES=30
-      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
-      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@example.com}
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=admin123
+      - ADMIN_EMAIL=admin@example.com
     command: >
       bash -c "
-        python -m src.scripts.setup_admin --username $$ADMIN_USERNAME --password $$ADMIN_PASSWORD --email $$ADMIN_EMAIL &&
+        python -m src.scripts.setup_admin --username admin --password admin123 --email admin@example.com &&
         python -m src.scripts.run_api --host 0.0.0.0
       "
+
+  # Frontend Django
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./frontend:/app/frontend
+      - ./frontend/static:/app/frontend/static
+      - ./frontend/media:/app/frontend/media
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-change-in-production
+      - API_URL=http://api:8000
+      - API_SECRET_KEY=secret-key-change-in-production
+      - DATABASE_URL=sqlite:///app/frontend/db.sqlite3
+    depends_on:
+      - api
 
   # Monitoring Prometheus
   prometheus:

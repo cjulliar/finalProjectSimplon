@@ -1,0 +1,1 @@
+# Package principal pour le frontend Django 
