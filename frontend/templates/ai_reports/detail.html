@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Détail du Rapport IA | Système de Rapports Bancaires{% endblock %}
+
+{% block extra_css %}
+<style>
+.markdown-content {
+    line-height: 1.6;
+}
+.markdown-content h1, .markdown-content h2, .markdown-content h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+.markdown-content h1 {
+    font-size: 1.8rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+.markdown-content h2 {
+    font-size: 1.5rem;
+}
+.markdown-content h3 {
+    font-size: 1.25rem;
+}
+.markdown-content ul, .markdown-content ol {
+    padding-left: 2rem;
+    margin-bottom: 1rem;
+}
+.markdown-content blockquote {
+    border-left: 4px solid #eee;
+    padding-left: 1rem;
+    color: #666;
+    margin: 1rem 0;
+}
+.markdown-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.viz-card {
+    transition: transform 0.2s ease;
+}
+.viz-card:hover {
+    transform: translateY(-5px);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Rapport d'Analyse IA</h1>
+        <div>
+            <a href="{% url 'ai_reports:list' %}" class="btn btn-outline-secondary me-2">
+                <i class="fas fa-arrow-left me-1"></i> Retour
+            </a>
+            <button onclick="window.print()" class="btn btn-outline-primary">
+                <i class="fas fa-print me-1"></i> Imprimer
+            </button>
+        </div>
+    </div>
+    
+    {% if api_error %}
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        Impossible de récupérer le rapport. L'API est inaccessible ou le rapport n'existe plus.
+        <hr>
+        <small>{{ error }}</small>
+        <div class="mt-3">
+            <a href="{% url 'ai_reports:list' %}" class="btn btn-sm btn-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Retour aux rapports
+            </a>
+        </div>
+    </div>
+    {% else %}
+    
+    <!-- Informations sur le rapport -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">Informations</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <p class="mb-2">
+                        <strong>ID :</strong> 
+                        <span class="text-muted">{{ report.id }}</span>
+                    </p>
+                    <p class="mb-2">
+                        <strong>Date de création :</strong> 
+                        <span class="text-muted">{{ report.metadata.timestamp|date:"d/m/Y H:i" }}</span>
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <p class="mb-2">
+                        <strong>Période analysée :</strong> 
+                        <span class="text-muted">
+                            Du {{ report.metadata.date_range.start|date:"d/m/Y" }} 
+                            au {{ report.metadata.date_range.end|date:"d/m/Y" }}
+                        </span>
+                    </p>
+                    <p class="mb-2">
+                        <strong>Points de données :</strong> 
+                        <span class="text-muted">{{ report.metadata.data_points }}</span>
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <p class="mb-2">
+                        <strong>Agences analysées :</strong> 
+                        <span class="text-muted">
+                            {% for agency in report.metadata.agencies %}
+                                <span class="badge bg-primary">{{ agency }}</span>
+                            {% endfor %}
+                        </span>
+                    </p>
+                    <p class="mb-2">
+                        <strong>Modèle IA :</strong> 
+                        <span class="text-muted">{{ report.metadata.model_used|default:"Modèle standard" }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Rapport -->
+        <div class="col-lg-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold">Rapport d'analyse</h6>
+                </div>
+                <div class="card-body">
+                    <div class="markdown-content">
+                        {{ report.report|linebreaks }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Visualisations -->
+        <div class="col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold">Visualisations</h6>
+                </div>
+                <div class="card-body">
+                    {% if report.visualizations %}
+                        {% for viz in report.visualizations %}
+                            <div class="card mb-3 viz-card">
+                                <div class="card-header py-2 bg-light">
+                                    <h6 class="m-0 small">{{ viz.title }}</h6>
+                                </div>
+                                <div class="card-body p-2 text-center">
+                                    <img src="{{ viz.url }}" alt="{{ viz.title }}" class="img-fluid" />
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-chart-bar fa-3x text-muted mb-3"></i>
+                            <p>Aucune visualisation disponible pour ce rapport.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

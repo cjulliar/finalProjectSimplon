@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Rapports IA | Système de Rapports Bancaires{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Rapports d'Analyse IA</h1>
+        <a href="{% url 'ai_reports:create' %}" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i> Nouveau rapport
+        </a>
+    </div>
+    
+    {% if api_error %}
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        Impossible de se connecter à l'API. Certaines données peuvent ne pas être à jour.
+        <hr>
+        <small>{{ error }}</small>
+    </div>
+    {% endif %}
+    
+    <!-- Liste des rapports -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">Tous les rapports</h6>
+        </div>
+        <div class="card-body">
+            {% if reports %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date de création</th>
+                            <th>Période analysée</th>
+                            <th>Agence</th>
+                            <th>Points de données</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for report in reports %}
+                        <tr>
+                            <td>{{ report.id|truncatechars:8 }}</td>
+                            <td>{{ report.created_at|date:"d/m/Y H:i" }}</td>
+                            <td>
+                                Du {{ report.metadata.date_range.start|date:"d/m/Y" }} 
+                                au {{ report.metadata.date_range.end|date:"d/m/Y" }}
+                            </td>
+                            <td>
+                                {% if report.query_parameters.agence %}
+                                <span class="badge bg-primary">{{ report.query_parameters.agence }}</span>
+                                {% else %}
+                                <span class="badge bg-secondary">Toutes agences</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ report.metadata.data_points }}</td>
+                            <td>
+                                <a href="{% url 'ai_reports:detail' report.id %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i> Voir
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <div class="mb-3">
+                    <i class="fas fa-robot fa-3x text-muted"></i>
+                </div>
+                <h5 class="text-muted">Aucun rapport IA disponible</h5>
+                <p>Générez votre premier rapport d'analyse IA</p>
+                <a href="{% url 'ai_reports:create' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-1"></i> Nouvelle analyse
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

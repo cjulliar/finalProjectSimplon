@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Nouvelle Analyse IA | Système de Rapports Bancaires{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Nouvelle Analyse IA</h1>
+        <a href="{% url 'ai_reports:list' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Retour aux rapports
+        </a>
+    </div>
+    
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">Paramètres d'analyse</h6>
+        </div>
+        <div class="card-body">
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="agence" class="form-label">Agence</label>
+                        <select class="form-select" id="agence" name="agence">
+                            <option value="">Toutes les agences</option>
+                            {% for agency in agencies %}
+                            <option value="{{ agency }}">{{ agency }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">Sélectionnez une agence spécifique ou laissez vide pour analyser toutes les agences</div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="date_debut" class="form-label">Date de début</label>
+                        <input type="date" class="form-control" id="date_debut" name="date_debut" value="{{ default_date_debut }}" required>
+                        <div class="invalid-feedback">
+                            Veuillez sélectionner une date de début.
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="date_fin" class="form-label">Date de fin</label>
+                        <input type="date" class="form-control" id="date_fin" name="date_fin" value="{{ default_date_fin }}" required>
+                        <div class="invalid-feedback">
+                            Veuillez sélectionner une date de fin.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="include_visualizations" name="include_visualizations" checked>
+                        <label class="form-check-label" for="include_visualizations">Inclure des visualisations</label>
+                    </div>
+                    <div class="form-text">Génère des graphiques pour illustrer les données</div>
+                </div>
+                
+                <div class="alert alert-info mb-4">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="fas fa-robot fa-2x"></i>
+                        </div>
+                        <div>
+                            <h5 class="alert-heading">Analyse par IA</h5>
+                            <p class="mb-0">L'IA va analyser les données bancaires selon les paramètres spécifiés et générer un rapport détaillé. Ce processus peut prendre quelques instants.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-cog me-1"></i> Générer l'analyse
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Validation du formulaire
+(function () {
+    'use strict'
+    
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll('.needs-validation')
+    
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                
+                form.classList.add('was-validated')
+            }, false)
+        })
+})()
+
+// Validation supplémentaire des dates
+document.getElementById('date_fin').addEventListener('change', function(e) {
+    const dateDebut = new Date(document.getElementById('date_debut').value);
+    const dateFin = new Date(this.value);
+    
+    if (dateFin < dateDebut) {
+        this.setCustomValidity('La date de fin doit être postérieure à la date de début');
+    } else {
+        this.setCustomValidity('');
+    }
+});
+
+document.getElementById('date_debut').addEventListener('change', function(e) {
+    // Forcer la vérification de la date de fin quand on change la date de début
+    const dateFinInput = document.getElementById('date_fin');
+    const event = new Event('change');
+    dateFinInput.dispatchEvent(event);
+});
+</script>
+{% endblock %} 
