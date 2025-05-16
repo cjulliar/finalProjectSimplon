@@ -1,8 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.contrib import messages
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+import json
+import os
+import sqlite3
 from datetime import datetime, timedelta
+from pathlib import Path
 from dashboard.services import get_api_client
 
 
@@ -15,20 +20,19 @@ def report_list(request):
     
     try:
         # Récupérer tous les rapports
-        reports = api_client.get_latest_analyses(limit=100)
+        analyses = api_client.get_latest_analyses(limit=10)
         
-        context = {
-            'reports': reports
-        }
-        
-        return render(request, 'ai_reports/list.html', context)
+        return render(request, 'ai_reports/list.html', {
+            'analyses': analyses.get('analyses', []),
+            'count': analyses.get('count', 0)
+        })
         
     except Exception as e:
-        context = {
+        return render(request, 'ai_reports/list.html', {
             'error': str(e),
-            'api_error': True
-        }
-        return render(request, 'ai_reports/list.html', context)
+            'analyses': [],
+            'count': 0
+        })
 
 
 @login_required
@@ -80,11 +84,24 @@ def report_create(request):
             # Envoyer la requête à l'API
             response = api_client.create_analysis(analysis_request)
             
-            messages.success(request, "Analyse IA créée avec succès.")
-            return redirect('ai_reports:detail', report_id=response['id'])
+            if 'id' in response:
+                return redirect('ai_reports:detail', report_id=response['id'])
+            else:
+                return render(request, 'ai_reports/create.html', {
+                    'error': 'Erreur lors de la création du rapport',
+                    'form_data': analysis_request
+                })
             
         except Exception as e:
-            messages.error(request, f"Erreur lors de la création de l'analyse : {str(e)}")
+            return render(request, 'ai_reports/create.html', {
+                'error': str(e),
+                'form_data': {
+                    'agence': agence,
+                    'start_date': date_debut_str,
+                    'end_date': date_fin_str,
+                    'include_visualizations': include_visualizations
+                }
+            })
     
     context = {
         'agencies': agencies,
@@ -106,16 +123,156 @@ def report_detail(request, report_id):
         # Récupérer les détails du rapport
         report = api_client.get_analysis(report_id)
         
-        context = {
+        return render(request, 'ai_reports/detail.html', {
             'report': report
-        }
-        
-        return render(request, 'ai_reports/detail.html', context)
+        })
         
     except Exception as e:
-        context = {
-            'error': str(e),
-            'api_error': True,
-            'report_id': report_id
-        }
-        return render(request, 'ai_reports/detail.html', context) 
+        return render(request, 'ai_reports/detail.html', {
+            'error': str(e)
+        })
+
+
+@login_required
+def email_reports(request):
+    """
+    Afficher les rapports par email pour une banque spécifique.
+    Cette vue permet de voir les emails de rapports pour chaque banque
+    avec un sélecteur de banque en haut à gauche.
+    """
+    # Connexion à la base de données SQLite
+    db_path = os.path.join(settings.BASE_DIR, '..', 'bankreports.db')
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    
+    # Liste des banques disponibles
+    cursor.execute("SELECT DISTINCT bank_name FROM email_reports ORDER BY bank_name")
+    banks = [row['bank_name'] for row in cursor.fetchall()]
+    
+    if not banks:
+        # Fallback sur les banques par défaut si aucune n'est trouvée
+        banks = ["Banque A", "Banque B", "Banque C", "Banque D"]
+    
+    # Banque sélectionnée (par défaut: première banque de la liste)
+    default_bank = banks[0] if banks else "Banque A"
+    selected_bank = request.GET.get('bank', default_bank)
+    
+    # Récupérer les rapports pour la banque sélectionnée
+    cursor.execute("""
+        SELECT id, subject, content, sent_at, recipients, status
+        FROM email_reports
+        WHERE bank_name = ?
+        ORDER BY sent_at DESC
+    """, (selected_bank,))
+    
+    reports = []
+    for row in cursor.fetchall():
+        # Convertir les données JSON
+        try:
+            recipients = json.loads(row['recipients'])
+        except:
+            recipients = []
+            
+        # Convertir la date
+        try:
+            sent_at = datetime.fromisoformat(row['sent_at']).strftime("%d/%m/%Y %H:%M")
+        except:
+            sent_at = row['sent_at']
+            
+        reports.append({
+            'id': row['id'],
+            'subject': row['subject'],
+            'content': row['content'],
+            'sent_at': sent_at,
+            'recipients': recipients,
+            'status': row['status']
+        })
+    
+    conn.close()
+    
+    return render(request, 'ai_reports/email_reports.html', {
+        'banks': banks,
+        'selected_bank': selected_bank,
+        'reports': reports
+    })
+
+
+@login_required
+def bank_charts(request):
+    """
+    Afficher les courbes d'évolution pour une banque spécifique.
+    Cette vue permet de voir les graphiques d'évolution des chiffres clés
+    avec un sélecteur de banque en haut à gauche.
+    """
+    # Connexion à la base de données SQLite
+    db_path = os.path.join(settings.BASE_DIR, '..', 'bankreports.db')
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    
+    # Liste des banques disponibles
+    cursor.execute("SELECT DISTINCT bank_name FROM email_reports ORDER BY bank_name")
+    banks = [row['bank_name'] for row in cursor.fetchall()]
+    
+    if not banks:
+        # Fallback sur les banques par défaut si aucune n'est trouvée
+        banks = ["Banque A", "Banque B", "Banque C", "Banque D"]
+    
+    # Banque sélectionnée (par défaut: première banque de la liste)
+    default_bank = banks[0] if banks else "Banque A"
+    selected_bank = request.GET.get('bank', default_bank)
+    
+    # Récupérer les visualisations pour la banque sélectionnée
+    output_dir = Path("output")
+    charts = []
+    
+    if output_dir.exists():
+        # Récupérer les dernières visualisations pour la banque sélectionnée
+        # Format des fichiers: evolution_montants_Banque A_20250514_151324.png
+        
+        # Trouver tous les timestamps uniques pour cette banque
+        timestamps = set()
+        for file in output_dir.glob(f"*_{selected_bank}_*.png"):
+            parts = file.stem.split('_')
+            if len(parts) >= 4:
+                timestamps.add(parts[-2] + '_' + parts[-1])
+        
+        # Pour chaque timestamp, récupérer toutes les visualisations
+        for timestamp in sorted(timestamps, reverse=True):
+            timestamp_charts = []
+            
+            # Chercher les visualisations pour ce timestamp
+            for file in output_dir.glob(f"*_{selected_bank}_{timestamp}.png"):
+                chart_type = file.stem.split('_')[0]
+                if chart_type == "evolution":
+                    chart_type = file.stem.split('_')[0] + '_' + file.stem.split('_')[1]
+                
+                timestamp_charts.append({
+                    'file': str(file),
+                    'type': chart_type,
+                    'url': f"/static/output/{file.name}"
+                })
+            
+            if timestamp_charts:
+                try:
+                    date = datetime.strptime(timestamp.split('_')[0], "%Y%m%d").strftime("%d/%m/%Y")
+                except ValueError:
+                    date = timestamp
+                
+                charts.append({
+                    'date': date,
+                    'timestamp': timestamp,
+                    'charts': timestamp_charts
+                })
+        
+        # Limiter à 5 ensembles de visualisations
+        charts = charts[:5]
+    
+    conn.close()
+    
+    return render(request, 'ai_reports/bank_charts.html', {
+        'banks': banks,
+        'selected_bank': selected_bank,
+        'charts': charts
+    }) 

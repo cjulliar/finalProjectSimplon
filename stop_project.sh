@@ -25,12 +25,17 @@ error() {
     echo -e "${RED}[ERREUR]${NC} $1"
 }
 
-# Vérifier si docker-compose ou docker compose est disponible
+# Déterminer la commande Docker Compose à utiliser
 if command -v docker-compose &> /dev/null; then
     DOCKER_COMPOSE="docker-compose"
-else
+elif docker compose version &> /dev/null; then
     DOCKER_COMPOSE="docker compose"
+else
+    error "Docker Compose n'est pas installé."
+    exit 1
 fi
+
+info "Utilisation de la commande : $DOCKER_COMPOSE"
 
 # Afficher un message de confirmation
 echo -e "${YELLOW}Arrêt des services du projet...${NC}"

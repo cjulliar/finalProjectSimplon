@@ -177,3 +177,43 @@ cython_debug/
 .DS_Store
 
 *.db
+
+# Fichiers générés par le projet
+output/
+output/*
+*.png
+*.jpg
+*.jpeg
+*.pdf
+*.md
+!README.md
+!docs/*.md
+!MIGRATIONS_README.md
+!SCRIPTS_README.md
+!frontend/README.md
+
+# Bases de données
+*.db
+*.sqlite
+*.sqlite3
+bankreports.db
+
+# Fichiers de logs et temporaires
+logs/
+tmp/
+temp/
+
+# Fichiers de configuration locaux
+.env.local
+
+# Données générées
+admin_credentials.txt
+credentials/
+
+# Docker
+.docker/
+docker-volumes/
+
+# Fichiers de visualisation
+src/ia/visualizations/
+frontend/media/visualizations/

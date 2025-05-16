@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Graphiques d'évolution - {{ selected_bank }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Sélecteur de banque -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Sélectionner une banque</h5>
+                </div>
+                <div class="card-body">
+                    <form method="get" action="{% url 'ai_reports:bank_charts' %}">
+                        <div class="form-group">
+                            <label for="bank">Banque :</label>
+                            <select name="bank" id="bank" class="form-control" onchange="this.form.submit()">
+                                {% for bank in banks %}
+                                <option value="{{ bank }}" {% if bank == selected_bank %}selected{% endif %}>{{ bank }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Navigation</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'ai_reports:email_reports' %}?bank={{ selected_bank }}">Rapports par Email</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'ai_reports:bank_charts' %}">Graphiques d'évolution</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'ai_reports:list' %}">Liste des rapports</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contenu principal -->
+        <div class="col-md-9">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Graphiques d'évolution - {{ selected_bank }}</h4>
+                </div>
+                <div class="card-body">
+                    {% if charts %}
+                        <ul class="nav nav-tabs" id="chartsTab" role="tablist">
+                            {% for chart_group in charts %}
+                                <li class="nav-item">
+                                    <a class="nav-link {% if forloop.first %}active{% endif %}" id="tab-{{ chart_group.timestamp }}" data-toggle="tab" href="#content-{{ chart_group.timestamp }}" role="tab" aria-controls="content-{{ chart_group.timestamp }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+                                        {{ chart_group.date }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        
+                        <div class="tab-content mt-3" id="chartsTabContent">
+                            {% for chart_group in charts %}
+                                <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="content-{{ chart_group.timestamp }}" role="tabpanel" aria-labelledby="tab-{{ chart_group.timestamp }}">
+                                    <h5>Graphiques du {{ chart_group.date }}</h5>
+                                    
+                                    <div class="row">
+                                        {% for chart in chart_group.charts %}
+                                            <div class="col-md-6 mb-4">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        {% if chart.type == 'evolution_montants' %}
+                                                            <h6 class="mb-0">Évolution des montants</h6>
+                                                        {% elif chart.type == 'evolution_occurrences' %}
+                                                            <h6 class="mb-0">Évolution des occurrences</h6>
+                                                        {% elif chart.type == 'montant_moyen' %}
+                                                            <h6 class="mb-0">Montant moyen par occurrence</h6>
+                                                        {% else %}
+                                                            <h6 class="mb-0">{{ chart.type|title }}</h6>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <img src="{% static chart.url|slice:'1:' %}" alt="{{ chart.type }}" class="img-fluid" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            Aucun graphique disponible pour {{ selected_bank }}.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Activer les onglets Bootstrap
+        $('#chartsTab a').on('click', function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+        
+        // Activer les tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+{% endblock %} 
