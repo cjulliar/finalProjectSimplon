@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Accueil - Système Bancaire Intelligent{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Hero Section -->
+    <div class="row bg-primary text-white py-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold">🏦 Système Bancaire Intelligent</h1>
+            <p class="lead">Automatisation des rapports hebdomadaires avec Intelligence Artificielle</p>
+            <div class="mt-4">
+                <a href="{% url 'login' %}" class="btn btn-light btn-lg me-3">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </a>
+                <a href="#features" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-info-circle"></i> En savoir plus
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div id="features" class="row py-5">
+        <div class="col-12">
+            <h2 class="text-center mb-5">Fonctionnalités Principales</h2>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-chart-line fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title">📊 Analyse IA Avancée</h5>
+                    <p class="card-text">
+                        Analyse intelligente des données bancaires avec 29 indicateurs enrichis, 
+                        segmentation clients particuliers/professionnels et recommandations stratégiques.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-envelope fa-3x text-success"></i>
+                    </div>
+                    <h5 class="card-title">📧 Rapports Automatiques</h5>
+                    <p class="card-text">
+                        Génération et envoi automatique de rapports hebdomadaires aux directeurs 
+                        des 74 agences bancaires avec templates HTML professionnels.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-clock fa-3x text-warning"></i>
+                    </div>
+                    <h5 class="card-title">⏰ Planification Intelligente</h5>
+                    <p class="card-text">
+                        Système de planification automatique avec Celery, monitoring en temps réel 
+                        et gestion robuste des erreurs avec retry automatique.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="row bg-light py-5">
+        <div class="col-12">
+            <h2 class="text-center mb-5">Chiffres Clés</h2>
+        </div>
+        
+        <div class="col-md-3 text-center mb-4">
+            <div class="display-4 fw-bold text-primary">74</div>
+            <p class="lead">Agences Bancaires</p>
+        </div>
+        
+        <div class="col-md-3 text-center mb-4">
+            <div class="display-4 fw-bold text-success">4,292</div>
+            <p class="lead">Enregistrements de Données</p>
+        </div>
+        
+        <div class="col-md-3 text-center mb-4">
+            <div class="display-4 fw-bold text-warning">29</div>
+            <p class="lead">Indicateurs d'Analyse</p>
+        </div>
+        
+        <div class="col-md-3 text-center mb-4">
+            <div class="display-4 fw-bold text-info">100%</div>
+            <p class="lead">Automatisation</p>
+        </div>
+    </div>
+
+    <!-- Technology Stack -->
+    <div class="row py-5">
+        <div class="col-12">
+            <h2 class="text-center mb-5">Technologies Utilisées</h2>
+        </div>
+        
+        <div class="col-md-2 col-4 text-center mb-4">
+            <div class="mb-2">
+                <i class="fab fa-python fa-2x text-primary"></i>
+            </div>
+            <small>Python</small>
+        </div>
+        
+        <div class="col-md-2 col-4 text-center mb-4">
+            <div class="mb-2">
+                <i class="fab fa-docker fa-2x text-info"></i>
+            </div>
+            <small>Docker</small>
+        </div>
+        
+        <div class="col-md-2 col-4 text-center mb-4">
+            <div class="mb-2">
+                <i class="fas fa-database fa-2x text-success"></i>
+            </div>
+            <small>PostgreSQL</small>
+        </div>
+        
+        <div class="col-md-2 col-4 text-center mb-4">
+            <div class="mb-2">
+                <i class="fab fa-react fa-2x text-primary"></i>
+            </div>
+            <small>FastAPI</small>
+        </div>
+        
+        <div class="col-md-2 col-4 text-center mb-4">
+            <div class="mb-2">
+                <i class="fab fa-js fa-2x text-warning"></i>
+            </div>
+            <small>Django</small>
+        </div>
+        
+        <div class="col-md-2 col-4 text-center mb-4">
+            <div class="mb-2">
+                <i class="fas fa-brain fa-2x text-danger"></i>
+            </div>
+            <small>IA/ML</small>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="row bg-primary text-white py-5">
+        <div class="col-12 text-center">
+            <h3>Prêt à commencer ?</h3>
+            <p class="lead">Connectez-vous pour accéder au tableau de bord complet</p>
+            <a href="{% url 'login' %}" class="btn btn-light btn-lg">
+                <i class="fas fa-sign-in-alt"></i> Accéder au Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Animation simple pour les statistiques
+document.addEventListener('DOMContentLoaded', function() {
+    const stats = document.querySelectorAll('.display-4');
+    stats.forEach(stat => {
+        const finalValue = stat.textContent;
+        const isNumber = !isNaN(finalValue);
+        
+        if (isNumber) {
+            stat.textContent = '0';
+            const target = parseInt(finalValue);
+            const increment = target / 50;
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    stat.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    stat.textContent = Math.floor(current);
+                }
+            }, 50);
+        }
+    });
+});
+</script>
+{% endblock %} 
