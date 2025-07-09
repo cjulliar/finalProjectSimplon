@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load email_filters %}
+
+{% block title %}Dernier Rapport - {{ agence_name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">
+                    <i class="fas fa-file-alt text-primary me-2"></i>
+                    Dernier Rapport IA
+                </h1>
+                <div class="text-muted">
+                    <i class="fas fa-calendar me-1"></i>
+                    {{ dernier_rapport.date_semaine }}
+                    {% if dernier_rapport.is_ai_generated %}
+                        <span class="badge bg-success ms-2">
+                            <i class="fas fa-robot"></i> IA
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if dernier_rapport.is_ai_generated %}
+    <!-- Statistiques rapides -->
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="card bg-gradient-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title">Statut</h6>
+                            <h3 class="mb-0">
+                                {% if dernier_rapport.status == 'generated' %}
+                                    <i class="fas fa-robot"></i> IA
+                                {% else %}
+                                    {{ dernier_rapport.status }}
+                                {% endif %}
+                            </h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-robot fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card bg-gradient-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title">Semaine</h6>
+                            <h3 class="mb-0">{{ dernier_rapport.numero_semaine }}</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-calendar-week fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card bg-gradient-info text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title">Destinataires</h6>
+                            <h3 class="mb-0">{{ dernier_rapport.recipients|length }}</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-users fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title">Généré le</h6>
+                            <h3 class="mb-0">{{ dernier_rapport.date_semaine|slice:":10" }}</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-clock fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Contenu du rapport -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-envelope me-2"></i>
+                        {% if dernier_rapport.is_ai_generated %}
+                            Email IA - {{ dernier_rapport.subject }}
+                        {% else %}
+                            Rapport Hebdomadaire - Semaine {{ dernier_rapport.numero_semaine }} - {{ dernier_rapport.annee }}
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="report-content">
+                                {% if dernier_rapport.is_ai_generated %}
+                                    <!-- Email IA -->
+                                    <div class="email-preview">
+                                        <div class="email-header">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p><strong>De:</strong> Système IA Bancaire &lt;ai@bankreports.com&gt;</p>
+                                                    <p><strong>À:</strong> 
+                                                    {% for recipient in dernier_rapport.recipients %}
+                                                        {{ recipient }}{% if not forloop.last %}, {% endif %}
+                                                    {% endfor %}
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><strong>Sujet:</strong> {{ dernier_rapport.subject }}</p>
+                                                    <p><strong>Date:</strong> {{ dernier_rapport.date_semaine }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="email-body">
+                                            {{ dernier_rapport.contenu|format_email_content }}
+                                        </div>
+                                        <div class="email-footer">
+                                            <small class="text-muted">
+                                                <i class="fas fa-robot"></i> Cet email a été généré automatiquement par l'Intelligence Artificielle.
+                                            </small>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <!-- Rapport classique -->
+                                    <pre style="white-space: pre-wrap; font-family: inherit; background: #f8f9fa; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid #007bff;">{{ dernier_rapport.contenu }}</pre>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="alert alert-info">
+                                <h6><i class="fas fa-info-circle me-2"></i>Informations</h6>
+                                <ul class="list-unstyled mb-0">
+                                    <li><strong>Agence:</strong> {{ agence_name }}</li>
+                                    {% if dernier_rapport.is_ai_generated %}
+                                        <li><strong>Sujet:</strong> {{ dernier_rapport.subject }}</li>
+                                        <li><strong>Statut:</strong> 
+                                            <span class="badge {% if dernier_rapport.status == 'generated' %}bg-success{% else %}bg-warning{% endif %}">
+                                                {% if dernier_rapport.status == 'generated' %}
+                                                    <i class="fas fa-robot"></i> Généré par IA
+                                                {% else %}
+                                                    {{ dernier_rapport.status }}
+                                                {% endif %}
+                                            </span>
+                                        </li>
+                                        <li><strong>Destinataires:</strong> {{ dernier_rapport.recipients|length }}</li>
+                                    {% else %}
+                                        <li><strong>Semaine:</strong> {{ dernier_rapport.numero_semaine }}</li>
+                                        <li><strong>Année:</strong> {{ dernier_rapport.annee }}</li>
+                                    {% endif %}
+                                    <li><strong>Date:</strong> {{ dernier_rapport.date_semaine }}</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <a href="{% url 'dashboard:historique_rapports' %}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-history me-1"></i>
+                                    Voir l'historique
+                                </a>
+                                <a href="{% url 'dashboard:statistiques' %}" class="btn btn-outline-success btn-sm">
+                                    <i class="fas fa-chart-line me-1"></i>
+                                    Voir les statistiques
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.email-preview {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px 0;
+}
+
+.email-header {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border-left: 4px solid #007bff;
+}
+
+.email-body {
+    padding: 15px;
+    background-color: white;
+    border-radius: 5px;
+    margin: 15px 0;
+    line-height: 1.6;
+}
+
+.email-footer {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+    font-size: 0.9em;
+    color: #6c757d;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+}
+</style>
+{% endblock %} 

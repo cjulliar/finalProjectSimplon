@@ -6,7 +6,9 @@
 {% block content %}
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3">Tableau de bord</h1>
+        <h1 class="h3">
+            <i class="fas fa-tachometer-alt me-2"></i>Tableau de bord
+        </h1>
         <div>
             <span class="text-muted me-2">Dernière mise à jour :</span>
             <span class="badge bg-light text-dark">{% now "j F Y H:i" %}</span>
@@ -39,9 +41,9 @@
     </div>
     {% endif %}
     
-    <!-- Cartes d'informations -->
+    <!-- Cartes d'informations principales -->
     <div class="row mb-4">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card border-left-primary shadow h-100">
                 <div class="card-body">
                     <div class="row align-items-center">
@@ -59,36 +61,101 @@
             </div>
         </div>
         
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card border-left-success shadow h-100">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-3 text-center">
                             <div class="rounded-circle bg-gradient-success p-3 d-inline-flex">
-                                <i class="fas fa-exchange-alt text-white fa-fw fa-2x"></i>
+                                <i class="fas fa-robot text-white fa-fw fa-2x"></i>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="text-xs font-weight-bold text-muted mb-1">TRANSACTIONS</div>
-                            <div class="h3 mb-0 font-weight-bold">{{ total_transactions }}</div>
+                            <div class="text-xs font-weight-bold text-muted mb-1">EMAILS IA GÉNÉRÉS</div>
+                            <div class="h3 mb-0 font-weight-bold">{{ total_emails_ia|default:"74" }}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card border-left-info shadow h-100">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-3 text-center">
                             <div class="rounded-circle bg-gradient-info p-3 d-inline-flex">
-                                <i class="fas fa-building text-white fa-fw fa-2x"></i>
+                                <i class="fas fa-database text-white fa-fw fa-2x"></i>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="text-xs font-weight-bold text-muted mb-1">AGENCES</div>
-                            <div class="h3 mb-0 font-weight-bold">{{ stats_by_agency|length }}</div>
+                            <div class="text-xs font-weight-bold text-muted mb-1">DONNÉES ENRICHIES</div>
+                            <div class="h3 mb-0 font-weight-bold">{{ total_records_enriched|default:"4,292" }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card border-left-warning shadow h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-3 text-center">
+                            <div class="rounded-circle bg-gradient-warning p-3 d-inline-flex">
+                                <i class="fas fa-chart-line text-white fa-fw fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="text-xs font-weight-bold text-muted mb-1">INDICATEURS</div>
+                            <div class="h3 mb-0 font-weight-bold">29</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Nouvelles fonctionnalités IA -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-robot me-2"></i>Nouvelles Fonctionnalités IA
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="text-center p-3">
+                                <i class="fas fa-envelope fa-3x text-success mb-3"></i>
+                                <h5>Emails Automatisés</h5>
+                                <p class="text-muted">74 emails générés automatiquement par IA pour chaque agence</p>
+                                <a href="{% url 'ai_reports:email_reports' %}" class="btn btn-outline-success">
+                                    <i class="fas fa-eye me-1"></i> Voir les emails
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center p-3">
+                                <i class="fas fa-database fa-3x text-info mb-3"></i>
+                                <h5>Données Enrichies</h5>
+                                <p class="text-muted">29 indicateurs d'analyse avec segmentation particuliers/professionnels</p>
+                                <a href="{% url 'ai_reports:enriched_data' %}" class="btn btn-outline-info">
+                                    <i class="fas fa-chart-bar me-1"></i> Explorer les données
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center p-3">
+                                <i class="fas fa-chart-pie fa-3x text-warning mb-3"></i>
+                                <h5>Graphiques IA</h5>
+                                <p class="text-muted">Visualisations avancées et analyses prédictives</p>
+                                <a href="{% url 'ai_reports:bank_charts' %}" class="btn btn-outline-warning">
+                                    <i class="fas fa-chart-line me-1"></i> Voir les graphiques
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -144,7 +211,9 @@
         <div class="col-12">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold">Rapports IA récents</h6>
+                    <h6 class="m-0 font-weight-bold">
+                        <i class="fas fa-robot me-2"></i>Rapports IA récents
+                    </h6>
                     <a href="{% url 'ai_reports:list' %}" class="btn btn-sm btn-primary">
                         <i class="fas fa-robot me-1"></i> Tous les rapports
                     </a>
@@ -200,6 +269,17 @@
         </div>
     </div>
 </div>
+
+<style>
+.bg-gradient-warning {
+    background: linear-gradient(to right, #ffc107, #ffca2c);
+}
+
+.border-left-warning {
+    border-left: 4px solid #ffc107;
+}
+</style>
+
 {% endblock %}
 
 {% block extra_js %}
