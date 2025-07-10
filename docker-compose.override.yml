@@ -1,0 +1,154 @@
+version: '3.8'
+
+services:
+  # Service principal Python - développement
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src
+      - ./docs:/app/docs
+      - ./requirements.txt:/app/requirements.txt
+    environment:
+      - DEBUG=True
+      - PYTHONPATH=/app
+    command: ["python", "-m", "uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+  # API FastAPI - développement
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app/src
+      - ./migrations:/app/migrations
+      - ./alembic.ini:/app/alembic.ini
+      - ./requirements.txt:/app/requirements.txt
+    environment:
+      - DEBUG=True
+      - PYTHONPATH=/app
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=bankreports
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - USE_POSTGRES=true
+      - API_SECRET_KEY=dev-secret-key-change-in-production
+      - API_ALGORITHM=HS256
+      - API_ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=admin123
+      - ADMIN_EMAIL=admin@example.com
+      - LLM_API_KEY=dummy-openai-key
+      - HUGGINGFACE_API_KEY=dummy-huggingface-key
+      - USE_HUGGINGFACE=false
+      - USE_OPENAI=false
+      - USE_FALLBACK_MODE=true
+    command: ["python", "-m", "uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    depends_on:
+      - db
+
+  # Frontend Django - développement
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./frontend:/app/frontend
+      - ./frontend/static:/app/frontend/static
+      - ./frontend/media:/app/frontend/media
+      - ./bankreports.db:/app/bankreports.db
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=django-dev-secret-key-change-in-production
+      - API_URL=http://api:8000
+      - API_SECRET_KEY=dev-secret-key-change-in-production
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=bankreports
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - USE_POSTGRES=true
+      - ALLOWED_HOSTS=localhost,127.0.0.1,frontend,0.0.0.0
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=admin123
+      - BANKREPORTS_DB_PATH=/app/bankreports.db
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8080"]
+    depends_on:
+      - api
+      - db
+
+  # Celery Worker - développement
+  celery-worker:
+    build:
+      context: .
+      dockerfile: docker/celery/Dockerfile
+    restart: always
+    volumes:
+      - ./src:/app/src
+      - ./migrations:/app/migrations
+      - ./alembic.ini:/app/alembic.ini
+      - ./output:/app/output
+      - ./requirements.txt:/app/requirements.txt
+    environment:
+      - DEBUG=True
+      - PYTHONPATH=/app
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=bankreports
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - USE_POSTGRES=true
+      - REDIS_URL=redis://redis:6379/0
+      - API_SECRET_KEY=dev-secret-key-change-in-production
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=admin123
+      - ADMIN_EMAIL=admin@example.com
+      - LLM_API_KEY=dummy-openai-key
+      - HUGGINGFACE_API_KEY=dummy-huggingface-key
+      - USE_HUGGINGFACE=false
+      - USE_OPENAI=false
+      - USE_FALLBACK_MODE=true
+    command: ["celery", "-A", "src.celery_app", "worker", "--loglevel=info"]
+    depends_on:
+      - redis
+      - db
+
+  # Celery Beat - développement
+  celery-beat:
+    build:
+      context: .
+      dockerfile: docker/celery/Dockerfile
+    restart: always
+    volumes:
+      - ./src:/app/src
+      - ./migrations:/app/migrations
+      - ./alembic.ini:/app/alembic.ini
+      - ./output:/app/output
+      - ./requirements.txt:/app/requirements.txt
+    environment:
+      - DEBUG=True
+      - PYTHONPATH=/app
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=bankreports
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - USE_POSTGRES=true
+      - REDIS_URL=redis://redis:6379/0
+      - API_SECRET_KEY=dev-secret-key-change-in-production
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=admin123
+      - ADMIN_EMAIL=admin@example.com
+      - LLM_API_KEY=dummy-openai-key
+      - HUGGINGFACE_API_KEY=dummy-huggingface-key
+      - USE_HUGGINGFACE=false
+      - USE_OPENAI=false
+      - USE_FALLBACK_MODE=true
+    command: ["celery", "-A", "src.celery_app", "beat", "--loglevel=info"]
+    depends_on:
+      - redis
+      - db 

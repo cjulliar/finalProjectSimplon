@@ -1,329 +1,244 @@
-# Système d'Automatisation des Rapports Bancaires
+# Système d'Analyse et de Génération de Rapports Bancaires
 
-Ce projet vise à automatiser la génération et l'envoi de rapports hebdomadaires aux directeurs des différentes banques du groupe, en utilisant l'intelligence artificielle pour analyser les données et générer des rapports pertinents.
+Un système complet d'automatisation pour l'analyse et la génération de rapports bancaires utilisant FastAPI, Django, Celery et l'IA.
 
-## Prérequis
+## 🚀 Fonctionnalités
 
+- **API REST** avec FastAPI pour la gestion des données bancaires
+- **Interface web** avec Django pour la visualisation et l'administration
+- **Traitement asynchrone** avec Celery pour les tâches en arrière-plan
+- **Intégration IA** pour l'analyse automatique des données
+- **Base de données** PostgreSQL avec migrations Alembic
+- **Monitoring** avec Prometheus et Grafana
+- **Déploiement** avec Docker et CI/CD GitHub Actions
+
+## 📋 Prérequis
+
+- Python 3.10+
 - Docker et Docker Compose
-- Python 3.10
 - Git
 
-## 🗄️ Architecture de Base de Données
+## 🛠️ Installation
 
-Le projet utilise une **architecture hybride intelligente** avec fallback automatique :
+### Option 1: Développement local
 
-- **🐘 PostgreSQL** : Base principale (production, performance)
-- **🗄️ SQLite** : Fallback automatique (développement, résilience)
+1. **Cloner le repository**
+   ```bash
+   git clone https://github.com/cjulliar/finalProjectSimplon.git
+   cd finalProjectSimplon
+   ```
 
-### Avantages
-- ✅ **Résilience** : Basculement transparent en cas de panne
-- ✅ **Performance** : PostgreSQL pour la production
-- ✅ **Simplicité** : SQLite pour le développement
-- ✅ **Flexibilité** : Configuration automatique selon l'environnement
+2. **Créer un environnement virtuel**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Linux/Mac
+   # ou
+   venv\Scripts\activate  # Windows
+   ```
 
-### Vérification du statut
-```bash
-# Script de vérification des bases de données
-python check_database_status.py
+3. **Installer les dépendances**
+   ```bash
+   pip install -r requirements.txt
+   pip install -e .
+   ```
 
-# Endpoint API
-curl http://localhost:8000/api/database-info
-```
+4. **Configurer la base de données**
+   ```bash
+   # Créer les tables
+   python src/main.py
+   
+   # Créer un utilisateur administrateur
+   python src/scripts/setup_admin.py --username admin --password admin123
+   ```
 
-📚 **Documentation complète** : [docs/DATABASE_ARCHITECTURE.md](docs/DATABASE_ARCHITECTURE.md)
+5. **Démarrer l'API**
+   ```bash
+   python src/scripts/run_api.py
+   ```
 
-### Scripts utilitaires
-```bash
-# Vérifier le statut des bases de données
-./scripts/database_utils.sh status
+### Option 2: Docker (Recommandé)
 
-# Tester le système de fallback
-./scripts/database_utils.sh full-test
+1. **Cloner le repository**
+   ```bash
+   git clone https://github.com/cjulliar/finalProjectSimplon.git
+   cd finalProjectSimplon
+   ```
 
-# Afficher les commandes disponibles
-./scripts/database_utils.sh
-```
+2. **Démarrer avec Docker Compose**
+   ```bash
+   docker-compose up -d
+   ```
 
-## Installation
+3. **Créer un utilisateur administrateur**
+   ```bash
+   docker-compose exec api python src/scripts/setup_admin.py --username admin --password admin123
+   ```
 
-1. Cloner le repository :
-```bash
-git clone <votre-repo-url>
-cd finalProjectSimplon
-```
+## 🌐 Accès aux services
 
-2. Copier le fichier .env.example en .env et configurer les variables :
-```bash
-cp .env.example .env
-# Éditer .env avec vos configurations
-```
+- **API FastAPI**: http://localhost:8000
+  - Documentation Swagger: http://localhost:8000/docs
+  - Documentation ReDoc: http://localhost:8000/redoc
 
-3. Créer et activer l'environnement virtuel :
-```bash
-python3.10 -m venv venv
-source venv/bin/activate  # Linux/Mac
-# ou
-.\venv\Scripts\activate  # Windows
-```
+- **Interface Django**: http://localhost:8080
+  - Admin: http://localhost:8080/admin
 
-4. Installer les dépendances :
-```bash
-python3.10 -m pip install -r requirements.txt
-```
+- **Monitoring**:
+  - Prometheus: http://localhost:9090
+  - Grafana: http://localhost:3000 (admin/admin)
 
-## Scripts d'exécution
+## 📊 Utilisation
 
-### Initialisation et démarrage du projet
-
-Pour initialiser et démarrer le projet complet avec Docker Compose :
-
-```bash
-./init_project.sh
-```
-
-Ce script effectue les opérations suivantes :
-- Vérifie que Docker et Docker Compose sont installés
-- Installe les dépendances Python
-- Initialise la base de données avec Alembic
-- Construit les images Docker
-- Lance les conteneurs Docker
-
-### Démarrage du projet (après initialisation)
-
-Pour démarrer le projet après l'initialisation :
+### 1. Import de données
 
 ```bash
-./run_project.sh
+# Importer des données Excel
+python src/main.py --import-excel --file docs/DonneeBanque.xlsx
 ```
 
-Ce script effectue les opérations suivantes :
-- Vérifie que Docker et Docker Compose sont installés
-- Vérifie si des conteneurs sont déjà en cours d'exécution
-- Lance ou redémarre les conteneurs Docker
-- Vérifie que tous les conteneurs sont en cours d'exécution
-- Affiche les informations d'accès aux différents services
-
-### Gestion des migrations de base de données
-
-Pour gérer les migrations de la base de données :
+### 2. API REST
 
 ```bash
-# Initialiser la base de données
-python -m src.scripts.init_db
+# Authentification
+curl -X POST "http://localhost:8000/api/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=admin&password=admin123"
 
-# Créer une nouvelle migration
-python -m src.scripts.create_migration "Description de la migration" --autogenerate
-
-# Appliquer les migrations
-python -m src.scripts.apply_migrations
-
-# Afficher l'historique des migrations
-python -m src.scripts.show_migrations
+# Récupérer les données
+curl -H "Authorization: Bearer <token>" \
+  "http://localhost:8000/api/bank-data"
 ```
 
-Pour plus d'informations sur les migrations, consultez le [Guide des Migrations](MIGRATIONS_README.md).
+### 3. Interface web
 
-## Fonctionnalités principales
+1. Accédez à http://localhost:8080
+2. Connectez-vous avec les identifiants admin/admin123
+3. Naviguez dans l'interface pour visualiser les données
 
-### 1. Importation et traitement des données
+## 🔧 Configuration
 
-L'application permet d'importer des données bancaires depuis un fichier Excel vers une base de données SQLite :
+### Variables d'environnement
+
+Créez un fichier `.env` à la racine du projet :
+
+```env
+# Base de données
+POSTGRES_HOST=localhost
+POSTGRES_DB=bankreports
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+
+# API
+API_SECRET_KEY=your-secret-key
+API_ALGORITHM=HS256
+API_ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+# IA
+LLM_API_KEY=your-openai-key
+HUGGINGFACE_API_KEY=your-huggingface-key
+USE_OPENAI=true
+USE_HUGGINGFACE=false
+
+# Celery
+REDIS_URL=redis://localhost:6379/0
+```
+
+### Configuration SMTP
+
+Pour l'envoi d'emails, créez un fichier `smtp_config.env` :
+
+```env
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USERNAME=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+```
+
+## 🧪 Tests
 
 ```bash
-# Importer les données du fichier Excel par défaut (docs/DonneeBanque.xlsx)
-python3.10 -m src.main --import-excel
+# Exécuter tous les tests
+python tests/run_all_tests.py
 
-# Spécifier un fichier Excel différent
-python3.10 -m src.main --import-excel --file chemin/vers/fichier.xlsx
+# Tests avec pytest
+pytest tests/ -v
 
-# Afficher les données importées
-python3.10 src/scripts/view_db.py
-
-# Afficher des statistiques
-python3.10 src/scripts/view_db.py --stats
+# Tests de l'API
+python -m pytest tests/test_api.py -v
 ```
 
-Pour plus de détails sur l'importation de données, consultez la [documentation C4](docs/C4_README.md).
+## 🚀 Déploiement
 
-### 2. API REST pour accéder aux données
+### CI/CD
 
-L'application expose une API REST sécurisée pour accéder aux données bancaires :
+Le projet utilise GitHub Actions pour le CI/CD :
+
+1. **Tests automatiques** sur chaque push
+2. **Build Docker** automatique
+3. **Déploiement staging** sur la branche `develop`
+4. **Déploiement production** sur la branche `main`
+
+### Production
 
 ```bash
-# Créer un utilisateur administrateur
-python3.10 src/scripts/create_admin.py --username admin --password votremotdepasse --email admin@example.com
+# Build pour la production
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
-# Lancer l'API
-python3.10 src/scripts/run_api.py --reload
+# Variables d'environnement de production
+export ADMIN_PASSWORD=your-secure-password
+export API_SECRET_KEY=your-secure-secret-key
+export LLM_API_KEY=your-production-openai-key
 ```
 
-L'API offre les fonctionnalités suivantes :
-- Authentification sécurisée avec JWT (JSON Web Tokens)
-- Accès aux données bancaires avec filtrage et pagination
-- Statistiques par agence et par date
-- Documentation interactive avec Swagger UI et ReDoc
+## 📁 Structure du projet
 
-Pour accéder à la documentation de l'API :
-- Swagger UI : http://localhost:8000/docs
-- ReDoc : http://localhost:8000/redoc
+```
+finalProjectSimplon/
+├── src/                    # Code source principal
+│   ├── api/               # API FastAPI
+│   ├── db/                # Modèles et configuration DB
+│   ├── ia/                # Services d'IA
+│   ├── scripts/           # Scripts utilitaires
+│   └── tasks/             # Tâches Celery
+├── frontend/              # Interface Django
+├── docker/                # Configuration Docker
+├── tests/                 # Tests
+├── docs/                  # Documentation
+├── migrations/            # Migrations Alembic
+├── requirements.txt       # Dépendances Python
+├── docker-compose.yml     # Configuration Docker Compose
+└── README.md             # Ce fichier
+```
 
-Pour plus de détails sur l'API, consultez la [documentation API](docs/API_README.md).
+## 🤝 Contribution
 
-### 3. Analyse des données avec IA
+1. Fork le projet
+2. Créez une branche feature (`git checkout -b feature/AmazingFeature`)
+3. Committez vos changements (`git commit -m 'Add some AmazingFeature'`)
+4. Push vers la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrez une Pull Request
 
-L'application utilise un modèle d'IA pour analyser les données bancaires et générer des rapports pertinents :
+## 📝 Licence
+
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+
+## 🆘 Support
+
+Pour toute question ou problème :
+
+1. Consultez la [documentation de l'API](http://localhost:8000/docs)
+2. Vérifiez les [issues GitHub](https://github.com/cjulliar/finalProjectSimplon/issues)
+3. Créez une nouvelle issue si nécessaire
+
+## 🔄 Mises à jour
 
 ```bash
-# Analyser les données d'une banque spécifique
-python3.10 src/scripts/analyze_bank.py --bank "Banque A" --format markdown
+# Mettre à jour le code
+git pull origin develop
 
-# Analyser toutes les banques filtrées
-python3.10 src/scripts/analyze_filtered_banks.py --format markdown
+# Mettre à jour les dépendances
+pip install -r requirements.txt --upgrade
 
-# Générer un rapport global pour toutes les banques
-python3.10 src/scripts/generate_global_report.py --format markdown
+# Redémarrer les services Docker
+docker-compose down && docker-compose up -d
 ```
-
-L'analyse inclut :
-- Statistiques globales sur les montants et les transactions
-- Tendances sur la période analysée
-- Visualisations graphiques (histogrammes, courbes d'évolution)
-- Recommandations basées sur l'analyse des données
-
-### 4. Génération et envoi de rapports
-
-L'application génère des rapports hebdomadaires et les envoie par email aux directeurs des différentes banques :
-
-```bash
-# Envoyer un rapport par email
-python3.10 src/scripts/generate_global_report.py --format markdown --email --recipients "directeur@banque.com"
-
-# Programmer l'envoi automatique des rapports
-python3.10 src/scripts/schedule_reports.py --day Monday --time "08:00" --format markdown --email --recipients "directeur@banque.com"
-```
-
-Les rapports envoyés par email sont également stockés dans la base de données pour consultation ultérieure via l'interface utilisateur.
-
-### 5. Interface utilisateur
-
-L'application dispose d'une interface utilisateur web pour consulter les rapports et les visualisations :
-
-```bash
-# Lancer l'interface utilisateur Django
-python3.10 manage.py runserver
-```
-
-L'interface utilisateur offre les fonctionnalités suivantes :
-- Consultation des rapports générés
-- Visualisation des graphiques par banque
-- Historique des rapports envoyés par email
-- Tableaux de bord interactifs
-
-Pour accéder à l'interface utilisateur :
-- URL : http://localhost:8000
-- Identifiants par défaut : 
-  - Utilisateur : `admin`
-  - Mot de passe : `admin`
-
-## Structure du Projet
-
-```
-.
-├── docker/                 # Configurations Docker
-├── docs/                   # Documentation et données
-│   ├── API_README.md       # Documentation de l'API
-│   ├── C4_README.md        # Documentation sur l'importation de données
-│   └── DonneeBanque.xlsx   # Fichier de données bancaires
-├── src/                    # Code source
-│   ├── api/                # API FastAPI
-│   ├── db/                 # Modèles et connexions à la base de données
-│   ├── etl/                # Scripts d'extraction, transformation et chargement
-│   ├── scripts/            # Scripts utilitaires
-│   └── utils/              # Utilitaires divers
-├── tests/                  # Tests automatisés
-├── .env                    # Variables d'environnement
-├── docker-compose.yml      # Configuration Docker Compose
-└── requirements.txt        # Dépendances Python
-```
-
-## Développement
-
-### Tests
-Pour exécuter les tests :
-```bash
-python3.10 -m pytest tests/
-```
-
-Pour exécuter les tests spécifiques à l'importation de données :
-```bash
-python3.10 tests/run_c4_tests.py
-```
-
-Pour exécuter les tests de l'API :
-```bash
-python3.10 -m pytest tests/test_api.py
-```
-
-### Exécution locale
-Pour lancer l'application en local :
-```bash
-python3.10 src/main.py
-```
-
-## Déploiement
-
-Le déploiement est automatisé via GitHub Actions :
-- La branche `develop` déploie en environnement de staging
-- La branche `main` déploie en production (après validation manuelle)
-
-## Monitoring
-
-### Prometheus
-- URL : http://localhost:9090
-- Pas d'authentification requise
-- Si le site est inaccessible, vérifiez que les conteneurs Docker sont bien lancés avec `docker-compose ps`
-- Vous pouvez redémarrer Prometheus avec `docker-compose restart prometheus`
-
-### Grafana
-- URL : http://localhost:3000
-- Identifiants par défaut : 
-  - Utilisateur : `admin`
-  - Mot de passe : `admin`
-- Lors de la première connexion, Grafana vous demandera de changer le mot de passe par défaut
-
-### Résolution des problèmes d'accès
-Si vous ne pouvez pas accéder à Prometheus, Grafana ou l'API après avoir exécuté `init_project.sh`, vérifiez l'état des conteneurs Docker :
-
-```bash
-docker-compose ps
-```
-
-Si certains conteneurs ne sont pas en cours d'exécution, vous pouvez les redémarrer :
-
-```bash
-docker-compose restart [nom_du_service]
-```
-
-Ou redémarrer tous les services :
-
-```bash
-docker-compose down
-docker-compose up -d
-```
-
-Alternativement, utilisez le script `run_project.sh` qui vérifiera l'état des conteneurs et les redémarrera si nécessaire :
-
-```bash
-./run_project.sh
-```
-
-## Documentation
-
-La documentation complète est disponible dans le dossier `docs/` :
-
-- [Documentation API](docs/API_README.md) - Détails sur l'API REST
-- [Documentation C4](docs/C4_README.md) - Informations sur la base de données et l'importation
-- [Documentation RGPD](docs/RGPD_README.md) - Conformité avec le RGPD
-- [Documentation des Migrations](MIGRATIONS_README.md) - Guide pour gérer les migrations de base de données
-- [Documentation des Rapports par Email](docs/EMAIL_REPORTS_README.md) - Guide pour les rapports par email et l'interface utilisateur
-- [Technologies](docs/TECHNOLOGIES.md) - Justification des choix technologiques
