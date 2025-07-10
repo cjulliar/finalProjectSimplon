@@ -11,7 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from src.db.database import SessionLocal, engine
-from src.api.models import User
+from src.db.models import User
 from src.api.auth import get_password_hash
 
 
@@ -19,7 +19,7 @@ def create_admin_user(username: str, password: str, email: str = None, output_fi
     """Crée un utilisateur administrateur."""
     try:
         # Créer les tables si elles n'existent pas
-        from src.api.models import Base
+        from src.db.models import Base
         Base.metadata.create_all(bind=engine)
         
         db = SessionLocal()
@@ -36,8 +36,7 @@ def create_admin_user(username: str, password: str, email: str = None, output_fi
             username=username,
             email=email or f"{username}@example.com",
             hashed_password=hashed_password,
-            is_active=True,
-            is_superuser=True
+            is_active=True
         )
         
         db.add(admin_user)
