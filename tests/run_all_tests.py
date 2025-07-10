@@ -40,7 +40,7 @@ def run_tests():
     # Test de création des tables
     try:
         from src.db.database import engine
-        from src.api.models import Base
+        from src.db.models import Base
         Base.metadata.create_all(bind=engine)
         print("✓ Création des tables réussie")
     except Exception as e:

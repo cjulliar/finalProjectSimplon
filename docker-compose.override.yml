@@ -66,9 +66,9 @@ services:
       - ./bankreports.db:/app/bankreports.db
     environment:
       - DEBUG=True
-      - SECRET_KEY=django-dev-secret-key-change-in-production
+      - SECRET_KEY=django-insecure-change-in-production
       - API_URL=http://api:8000
-      - API_SECRET_KEY=dev-secret-key-change-in-production
+      - API_SECRET_KEY=secret-key-change-in-production
       - POSTGRES_HOST=db
       - POSTGRES_DB=bankreports
       - POSTGRES_USER=postgres
@@ -76,9 +76,9 @@ services:
       - USE_POSTGRES=true
       - ALLOWED_HOSTS=localhost,127.0.0.1,frontend,0.0.0.0
       - ADMIN_USERNAME=admin
-      - ADMIN_PASSWORD=admin123
+      - ADMIN_PASSWORD=hBtH_apEj3dP_baa
       - BANKREPORTS_DB_PATH=/app/bankreports.db
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8080"]
+    # command: ["python", "manage.py", "runserver", "0.0.0.0:8080"]
     depends_on:
       - api
       - db
