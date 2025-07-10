@@ -8,6 +8,42 @@ Ce projet vise à automatiser la génération et l'envoi de rapports hebdomadair
 - Python 3.10
 - Git
 
+## 🗄️ Architecture de Base de Données
+
+Le projet utilise une **architecture hybride intelligente** avec fallback automatique :
+
+- **🐘 PostgreSQL** : Base principale (production, performance)
+- **🗄️ SQLite** : Fallback automatique (développement, résilience)
+
+### Avantages
+- ✅ **Résilience** : Basculement transparent en cas de panne
+- ✅ **Performance** : PostgreSQL pour la production
+- ✅ **Simplicité** : SQLite pour le développement
+- ✅ **Flexibilité** : Configuration automatique selon l'environnement
+
+### Vérification du statut
+```bash
+# Script de vérification des bases de données
+python check_database_status.py
+
+# Endpoint API
+curl http://localhost:8000/api/database-info
+```
+
+📚 **Documentation complète** : [docs/DATABASE_ARCHITECTURE.md](docs/DATABASE_ARCHITECTURE.md)
+
+### Scripts utilitaires
+```bash
+# Vérifier le statut des bases de données
+./scripts/database_utils.sh status
+
+# Tester le système de fallback
+./scripts/database_utils.sh full-test
+
+# Afficher les commandes disponibles
+./scripts/database_utils.sh
+```
+
 ## Installation
 
 1. Cloner le repository :

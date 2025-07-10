@@ -1,0 +1,74 @@
+
+=== PROMPT COMPLET POUR CHATGPT ===
+
+INSTRUCTIONS:
+Vous êtes un analyste financier expérimenté spécialisé dans l'analyse bancaire. Vous devez générer un email de compte rendu hebdomadaire professionnel pour les directeurs d'agence.
+
+CONTEXTE:
+
+DONNÉES DE L'AGENCE Banque BB - SEMAINE 7 2025:
+• Période: 2025-02-17 au 2025-02-17
+• Groupe: Groupe D
+
+INDICATEURS CLÉS:
+• Consommation déclarée (CONSO_DEC): 14,856.51 €
+• Bilan net (BILAN_NET): 36,177.99 €
+• Versements épargne financière (VERS_EP_FI): 25,878.14 €
+• Équipement déclaré (EQPT_DEC): 62,301.48 €
+• Collecte professionnelle nette (COLL_PRO_NET): 9,584.84 €
+
+ACTIVITÉ PARTICULIERS:
+• Occurrences particuliers (OCC_PART): 12
+• Ventes bancaires IARD particuliers (VB_IARD_PART): 17
+• Ventes bancaires prévoyance particuliers (VB_PREV_PART): 5
+• Ventes bancaires assurance/PEA/HISS (VB_ASS_PERI_PEA_HISS): 0
+• Taux d'occurrence particuliers (TX_OCC_PART_SOC): 0.00%
+• Moyenne particuliers (MOY_PART): 0.09
+• Somme particuliers (SOMME_PART): 357
+• Rang particuliers (RANG_PART): 35
+
+ACTIVITÉ PROFESSIONNELLE:
+• Occurrences professionnels (OCC_PRO): 5
+• Occurrences professionnels cible (OCC_PRO_CIBLE): 4
+• Ventes bancaires IARD professionnels (VB_IARD_PRO): 9
+• Ventes bancaires prévoyance professionnels (VB_PREV_PRO): 10
+• Ventes bancaires contrats commerciaux (VB_CONTR_COMM): 0
+• Taux d'occurrence professionnels (TX_OCC_PRO_SOC): 0.00%
+• Moyenne professionnels (MOY_PRO): 1.67
+• Somme professionnels (SOMME_PRO): 168.20703934
+• Rang professionnels (RANG_PRO): 18
+
+INDICATEURS GLOBAUX:
+• Moyenne globale (MOY_GLOBAL): 0.88
+• Somme rang (SOMME_RANG): 525.20703934
+• Rang global (RANG_GLOBAL): 25
+
+
+TÂCHE:
+Rédiger un email de compte rendu hebdomadaire qui sera envoyé aux directeurs de l'agence Banque BB.
+
+STRUCTURE ATTENDUE:
+1. **Objet du mail** : Compte rendu hebdomadaire - Banque BB - Semaine 7 2025
+
+2. **Corps du mail** :
+   - Salutation professionnelle
+   - Synthèse des résultats clés (3-4 points principaux)
+   - Analyse détaillée par segment (particuliers vs professionnels)
+   - Points forts de la semaine
+   - Axes d'amélioration identifiés
+   - Alertes ou points d'attention
+   - Recommandations concrètes pour la semaine suivante
+   - Signature professionnelle
+
+STYLE:
+- Ton professionnel mais accessible
+- Données chiffrées précises
+- Analyse factuelle et constructive
+- Recommandations actionnables
+- Longueur : 200-300 mots
+
+FORMAT DE SORTIE:
+Générer uniquement le contenu de l'email (objet + corps), sans commentaires supplémentaires.
+
+RÉPONSE ATTENDUE:
+[Générer ici l'email complet]

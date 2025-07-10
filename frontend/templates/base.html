@@ -100,6 +100,14 @@
             background: linear-gradient(to right, #17a2b8, #138496);
         }
         
+        .agence-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            color: white;
+        }
+        
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
@@ -120,27 +128,39 @@
             <div class="text-center mb-4">
                 <h5>Rapports Bancaires</h5>
                 <small>v1.0.0</small>
+                <hr class="my-2">
+                <div class="agence-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-building me-2"></i>
+                        {% if request.agence_name %}
+                            {{ request.agence_name }}
+                        {% else %}
+                            {{ user.username }}
+                        {% endif %}
+                    </h6>
+                </div>
             </div>
             
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard:dashboard' %}">
-                        <i class="fas fa-tachometer-alt me-2"></i>
-                        Tableau de bord
+                    <a class="nav-link {% if request.resolver_match.url_name == 'dernier_rapport' %}active{% endif %}" href="{% url 'dashboard:dernier_rapport' %}">
+                        <i class="fas fa-file-alt me-2"></i>
+                        Dernier rapport
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if 'bank-data' in request.path %}active{% endif %}" href="{% url 'bank_data:list' %}">
-                        <i class="fas fa-landmark me-2"></i>
-                        Données bancaires
+                    <a class="nav-link {% if request.resolver_match.url_name == 'historique_rapports' %}active{% endif %}" href="{% url 'dashboard:historique_rapports' %}">
+                        <i class="fas fa-history me-2"></i>
+                        Historique des rapports
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if 'ai-reports' in request.path %}active{% endif %}" href="{% url 'ai_reports:list' %}">
-                        <i class="fas fa-robot me-2"></i>
-                        Rapports IA
+                    <a class="nav-link {% if request.resolver_match.url_name == 'statistiques' %}active{% endif %}" href="{% url 'dashboard:statistiques' %}">
+                        <i class="fas fa-chart-line me-2"></i>
+                        Statistiques
                     </a>
                 </li>
+                
                 <li class="nav-item mt-4">
                     <a class="nav-link" href="{% url 'logout' %}">
                         <i class="fas fa-sign-out-alt me-2"></i>

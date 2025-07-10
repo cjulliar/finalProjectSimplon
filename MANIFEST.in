@@ -1,0 +1,31 @@
+include README.md
+include requirements.txt
+include docker-compose.yml
+include Dockerfile
+include *.md
+include *.txt
+include *.yml
+include *.yaml
+include *.env.example
+include alembic.ini
+
+recursive-include src *
+recursive-include frontend *
+recursive-include docs *
+recursive-include docker *
+recursive-include tests *
+
+exclude *.pyc
+exclude __pycache__
+exclude *.db
+exclude *.sqlite
+exclude *.sqlite3
+exclude .env
+exclude smtp_config.env
+exclude admin_credentials.txt
+exclude credentials/
+exclude output/
+exclude data/
+exclude logs/
+exclude tmp/
+exclude temp/ 

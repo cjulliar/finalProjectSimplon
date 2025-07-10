@@ -17,6 +17,7 @@ urlpatterns = [
     path('', include('dashboard.urls')),
     path('bank-data/', include('bank_data.urls')),
     path('ai-reports/', include('ai_reports.urls')),
+    path('celery/', include('bankapp.urls')),  # Dashboard Celery
 ]
 
 # Servir les fichiers statiques et médias en développement

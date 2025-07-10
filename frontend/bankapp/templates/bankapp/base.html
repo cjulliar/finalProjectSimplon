@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bank Reports System{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar-brand {
+            font-weight: bold;
+        }
+        .sidebar {
+            min-height: calc(100vh - 56px);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            transition: all 0.3s ease;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+        .main-content {
+            padding: 2rem;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-ok { background-color: #28a745; }
+        .status-warning { background-color: #ffc107; }
+        .status-error { background-color: #dc3545; }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-university"></i> Bank Reports System
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home"></i> Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="systemDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-cogs"></i> Système
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/celery/">
+                                <i class="fas fa-tasks"></i> Tâches Automatisées
+                            </a></li>
+                            <li><a class="dropdown-item" href="/admin/">
+                                <i class="fas fa-shield-alt"></i> Administration
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="checkSystemHealth()">
+                            <span id="system-status" class="status-indicator status-warning"></span>
+                            <span id="system-status-text">Système</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout Principal -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-2 d-none d-md-block sidebar">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                                <i class="fas fa-chart-bar"></i> Tableaux de Bord
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/reports/">
+                                <i class="fas fa-file-alt"></i> Rapports
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/data/">
+                                <i class="fas fa-database"></i> Données
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/celery/">
+                                <i class="fas fa-cogs"></i> Automatisation
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/api/docs">
+                                <i class="fas fa-code"></i> API Docs
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-white-50">
+                        <span>Système</span>
+                    </h6>
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item">
+                            <a class="nav-link text-white-50" href="#" onclick="checkDatabaseStatus()">
+                                <i class="fas fa-database"></i> Base de Données
+                                <span id="db-status" class="status-indicator status-warning float-end mt-1"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white-50" href="#" onclick="checkAPIStatus()">
+                                <i class="fas fa-plug"></i> API Status
+                                <span id="api-status" class="status-indicator status-warning float-end mt-1"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white-50" href="#" onclick="checkCeleryStatus()">
+                                <i class="fas fa-tasks"></i> Celery
+                                <span id="celery-status" class="status-indicator status-warning float-end mt-1"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Contenu Principal -->
+            <main class="col-md-10 ms-sm-auto main-content">
+                {% block content %}
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Bienvenue dans le Système de Rapports Bancaires</h1>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
+                                <h5>Rapports</h5>
+                                <p class="text-muted">Générez et consultez vos rapports bancaires</p>
+                                <a href="/reports/" class="btn btn-primary">Accéder</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-cogs fa-3x text-success mb-3"></i>
+                                <h5>Automatisation</h5>
+                                <p class="text-muted">Gérez les tâches automatisées</p>
+                                <a href="/celery/" class="btn btn-success">Gérer</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-database fa-3x text-info mb-3"></i>
+                                <h5>Données</h5>
+                                <p class="text-muted">Explorez vos données</p>
+                                <a href="/data/" class="btn btn-info">Explorer</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <!-- Toast Container for Notifications -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert">
+            <div class="toast-header">
+                <strong class="me-auto">Notification</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body" id="toast-message">
+                Message here
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        // Fonctions de vérification du système
+        async function checkSystemHealth() {
+            const statusElement = document.getElementById('system-status');
+            const textElement = document.getElementById('system-status-text');
+            
+            statusElement.className = 'status-indicator status-warning';
+            textElement.textContent = 'Vérification...';
+            
+            try {
+                const [dbResponse, apiResponse, celeryResponse] = await Promise.allSettled([
+                    fetch('/api/health/database'),
+                    fetch('/api/health'),
+                    fetch('http://localhost:8001/api/celery/status')
+                ]);
+                
+                let allOk = true;
+                let issues = [];
+                
+                if (dbResponse.status !== 'fulfilled' || !dbResponse.value.ok) {
+                    allOk = false;
+                    issues.push('Base de données');
+                }
+                
+                if (apiResponse.status !== 'fulfilled' || !apiResponse.value.ok) {
+                    allOk = false;
+                    issues.push('API');
+                }
+                
+                if (celeryResponse.status !== 'fulfilled' || !celeryResponse.value.ok) {
+                    issues.push('Celery');
+                }
+                
+                if (allOk && issues.length === 0) {
+                    statusElement.className = 'status-indicator status-ok';
+                    textElement.textContent = 'Système OK';
+                } else if (issues.length === 1 && issues[0] === 'Celery') {
+                    statusElement.className = 'status-indicator status-warning';
+                    textElement.textContent = 'Système OK (Celery offline)';
+                } else {
+                    statusElement.className = 'status-indicator status-error';
+                    textElement.textContent = `Problèmes: ${issues.join(', ')}`;
+                }
+                
+            } catch (error) {
+                statusElement.className = 'status-indicator status-error';
+                textElement.textContent = 'Erreur système';
+            }
+        }
+        
+        async function checkDatabaseStatus() {
+            const statusElement = document.getElementById('db-status');
+            try {
+                const response = await fetch('/api/health/database');
+                statusElement.className = response.ok ? 'status-indicator status-ok' : 'status-indicator status-error';
+            } catch {
+                statusElement.className = 'status-indicator status-error';
+            }
+        }
+        
+        async function checkAPIStatus() {
+            const statusElement = document.getElementById('api-status');
+            try {
+                const response = await fetch('/api/health');
+                statusElement.className = response.ok ? 'status-indicator status-ok' : 'status-indicator status-error';
+            } catch {
+                statusElement.className = 'status-indicator status-error';
+            }
+        }
+        
+        async function checkCeleryStatus() {
+            const statusElement = document.getElementById('celery-status');
+            try {
+                const response = await fetch('http://localhost:8001/api/celery/status');
+                const data = await response.json();
+                statusElement.className = data.status === 'connected' ? 'status-indicator status-ok' : 'status-indicator status-warning';
+            } catch {
+                statusElement.className = 'status-indicator status-error';
+            }
+        }
+        
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('liveToast');
+            const messageElement = document.getElementById('toast-message');
+            
+            messageElement.textContent = message;
+            toast.className = `toast ${type === 'error' ? 'border-danger' : type === 'success' ? 'border-success' : 'border-info'}`;
+            
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+        }
+        
+        // Vérification périodique du système
+        document.addEventListener('DOMContentLoaded', function() {
+            checkSystemHealth();
+            checkDatabaseStatus();
+            checkAPIStatus();
+            checkCeleryStatus();
+            
+            // Vérifications toutes les 30 secondes
+            setInterval(() => {
+                checkDatabaseStatus();
+                checkAPIStatus();
+                checkCeleryStatus();
+            }, 30000);
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 

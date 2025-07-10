@@ -1,0 +1,103 @@
+=== PRÉ-PROMPT SÉQUENTIEL ENRICHI - OPTION B ===
+AGENCE: Banque H
+PÉRIODE ANALYSÉE: 2024-01-08 à 2024-01-08
+SEMAINE ACTUELLE: 2024-W02
+SEMAINE DE RÉFÉRENCE: 2024-W01
+DATE GÉNÉRATION: 2025-06-11 16:26:03
+
+RÔLE: Tu es un analyste financier expert spécialisé dans l'analyse bancaire séquentielle enrichie.
+
+CONTEXTE: Analyser l'évolution de l'agence Banque H avec focus principal sur l'évolution récente (2024-W01 → 2024-W02) tout en intégrant le contexte tendanciel à moyen terme.
+
+📊 SECTION PRINCIPALE (70%) - DONNÉES ACTUELLES vs PRÉCÉDENTES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📈 SEMAINE ACTUELLE (2024-W02):
+• Montant total: 610.00 €
+• Transactions totales: 11
+• Montant moyen/jour: 610.00 €
+• Transactions moyennes/jour: 11.0
+• Jours d'activité: 1
+• Pic montant: 610.00 €
+• Creux montant: 610.00 €
+
+📊 SEMAINE PRÉCÉDENTE (2024-W01):
+• Montant total: 443.00 €
+• Transactions totales: 16
+• Montant moyen/jour: 443.00 €
+• Transactions moyennes/jour: 16.0
+
+🔄 ÉVOLUTION IMMÉDIATE (2024-W01 → 2024-W02):
+• Évolution montant total: +37.7%
+• Évolution nb transactions: -31.2%
+• Évolution montant/jour: +37.7%
+• Évolution transactions/jour: -31.2%
+• Tendance immédiate: Forte progression
+• Performance: Dégradation préoccupante
+
+📈 SECTION CONTEXTUELLE (20%) - TENDANCE À MOYEN TERME:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 CONTEXTE MOBILE (2 semaines):
+Période analysée: 2024-W01 à 2024-W02
+• Moyenne montant: 526.50 €
+• Moyenne transactions: 14
+• Moyenne montant/jour: 526.50 €
+• Moyenne transactions/jour: 13.5
+
+📊 POSITIONNEMENT vs MOYENNE MOBILE:
+• Position montant: +15.9% vs moyenne
+• Position transactions: -18.5% vs moyenne
+
+🎯 INDICATEUR DE TENDANCE GLOBALE:
+• Tendance 2 semaines: Progression forte
+• Évolution tendancielle: +31.7%/semaine
+
+📚 SECTION HISTORIQUE (10%) - ANALYSE PRÉCÉDENTE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 ANALYSE SEMAINE 2024-W01:
+Date: 2025-06-11
+Extrait: "RAPPORT D'ANALYSE COMPARATIVE - AGENCE Banque H
+Période : 2024-01-08 à 2024-01-08 (Semaine 2024-W02)
+Référence : Semaine 2024-W01
+Destinataire : Direc..."
+Statut: Analyse de référence établie
+
+🎯 INSTRUCTIONS POUR ANALYSE SÉQUENTIELLE ENRICHIE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. FOCUS PRINCIPAL (70% du rapport) : Évolution 2024-W01 → 2024-W02
+   - Analyser la performance actuelle de Banque H
+   - Expliquer les changements immédiats observés
+   - Identifier les facteurs de cette évolution récente
+
+2. CONTEXTE ENRICHI (20% du rapport) : Perspective à moyen terme
+   - Positionner l'évolution dans la tendance générale
+   - Évaluer si l'évolution s'inscrit dans la tendance ou la rompt
+   - Analyser la cohérence avec la moyenne mobile
+
+3. COHÉRENCE HISTORIQUE (10% du rapport) : Suivi des recommandations
+   - Évaluer l'efficacité des recommandations précédentes
+   - Ajuster les préconisations basées sur les résultats observés
+
+📋 STRUCTURE OBLIGATOIRE DU RAPPORT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• RÉSUMÉ EXÉCUTIF - ÉVOLUTION IMMÉDIATE 2024-W01→2024-W02
+• PERFORMANCE SEMAINE 2024-W02 (données actuelles)
+• ANALYSE COMPARATIVE IMMÉDIATE (vs 2024-W01)
+• CONTEXTUALISATION TENDANCIELLE (positionnement vs moyenne mobile)
+• ÉVALUATION DES RECOMMANDATIONS PRÉCÉDENTES
+• NOUVELLES RECOMMANDATIONS ADAPTÉES
+• CONCLUSION ET OBJECTIFS SEMAINE SUIVANTE
+
+⚠️ CONTRAINTES IMPORTANTES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Rapport en français professionnel
+• Destiné au directeur général du groupe
+• Maximum 700 mots
+• Équilibrer focus immédiat (70%) et contexte (30%)
+• Recommandations concrètes basées sur l'approche enrichie
+• Ton constructif et orienté solutions
+
+=== FIN DU PRÉ-PROMPT SÉQUENTIEL ENRICHI ===

@@ -1,0 +1,103 @@
+=== PRÉ-PROMPT SÉQUENTIEL ENRICHI - OPTION B ===
+AGENCE: Banque N
+PÉRIODE ANALYSÉE: 2024-02-05 à 2024-02-05
+SEMAINE ACTUELLE: 2024-W06
+SEMAINE DE RÉFÉRENCE: 2024-W05
+DATE GÉNÉRATION: 2025-06-11 16:26:07
+
+RÔLE: Tu es un analyste financier expert spécialisé dans l'analyse bancaire séquentielle enrichie.
+
+CONTEXTE: Analyser l'évolution de l'agence Banque N avec focus principal sur l'évolution récente (2024-W05 → 2024-W06) tout en intégrant le contexte tendanciel à moyen terme.
+
+📊 SECTION PRINCIPALE (70%) - DONNÉES ACTUELLES vs PRÉCÉDENTES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📈 SEMAINE ACTUELLE (2024-W06):
+• Montant total: 263.00 €
+• Transactions totales: 9
+• Montant moyen/jour: 263.00 €
+• Transactions moyennes/jour: 9.0
+• Jours d'activité: 1
+• Pic montant: 263.00 €
+• Creux montant: 263.00 €
+
+📊 SEMAINE PRÉCÉDENTE (2024-W05):
+• Montant total: 514.00 €
+• Transactions totales: 6
+• Montant moyen/jour: 514.00 €
+• Transactions moyennes/jour: 6.0
+
+🔄 ÉVOLUTION IMMÉDIATE (2024-W05 → 2024-W06):
+• Évolution montant total: -48.8%
+• Évolution nb transactions: +50.0%
+• Évolution montant/jour: -48.8%
+• Évolution transactions/jour: +50.0%
+• Tendance immédiate: Forte baisse
+• Performance: Dégradation préoccupante
+
+📈 SECTION CONTEXTUELLE (20%) - TENDANCE À MOYEN TERME:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 CONTEXTE MOBILE (4 semaines):
+Période analysée: 2024-W03 à 2024-W06
+• Moyenne montant: 383.50 €
+• Moyenne transactions: 10
+• Moyenne montant/jour: 383.50 €
+• Moyenne transactions/jour: 9.5
+
+📊 POSITIONNEMENT vs MOYENNE MOBILE:
+• Position montant: -31.4% vs moyenne
+• Position transactions: -5.3% vs moyenne
+
+🎯 INDICATEUR DE TENDANCE GLOBALE:
+• Tendance 4 semaines: Déclin préoccupant
+• Évolution tendancielle: -13.8%/semaine
+
+📚 SECTION HISTORIQUE (10%) - ANALYSE PRÉCÉDENTE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 ANALYSE SEMAINE 2024-W05:
+Date: 2025-06-11
+Extrait: "RAPPORT D'ANALYSE SÉQUENTIELLE ENRICHIE - AGENCE Banque N
+Période : 2024-01-29 à 2024-01-29 (Semaine 2024-W05)
+Référence immédiate : Semaine 2024-W04
+..."
+Statut: Analyse de référence établie
+
+🎯 INSTRUCTIONS POUR ANALYSE SÉQUENTIELLE ENRICHIE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. FOCUS PRINCIPAL (70% du rapport) : Évolution 2024-W05 → 2024-W06
+   - Analyser la performance actuelle de Banque N
+   - Expliquer les changements immédiats observés
+   - Identifier les facteurs de cette évolution récente
+
+2. CONTEXTE ENRICHI (20% du rapport) : Perspective à moyen terme
+   - Positionner l'évolution dans la tendance générale
+   - Évaluer si l'évolution s'inscrit dans la tendance ou la rompt
+   - Analyser la cohérence avec la moyenne mobile
+
+3. COHÉRENCE HISTORIQUE (10% du rapport) : Suivi des recommandations
+   - Évaluer l'efficacité des recommandations précédentes
+   - Ajuster les préconisations basées sur les résultats observés
+
+📋 STRUCTURE OBLIGATOIRE DU RAPPORT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• RÉSUMÉ EXÉCUTIF - ÉVOLUTION IMMÉDIATE 2024-W05→2024-W06
+• PERFORMANCE SEMAINE 2024-W06 (données actuelles)
+• ANALYSE COMPARATIVE IMMÉDIATE (vs 2024-W05)
+• CONTEXTUALISATION TENDANCIELLE (positionnement vs moyenne mobile)
+• ÉVALUATION DES RECOMMANDATIONS PRÉCÉDENTES
+• NOUVELLES RECOMMANDATIONS ADAPTÉES
+• CONCLUSION ET OBJECTIFS SEMAINE SUIVANTE
+
+⚠️ CONTRAINTES IMPORTANTES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Rapport en français professionnel
+• Destiné au directeur général du groupe
+• Maximum 700 mots
+• Équilibrer focus immédiat (70%) et contexte (30%)
+• Recommandations concrètes basées sur l'approche enrichie
+• Ton constructif et orienté solutions
+
+=== FIN DU PRÉ-PROMPT SÉQUENTIEL ENRICHI ===

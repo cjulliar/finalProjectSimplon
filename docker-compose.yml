@@ -51,7 +51,7 @@ services:
       - API_ALGORITHM=HS256
       - API_ACCESS_TOKEN_EXPIRE_MINUTES=30
       - ADMIN_USERNAME=admin
-      - ADMIN_PASSWORD=admin123
+      - ADMIN_PASSWORD=hBtH_apEj3dP_baa
       - ADMIN_EMAIL=admin@example.com
       - LLM_API_KEY=dummy-openai-key
       - HUGGINGFACE_API_KEY=dummy-huggingface-key
@@ -73,14 +73,24 @@ services:
       - ./frontend:/app/frontend
       - ./frontend/static:/app/frontend/static
       - ./frontend/media:/app/frontend/media
+      - ./bankreports.db:/app/bankreports.db
     environment:
       - DEBUG=True
       - SECRET_KEY=django-insecure-change-in-production
       - API_URL=http://api:8000
       - API_SECRET_KEY=secret-key-change-in-production
-      - DATABASE_URL=sqlite:///app/frontend/db.sqlite3
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=bankreports
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - USE_POSTGRES=true
+      - ALLOWED_HOSTS=localhost,127.0.0.1,frontend,0.0.0.0
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=hBtH_apEj3dP_baa
+      - BANKREPORTS_DB_PATH=/app/bankreports.db
     depends_on:
       - api
+      - db
 
   # Monitoring Prometheus
   prometheus:
@@ -115,7 +125,82 @@ services:
     depends_on:
       - prometheus
 
+  # Redis pour Celery
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  # Celery Worker pour les tâches en arrière-plan
+  celery-worker:
+    build:
+      context: .
+      dockerfile: docker/celery/Dockerfile
+    restart: always
+    volumes:
+      - ./src:/app/src
+      - ./migrations:/app/migrations
+      - ./alembic.ini:/app/alembic.ini
+      - ./output:/app/output
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=bankreports
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - USE_POSTGRES=true
+      - REDIS_URL=redis://redis:6379/0
+      - API_SECRET_KEY=secret-key-change-in-production
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=hBtH_apEj3dP_baa
+      - ADMIN_EMAIL=admin@example.com
+      - LLM_API_KEY=dummy-openai-key
+      - HUGGINGFACE_API_KEY=dummy-huggingface-key
+      - USE_HUGGINGFACE=false
+      - USE_OPENAI=false
+      - USE_FALLBACK_MODE=true
+    depends_on:
+      - redis
+      - db
+
+  # Celery Beat pour la planification des tâches
+  celery-beat:
+    build:
+      context: .
+      dockerfile: docker/celery/Dockerfile
+    restart: always
+    volumes:
+      - ./src:/app/src
+      - ./migrations:/app/migrations
+      - ./alembic.ini:/app/alembic.ini
+      - ./output:/app/output
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=bankreports
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - USE_POSTGRES=true
+      - REDIS_URL=redis://redis:6379/0
+      - API_SECRET_KEY=secret-key-change-in-production
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=hBtH_apEj3dP_baa
+      - ADMIN_EMAIL=admin@example.com
+      - LLM_API_KEY=dummy-openai-key
+      - HUGGINGFACE_API_KEY=dummy-huggingface-key
+      - USE_HUGGINGFACE=false
+      - USE_OPENAI=false
+      - USE_FALLBACK_MODE=true
+    command: celery -A src.celery_app beat --loglevel=info
+    depends_on:
+      - redis
+      - db
+
 volumes:
   postgres_data:
   prometheus_data:
-  grafana_data: 
+  grafana_data:
+  redis_data: 

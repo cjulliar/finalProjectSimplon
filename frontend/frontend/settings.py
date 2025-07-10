@@ -2,11 +2,16 @@
 Configuration Django pour le projet d'interface bancaire.
 """
 import os
+import logging
 from pathlib import Path
 from dotenv import load_dotenv
 
 # Charger les variables d'environnement depuis le fichier .env
 load_dotenv()
+
+# Configuration du logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Chemin de base du projet
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,6 +38,7 @@ INSTALLED_APPS = [
     'dashboard',
     'bank_data',
     'ai_reports',
+    'bankapp',  # Dashboard Celery
 ]
 
 MIDDLEWARE = [
@@ -44,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'dashboard.middleware.AgenceMiddleware',  # Middleware personnalisé pour l'agence
 ]
 
 ROOT_URLCONF = 'frontend.urls'
@@ -66,13 +73,71 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'frontend.wsgi.application'
 
-# Configuration de la base de données
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Test de connexion PostgreSQL automatique
+def test_postgres_connection():
+    """Test la connexion PostgreSQL pour Django."""
+    try:
+        import psycopg2
+    except ImportError:
+        logger.info("🐘❌ psycopg2 non disponible - Django utilise SQLite")
+        return False
+    
+    postgres_host = os.environ.get('POSTGRES_HOST')
+    postgres_db = os.environ.get('POSTGRES_DB')
+    postgres_user = os.environ.get('POSTGRES_USER')
+    postgres_password = os.environ.get('POSTGRES_PASSWORD')
+    
+    if not all([postgres_host, postgres_db, postgres_user, postgres_password]):
+        logger.info("🐘➡️🗄️ Variables PostgreSQL manquantes - Django utilise SQLite")
+        return False
+    
+    try:
+        # Test de connexion
+        conn = psycopg2.connect(
+            host=postgres_host,
+            database=postgres_db,
+            user=postgres_user,
+            password=postgres_password,
+            connect_timeout=5
+        )
+        conn.close()
+        logger.info(f"🐘✅ Django: Connexion PostgreSQL réussie ({postgres_host})")
+        return True
+    except Exception as e:
+        logger.warning(f"🐘❌ Django: Connexion PostgreSQL échouée: {e}")
+        logger.info("🐘➡️🗄️ Django: Basculement automatique vers SQLite")
+        return False
+
+# Configuration automatique de la base de données
+USE_POSTGRES = os.environ.get('USE_POSTGRES', 'true').lower() == 'true'
+
+if USE_POSTGRES and test_postgres_connection():
+    # PostgreSQL disponible
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('POSTGRES_DB'),
+            'USER': os.environ.get('POSTGRES_USER'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+            'OPTIONS': {
+                'connect_timeout': 10,
+            },
+        }
     }
-}
+    DATABASE_TYPE = "PostgreSQL"
+    logger.info(f"🐘 Django: Base de données PostgreSQL ({os.environ.get('POSTGRES_HOST')})")
+else:
+    # SQLite comme fallback
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+    DATABASE_TYPE = "SQLite"
+    logger.info(f"🗄️ Django: Base de données SQLite ({BASE_DIR / 'db.sqlite3'})")
 
 # Validation du mot de passe
 AUTH_PASSWORD_VALIDATORS = [
@@ -115,9 +180,9 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # Configuration du client REST pour l'API
-API_URL = os.environ.get('API_URL', 'http://localhost:8000')
-# Pour le développement local, vous pouvez redéfinir cette valeur à http://localhost:8000
-# Pour Docker, elle est définie à http://api:8000 dans le docker-compose.yml
+API_URL = os.environ.get('API_URL', 'http://localhost:8001')
+# Pour le développement local : http://localhost:8001 (uvicorn direct)
+# Pour Docker : http://api:8000 dans le docker-compose.yml
 API_SECRET_KEY = os.environ.get('API_SECRET_KEY', 'secret-key-change-in-production')
 
 # Configuration de l'authentification

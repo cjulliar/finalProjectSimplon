@@ -1,0 +1,29 @@
+RAPPORT D'ANALYSE - AGENCE Banque F
+Période : 2024-01-01 à 2024-01-01 (Semaine de référence 2024-W01)
+Destinataire : Direction Générale
+
+RÉSUMÉ EXÉCUTIF - PROFIL INITIAL
+L'agence Banque F présente une activité modérée avec 320.00 € de volume total sur 1 jours d'activité. Cette première analyse établit les métriques de référence pour le suivi futur.
+
+ANALYSE DES DONNÉES DE BASE
+Volume d'activité : 320.00 € répartis sur 13 transactions
+Performance quotidienne : 320.00 € en moyenne par jour actif
+Fréquence transactionnelle : 13.0 transactions par jour
+Amplitude d'activité : de 320.00 € à 320.00 €
+
+PATTERNS ET CARACTÉRISTIQUES OBSERVÉS
+L'agence Banque F montre un profil d'activité très active avec de nombreuses petites transactions. La répartition des volumes indique une activité très régulière, ce qui suggère un fonctionnement opérationnel stable pour cette période initiale.
+
+ÉVALUATION DE LA PERFORMANCE INTRINSÈQUE
+Avec une moyenne de 320.00 € par jour et 13.0 transactions quotidiennes, l'agence présente des indicateurs de performance modérée. Le ratio montant/transaction de 24.62 € indique le profil type de clientèle.
+
+RECOMMANDATIONS INITIALES
+Analyser les facteurs limitants et mettre en place des actions correctives. Il est recommandé de surveiller l'évolution de ces métriques de base lors des prochaines analyses pour identifier les tendances et optimisations possibles.
+
+MÉTRIQUES DE RÉFÉRENCE POUR SUIVI FUTUR
+- Volume de référence : 320.00 €
+- Fréquence de référence : 13.0 transactions/jour
+- Ticket moyen de référence : 24.62 €
+- Amplitude normale : 0.00 € entre pic et creux
+
+Cette analyse constitue la base de référence pour toutes les futures évaluations comparatives de l'agence Banque F.

@@ -1,0 +1,24 @@
+
+# CONFIGURATION CRON POUR EMAILS BANCAIRES AUTOMATIQUES
+# =====================================================
+
+# 1. Ouvrir crontab
+# crontab -e
+
+# 2. Ajouter cette ligne pour envoi tous les lundis à 9h00 :
+0 9 * * 1 cd /Users/cyriljulliard/simplon/finalProjectSimplon && /Users/cyriljulliard/simplon/finalProjectSimplon/venv/bin/python email_scheduler.py >> email_cron.log 2>&1
+
+# 3. Sauvegarder et quitter
+
+# AUTRES FRÉQUENCES POSSIBLES :
+# Tous les jours à 8h30 :     30 8 * * * 
+# Tous les vendredis à 17h :  0 17 * * 5
+# Le 1er de chaque mois :     0 9 1 * *
+
+# VÉRIFIER LES LOGS :
+# tail -f /Users/cyriljulliard/simplon/finalProjectSimplon/email_cron.log
+# tail -f /Users/cyriljulliard/simplon/finalProjectSimplon/email_logs.txt
+
+# TESTER MANUELLEMENT :
+# cd /Users/cyriljulliard/simplon/finalProjectSimplon
+# python email_scheduler.py

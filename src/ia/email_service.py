@@ -26,6 +26,16 @@ logger = logging.getLogger(__name__)
 # Charger les variables d'environnement
 load_dotenv()
 
+# Charger également depuis smtp_config.env si il existe
+try:
+    with open('smtp_config.env', 'r') as f:
+        for line in f:
+            if '=' in line and not line.startswith('#'):
+                key, value = line.strip().split('=', 1)
+                os.environ[key] = value
+except FileNotFoundError:
+    pass
+
 # Configuration SMTP
 SMTP_SERVER = os.getenv("SMTP_SERVER", "")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
@@ -138,17 +148,25 @@ class EmailService:
         Formater le contenu HTML de l'email.
         
         Args:
-            report: Contenu du rapport (format Markdown)
+            report: Contenu du rapport (format Markdown ou HTML)
             visualizations: Liste des visualisations à inclure
             metadata: Métadonnées du rapport
             
         Returns:
             Contenu HTML formaté
         """
-        # Convertir le markdown en HTML
-        report_html = markdown.markdown(report)
+        # Détecter si le contenu est déjà du HTML complet ou du Markdown
+        if report.strip().startswith('<html') and report.strip().endswith('</html>'):
+            # C'est déjà du HTML complet, on l'utilise directement
+            return report
+        elif '<div' in report or '<h1>' in report:
+            # C'est du HTML partiel, on l'utilise directement
+            report_html = report
+        else:
+            # C'est du markdown, on le convertit
+            report_html = markdown.markdown(report)
         
-        # Template HTML pour l'email
+        # Template HTML pour l'email (uniquement pour markdown ou HTML partiel)
         template = Template("""
         <!DOCTYPE html>
         <html>

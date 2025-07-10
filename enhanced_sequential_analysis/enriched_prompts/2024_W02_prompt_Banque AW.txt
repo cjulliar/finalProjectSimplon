@@ -1,0 +1,103 @@
+=== PRÉ-PROMPT SÉQUENTIEL ENRICHI - OPTION B ===
+AGENCE: Banque AW
+PÉRIODE ANALYSÉE: 2024-01-08 à 2024-01-08
+SEMAINE ACTUELLE: 2024-W02
+SEMAINE DE RÉFÉRENCE: 2024-W01
+DATE GÉNÉRATION: 2025-06-11 16:26:02
+
+RÔLE: Tu es un analyste financier expert spécialisé dans l'analyse bancaire séquentielle enrichie.
+
+CONTEXTE: Analyser l'évolution de l'agence Banque AW avec focus principal sur l'évolution récente (2024-W01 → 2024-W02) tout en intégrant le contexte tendanciel à moyen terme.
+
+📊 SECTION PRINCIPALE (70%) - DONNÉES ACTUELLES vs PRÉCÉDENTES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📈 SEMAINE ACTUELLE (2024-W02):
+• Montant total: 528.36 €
+• Transactions totales: 5
+• Montant moyen/jour: 528.36 €
+• Transactions moyennes/jour: 5.0
+• Jours d'activité: 1
+• Pic montant: 528.36 €
+• Creux montant: 528.36 €
+
+📊 SEMAINE PRÉCÉDENTE (2024-W01):
+• Montant total: 278.00 €
+• Transactions totales: 8
+• Montant moyen/jour: 278.00 €
+• Transactions moyennes/jour: 8.0
+
+🔄 ÉVOLUTION IMMÉDIATE (2024-W01 → 2024-W02):
+• Évolution montant total: +90.1%
+• Évolution nb transactions: -37.5%
+• Évolution montant/jour: +90.1%
+• Évolution transactions/jour: -37.5%
+• Tendance immédiate: Forte progression
+• Performance: Dégradation préoccupante
+
+📈 SECTION CONTEXTUELLE (20%) - TENDANCE À MOYEN TERME:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 CONTEXTE MOBILE (2 semaines):
+Période analysée: 2024-W01 à 2024-W02
+• Moyenne montant: 403.18 €
+• Moyenne transactions: 6
+• Moyenne montant/jour: 403.18 €
+• Moyenne transactions/jour: 6.5
+
+📊 POSITIONNEMENT vs MOYENNE MOBILE:
+• Position montant: +31.0% vs moyenne
+• Position transactions: -23.1% vs moyenne
+
+🎯 INDICATEUR DE TENDANCE GLOBALE:
+• Tendance 2 semaines: Progression forte
+• Évolution tendancielle: +62.1%/semaine
+
+📚 SECTION HISTORIQUE (10%) - ANALYSE PRÉCÉDENTE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 ANALYSE SEMAINE 2024-W01:
+Date: 2025-06-11
+Extrait: "RAPPORT D'ANALYSE COMPARATIVE - AGENCE Banque AW
+Période : 2024-01-08 à 2024-01-08 (Semaine 2024-W02)
+Référence : Semaine 2024-W01
+Destinataire : Dire..."
+Statut: Analyse de référence établie
+
+🎯 INSTRUCTIONS POUR ANALYSE SÉQUENTIELLE ENRICHIE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. FOCUS PRINCIPAL (70% du rapport) : Évolution 2024-W01 → 2024-W02
+   - Analyser la performance actuelle de Banque AW
+   - Expliquer les changements immédiats observés
+   - Identifier les facteurs de cette évolution récente
+
+2. CONTEXTE ENRICHI (20% du rapport) : Perspective à moyen terme
+   - Positionner l'évolution dans la tendance générale
+   - Évaluer si l'évolution s'inscrit dans la tendance ou la rompt
+   - Analyser la cohérence avec la moyenne mobile
+
+3. COHÉRENCE HISTORIQUE (10% du rapport) : Suivi des recommandations
+   - Évaluer l'efficacité des recommandations précédentes
+   - Ajuster les préconisations basées sur les résultats observés
+
+📋 STRUCTURE OBLIGATOIRE DU RAPPORT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• RÉSUMÉ EXÉCUTIF - ÉVOLUTION IMMÉDIATE 2024-W01→2024-W02
+• PERFORMANCE SEMAINE 2024-W02 (données actuelles)
+• ANALYSE COMPARATIVE IMMÉDIATE (vs 2024-W01)
+• CONTEXTUALISATION TENDANCIELLE (positionnement vs moyenne mobile)
+• ÉVALUATION DES RECOMMANDATIONS PRÉCÉDENTES
+• NOUVELLES RECOMMANDATIONS ADAPTÉES
+• CONCLUSION ET OBJECTIFS SEMAINE SUIVANTE
+
+⚠️ CONTRAINTES IMPORTANTES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Rapport en français professionnel
+• Destiné au directeur général du groupe
+• Maximum 700 mots
+• Équilibrer focus immédiat (70%) et contexte (30%)
+• Recommandations concrètes basées sur l'approche enrichie
+• Ton constructif et orienté solutions
+
+=== FIN DU PRÉ-PROMPT SÉQUENTIEL ENRICHI ===

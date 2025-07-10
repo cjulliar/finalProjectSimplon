@@ -1,0 +1,78 @@
+=== PRÉ-PROMPT D'ANALYSE IA ENRICHI - SEMAINE 02 AVEC HISTORIQUE ===
+AGENCE: Banque AQ
+PÉRIODE ANALYSÉE: 2024-01-08 à 2024-01-08
+SEMAINE ACTUELLE: 2024-W02
+SEMAINE DE RÉFÉRENCE: 2024-W01
+DATE GÉNÉRATION: 2025-06-11 15:08:22
+
+RÔLE: Tu es un analyste financier expert spécialisé dans l'analyse comparative bancaire.
+
+CONTEXTE: Analyser l'évolution de l'agence Banque AQ entre la semaine 01 (référence) et la semaine 02 (actuelle). Utiliser l'analyse précédente comme base de comparaison.
+
+📊 DONNÉES ACTUELLES - SEMAINE 2024-W02:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Montant total: 435.72 €
+• Transactions totales: 8
+• Montant moyen/jour: 435.72 €
+• Transactions moyennes/jour: 8.0
+• Jours d'activité: 1
+• Pic montant: 435.72 €
+• Creux montant: 435.72 €
+
+📈 DONNÉES DE COMPARAISON - SEMAINE 2024-W01:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Montant total: 463.45 €
+• Transactions totales: 19
+• Montant moyen/jour: 463.45 €
+• Transactions moyennes/jour: 19.0
+
+🔄 ÉVOLUTION SEMAINE 01 → SEMAINE 02:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Évolution montant total: -6.0%
+• Évolution nb transactions: -57.9%
+• Évolution montant/jour: -6.0%
+• Évolution transactions/jour: -57.9%
+• Tendance globale: Déclin modéré
+• Performance: Dégradation préoccupante
+
+📚 ANALYSE PRÉCÉDENTE (SEMAINE 2024-W01):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Date: 2025-06-11
+Extrait: "RAPPORT D'ANALYSE - AGENCE Banque AQ
+Période : 2024-01-01 à 2024-01-01 (Semaine de référence 2024-W01)
+Destinataire : Direction Générale
+
+RÉSUMÉ EXÉCU..."
+Statut: Analyse de référence établie
+
+🎯 INSTRUCTIONS DÉTAILLÉES POUR L'ANALYSE COMPARATIVE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. ANALYSER LA PERFORMANCE de Banque AQ pour la semaine 2024-W02
+2. COMPARER avec les résultats de la semaine 2024-W01 (données et analyse précédente)
+3. EXPLIQUER les évolutions observées (Dégradation préoccupante)
+4. IDENTIFIER les facteurs d'amélioration ou de dégradation
+5. ÉVALUER la cohérence avec les recommandations précédentes
+6. AJUSTER les recommandations basées sur l'évolution constatée
+7. PROPOSER des actions correctives ou d'amplification selon les résultats
+
+📋 STRUCTURE OBLIGATOIRE DU RAPPORT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• RÉSUMÉ EXÉCUTIF - ÉVOLUTION SEMAINE 01→02
+• PERFORMANCE SEMAINE 02 (données actuelles)
+• ANALYSE COMPARATIVE avec semaine 01
+• FACTEURS D'ÉVOLUTION IDENTIFIÉS
+• ÉVALUATION DES RECOMMANDATIONS PRÉCÉDENTES
+• NOUVELLES RECOMMANDATIONS ADAPTÉES
+• CONCLUSION ET OBJECTIFS SEMAINE 03
+
+⚠️ CONTRAINTES IMPORTANTES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Rapport en français professionnel
+• Destiné au directeur général du groupe
+• Maximum 650 mots
+• Focus sur l'évolution et la comparaison
+• Recommandations concrètes basées sur les tendances
+• Prendre en compte l'analyse précédente
+• Ton constructif et orienté solutions
+
+=== FIN DU PRÉ-PROMPT ENRICHI ===

@@ -1,0 +1,25 @@
+Objet : Compte rendu hebdomadaire – Banque BN
+
+Bonjour,
+
+Veuillez trouver ci-dessous le compte rendu détaillé de l'activité de l'agence **Banque BN** pour la période du 2025-02-17 au 2025-02-17.
+
+---
+
+**Synthèse des résultats :**
+- Consommation déclarée (CONSO_DEC) : 0.00 €
+- Bilan net (BILAN_NET) : 0.00 €
+- Versements épargne financière (VERS_EP_FI) : 0.00 €
+- Équipement déclaré (EQPT_DEC) : 0.00 €
+- Collecte professionnelle nette (COLL_PRO_NET) : 0.00 €
+
+---
+
+**Analyse et recommandations :**
+- [L'IA ou l'analyste doit ici synthétiser les points forts, les axes d'amélioration, les alertes éventuelles, et proposer des recommandations concrètes.]
+
+---
+Cordialement,
+La Direction
+
+*Ce mail est généré automatiquement à partir des données consolidées de la période. Pour toute question, contactez le service reporting.*

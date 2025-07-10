@@ -364,111 +364,45 @@ class AIAnalysisService:
     
     def _prepare_prompt(self, df: pd.DataFrame) -> str:
         """
-        Préparer le prompt pour l'IA en extrayant les statistiques des données.
-        
-        Args:
-            df: DataFrame contenant les données bancaires
-            
-        Returns:
-            str: Prompt formaté pour l'IA
+        Préparer le prompt pour l'IA en extrayant les statistiques des données, au format mail de compte rendu d'analyse.
         """
-        # Préparation des statistiques essentielles pour l'analyse
         total_montant = df["montant"].sum() if not df.empty else 0
         total_transactions = df["nombre_transactions"].sum() if not df.empty else 0
         moyenne_montant = df["montant"].mean() if not df.empty else 0
-        
-        # Agrégations par agence
-        if not df.empty:
-            agg_by_agency = df.groupby("agence").agg({
-                "montant": ["sum", "mean"],
-                "nombre_transactions": ["sum", "mean"]
-            })
-            
-            # Trouver l'agence la plus performante
-            best_agency = agg_by_agency[("montant", "sum")].idxmax() if not agg_by_agency.empty else "Aucune"
-        else:
-            best_agency = "Aucune"
-        
-        # Pour l'analyse de l'évolution semaine par semaine, éviter les comparaisons directes
-        # qui peuvent causer des problèmes de type entre date et datetime
-        last_week_montant = 0
-        previous_week_montant = 1  # Éviter division par zéro
-        
-        if not df.empty:
-            # Traiter les données de date de manière sécurisée
-            today = datetime.now().date()
-            seven_days_ago = today - timedelta(days=7)
-            fourteen_days_ago = today - timedelta(days=14)
-            
-            # Utiliser des chaînes de caractères pour les comparaisons pour éviter les problèmes de type
-            df_with_str_dates = df.copy()
-            df_with_str_dates['date_str'] = df_with_str_dates['date'].astype(str)
-            seven_days_ago_str = seven_days_ago.isoformat()
-            fourteen_days_ago_str = fourteen_days_ago.isoformat()
-            
-            # Sélectionner les données des dernières semaines en utilisant des comparaisons de chaînes
-            last_week_data = df_with_str_dates[df_with_str_dates['date_str'] >= seven_days_ago_str]
-            previous_week_data = df_with_str_dates[
-                (df_with_str_dates['date_str'] < seven_days_ago_str) & 
-                (df_with_str_dates['date_str'] >= fourteen_days_ago_str)
-            ]
-            
-            # Calculer les montants par semaine
-            last_week_montant = last_week_data["montant"].sum() if not last_week_data.empty else 0
-            previous_week_montant = previous_week_data["montant"].sum() if not previous_week_data.empty else 1  # Éviter division par zéro
-        
-        # Calculer l'évolution en pourcentage
-        evolution_percentage = ((last_week_montant - previous_week_montant) / previous_week_montant) * 100 if previous_week_montant else 0
-        
-        # Préparation des données pour le prompt
-        stats = {
-            "total_montant": f"{total_montant:,.2f} €",
-            "total_transactions": total_transactions,
-            "moyenne_montant": f"{moyenne_montant:,.2f} €",
-            "meilleure_agence": best_agency,
-            "evolution_semaine": f"{evolution_percentage:.2f}%"
-        }
-        
-        # Statistiques par agence
-        agency_stats = {}
-        for agence in df["agence"].unique():
-            agence_df = df[df["agence"] == agence]
-            agency_stats[agence] = {
-                "total_montant": f"{agence_df['montant'].sum():,.2f} €",
-                "total_transactions": agence_df["nombre_transactions"].sum(),
-                "moyenne_montant": f"{agence_df['montant'].mean():,.2f} €"
-            }
-        
-        # Construction du prompt pour l'IA
-        prompt = f"""
-        Analyser les données bancaires suivantes et générer un rapport détaillé pour le directeur.
-        
-        STATISTIQUES GLOBALES:
-        - Montant total: {stats['total_montant']}
-        - Transactions totales: {stats['total_transactions']}
-        - Montant moyen par transaction: {stats['moyenne_montant']}
-        - Évolution sur la semaine: {stats['evolution_semaine']}
-        
-        STATISTIQUES PAR AGENCE:
-        """
-        
-        for agence, data in agency_stats.items():
-            prompt += f"""
-        {agence}:
-        - Montant total: {data['total_montant']}
-        - Transactions totales: {data['total_transactions']}
-        - Montant moyen par transaction: {data['moyenne_montant']}
-        """
-        
-        prompt += """
-        INSTRUCTIONS:
-        1. Analyser les performances de chaque agence
-        2. Identifier les tendances et anomalies
-        3. Proposer des recommandations stratégiques
-        4. Rédiger un rapport structuré en français, avec introduction, analyse et conclusion
-        5. Le rapport doit être destiné au directeur du groupe bancaire
-        """
-        
+        subject = "Compte rendu hebdomadaire – Semaine en cours"
+        prompt = f"""Objet : {subject}
+
+Bonjour,
+
+Veuillez trouver ci-dessous le compte rendu détaillé de l'activité pour la semaine analysée.
+
+---
+
+**Synthèse des résultats :**
+- Montant total : {total_montant:,.2f} €
+- Transactions totales : {total_transactions}
+- Montant moyen par transaction : {moyenne_montant:,.2f} €
+- Évolution sur la semaine : ...
+
+**Détail par agence :**
+Agence : ...
+- Montant total : ...
+- Transactions totales : ...
+- Montant moyen par transaction : ...
+...
+
+---
+
+**Analyse et recommandations :**
+- [À compléter par l'IA ou l'analyste]
+
+---
+
+Cordialement,
+La Direction
+
+*Ce mail est généré automatiquement à partir des données consolidées de la période. Pour toute question, contactez le service reporting.*
+"""
         return prompt
     
     def _generate_report(self, prompt: str) -> str:
@@ -1139,6 +1073,246 @@ Les performances globales montrent des signes encourageants malgré quelques var
                 report += f"![{viz['title']}]({viz['path']})\n\n"
         
         return report
+
+    def generer_rapport_hebdomadaire(self, transactions_data: List[Dict], agence: str = None, periode_debut=None, periode_fin=None) -> str:
+        """
+        Génère un rapport hebdomadaire en HTML à partir des données de transactions.
+        
+        Args:
+            transactions_data: Liste des transactions
+            agence: Nom de l'agence (optionnel)
+            periode_debut: Date de début de la période
+            periode_fin: Date de fin de la période
+        
+        Returns:
+            str: Rapport HTML formaté
+        """
+        try:
+            # Analyser les données
+            analyse = self.analyze_bank_data(transactions_data)
+            
+            # Générer le contenu du rapport
+            if self.use_fallback_mode:
+                # Mode de secours avec analyse statistique basique
+                rapport_contenu = self._generer_rapport_fallback(
+                    transactions_data, analyse, agence, periode_debut, periode_fin
+                )
+            else:
+                # Mode avec IA
+                rapport_contenu = self._generer_rapport_ia(
+                    transactions_data, analyse, agence, periode_debut, periode_fin
+                )
+            
+            # Générer le HTML final
+            html_rapport = self._formater_rapport_html(rapport_contenu, agence, periode_debut, periode_fin)
+            
+            return html_rapport
+            
+        except Exception as e:
+            logger.error(f"Erreur lors de la génération du rapport: {str(e)}")
+            return self._generer_rapport_erreur(str(e))
+
+    def _generer_rapport_fallback(self, transactions_data: List[Dict], analyse: Dict, agence: str, periode_debut, periode_fin) -> Dict:
+        """Génère un rapport en mode de secours (sans IA)."""
+        
+        # Calculs statistiques
+        total_transactions = len(transactions_data)
+        montant_total = sum(t['montant'] for t in transactions_data)
+        montant_moyen = montant_total / total_transactions if total_transactions > 0 else 0
+        
+        # Analyse par type de transaction
+        types_transactions = {}
+        for transaction in transactions_data:
+            type_t = transaction.get('type_transaction', 'Non spécifié')
+            if type_t not in types_transactions:
+                types_transactions[type_t] = {'count': 0, 'montant': 0}
+            types_transactions[type_t]['count'] += 1
+            types_transactions[type_t]['montant'] += transaction['montant']
+        
+        # Tendances simples
+        if len(transactions_data) >= 7:
+            # Comparer première et dernière semaine
+            premiers_3_jours = transactions_data[:3] if len(transactions_data) >= 3 else transactions_data
+            derniers_3_jours = transactions_data[-3:] if len(transactions_data) >= 3 else transactions_data
+            
+            montant_debut = sum(t['montant'] for t in premiers_3_jours)
+            montant_fin = sum(t['montant'] for t in derniers_3_jours)
+            
+            if montant_debut > 0:
+                evolution = ((montant_fin - montant_debut) / montant_debut) * 100
+            else:
+                evolution = 0
+        else:
+            evolution = 0
+        
+        return {
+            'resume_executif': f"Analyse automatique pour la période du {periode_debut.strftime('%d/%m/%Y') if periode_debut else 'N/A'} au {periode_fin.strftime('%d/%m/%Y') if periode_fin else 'N/A'}",
+            'statistiques_cles': {
+                'total_transactions': total_transactions,
+                'montant_total': montant_total,
+                'montant_moyen': montant_moyen,
+                'evolution': evolution
+            },
+            'analyse_transactions': types_transactions,
+            'recommandations': [
+                "Surveiller l'évolution des volumes de transactions",
+                "Analyser les types de transactions les plus fréquents",
+                "Vérifier la conformité des montants moyens"
+            ],
+            'points_attention': [
+                "Analyse automatique sans intelligence artificielle",
+                "Recommandations génériques basées sur les statistiques"
+            ]
+        }
+
+    def _generer_rapport_ia(self, transactions_data: List[Dict], analyse: Dict, agence: str, periode_debut, periode_fin) -> Dict:
+        """Génère un rapport avec analyse IA (quand disponible)."""
+        
+        # Pour l'instant, retourne le rapport de base
+        # TODO: Implémenter l'analyse IA quand les LLM seront configurés
+        return self._generer_rapport_fallback(transactions_data, analyse, agence, periode_debut, periode_fin)
+
+    def _formater_rapport_html(self, contenu: Dict, agence: str, periode_debut, periode_fin) -> str:
+        """Formate le rapport en HTML."""
+        
+        agence_text = f" - {agence}" if agence else ""
+        periode_text = f"du {periode_debut.strftime('%d/%m/%Y')} au {periode_fin.strftime('%d/%m/%Y')}" if periode_debut and periode_fin else "Période non spécifiée"
+        
+        html = f"""
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport Hebdomadaire Bancaire{agence_text}</title>
+    <style>
+        body {{ font-family: Arial, sans-serif; margin: 20px; }}
+        .header {{ background-color: #2c3e50; color: white; padding: 20px; text-align: center; }}
+        .section {{ margin: 20px 0; padding: 15px; border-left: 4px solid #3498db; }}
+        .stat-box {{ display: inline-block; background-color: #ecf0f1; padding: 10px; margin: 5px; border-radius: 5px; }}
+        .warning {{ background-color: #fff3cd; border-color: #ffc107; }}
+        .recommendation {{ background-color: #d4edda; border-color: #28a745; }}
+        table {{ width: 100%; border-collapse: collapse; margin: 10px 0; }}
+        th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
+        th {{ background-color: #f2f2f2; }}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Rapport Hebdomadaire Bancaire{agence_text}</h1>
+        <p>{periode_text}</p>
+    </div>
+
+    <div class="section">
+        <h2>📊 Résumé Exécutif</h2>
+        <p>{contenu['resume_executif']}</p>
+    </div>
+
+    <div class="section">
+        <h2>🔢 Statistiques Clés</h2>
+        <div class="stat-box">
+            <strong>Total Transactions:</strong> {contenu['statistiques_cles']['total_transactions']}
+        </div>
+        <div class="stat-box">
+            <strong>Montant Total:</strong> {contenu['statistiques_cles']['montant_total']:,.2f} €
+        </div>
+        <div class="stat-box">
+            <strong>Montant Moyen:</strong> {contenu['statistiques_cles']['montant_moyen']:,.2f} €
+        </div>
+        <div class="stat-box">
+            <strong>Évolution:</strong> {contenu['statistiques_cles']['evolution']:+.1f}%
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📈 Analyse des Transactions</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Type de Transaction</th>
+                    <th>Nombre</th>
+                    <th>Montant Total</th>
+                    <th>Montant Moyen</th>
+                </tr>
+            </thead>
+            <tbody>
+"""
+        
+        for type_t, data in contenu['analyse_transactions'].items():
+            montant_moyen_type = data['montant'] / data['count'] if data['count'] > 0 else 0
+            html += f"""
+                <tr>
+                    <td>{type_t}</td>
+                    <td>{data['count']}</td>
+                    <td>{data['montant']:,.2f} €</td>
+                    <td>{montant_moyen_type:,.2f} €</td>
+                </tr>
+            """
+        
+        html += """
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section recommendation">
+        <h2>💡 Recommandations</h2>
+        <ul>
+"""
+        
+        for rec in contenu['recommandations']:
+            html += f"            <li>{rec}</li>\n"
+        
+        html += """
+        </ul>
+    </div>
+
+    <div class="section warning">
+        <h2>⚠️ Points d'Attention</h2>
+        <ul>
+"""
+        
+        for point in contenu['points_attention']:
+            html += f"            <li>{point}</li>\n"
+        
+        html += f"""
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>📅 Informations du Rapport</h2>
+        <p><strong>Généré le:</strong> {datetime.now().strftime('%d/%m/%Y à %H:%M')}</p>
+        <p><strong>Système:</strong> Plateforme d'Automatisation des Rapports Bancaires</p>
+    </div>
+
+</body>
+</html>
+        """
+        
+        return html
+
+    def _generer_rapport_erreur(self, erreur: str) -> str:
+        """Génère un rapport d'erreur en HTML."""
+        
+        return f"""
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Erreur - Rapport Bancaire</title>
+    <style>
+        body {{ font-family: Arial, sans-serif; margin: 20px; }}
+        .error {{ background-color: #f8d7da; color: #721c24; padding: 20px; border-radius: 5px; }}
+    </style>
+</head>
+<body>
+    <div class="error">
+        <h1>❌ Erreur lors de la génération du rapport</h1>
+        <p><strong>Détails de l'erreur:</strong> {erreur}</p>
+        <p><strong>Généré le:</strong> {datetime.now().strftime('%d/%m/%Y à %H:%M')}</p>
+    </div>
+</body>
+</html>
+        """
 
 # Instance singleton du service
 ai_service = AIAnalysisService() 

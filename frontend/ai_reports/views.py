@@ -134,76 +134,9 @@ def report_detail(request, report_id):
 
 
 @login_required
-def email_reports(request):
-    """
-    Afficher les rapports par email pour une banque spécifique.
-    Cette vue permet de voir les emails de rapports pour chaque banque
-    avec un sélecteur de banque en haut à gauche.
-    """
-    # Connexion à la base de données SQLite
-    db_path = os.path.join(settings.BASE_DIR, '..', 'bankreports.db')
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-    
-    # Liste des banques disponibles
-    cursor.execute("SELECT DISTINCT bank_name FROM email_reports ORDER BY bank_name")
-    banks = [row['bank_name'] for row in cursor.fetchall()]
-    
-    if not banks:
-        # Fallback sur les banques par défaut si aucune n'est trouvée
-        banks = ["Banque A", "Banque B", "Banque C", "Banque D"]
-    
-    # Banque sélectionnée (par défaut: première banque de la liste)
-    default_bank = banks[0] if banks else "Banque A"
-    selected_bank = request.GET.get('bank', default_bank)
-    
-    # Récupérer les rapports pour la banque sélectionnée
-    cursor.execute("""
-        SELECT id, subject, content, sent_at, recipients, status
-        FROM email_reports
-        WHERE bank_name = ?
-        ORDER BY sent_at DESC
-    """, (selected_bank,))
-    
-    reports = []
-    for row in cursor.fetchall():
-        # Convertir les données JSON
-        try:
-            recipients = json.loads(row['recipients'])
-        except:
-            recipients = []
-            
-        # Convertir la date
-        try:
-            sent_at = datetime.fromisoformat(row['sent_at']).strftime("%d/%m/%Y %H:%M")
-        except:
-            sent_at = row['sent_at']
-            
-        reports.append({
-            'id': row['id'],
-            'subject': row['subject'],
-            'content': row['content'],
-            'sent_at': sent_at,
-            'recipients': recipients,
-            'status': row['status']
-        })
-    
-    conn.close()
-    
-    return render(request, 'ai_reports/email_reports.html', {
-        'banks': banks,
-        'selected_bank': selected_bank,
-        'reports': reports
-    })
-
-
-@login_required
 def bank_charts(request):
     """
-    Afficher les courbes d'évolution pour une banque spécifique.
-    Cette vue permet de voir les graphiques d'évolution des chiffres clés
-    avec un sélecteur de banque en haut à gauche.
+    Graphiques d'évolution pour une banque spécifique.
     """
     # Connexion à la base de données SQLite
     db_path = os.path.join(settings.BASE_DIR, '..', 'bankreports.db')
@@ -212,8 +145,8 @@ def bank_charts(request):
     cursor = conn.cursor()
     
     # Liste des banques disponibles
-    cursor.execute("SELECT DISTINCT bank_name FROM email_reports ORDER BY bank_name")
-    banks = [row['bank_name'] for row in cursor.fetchall()]
+    cursor.execute("SELECT DISTINCT agence FROM bank_data_enriched ORDER BY agence")
+    banks = [row['agence'] for row in cursor.fetchall()]
     
     if not banks:
         # Fallback sur les banques par défaut si aucune n'est trouvée
@@ -223,51 +156,32 @@ def bank_charts(request):
     default_bank = banks[0] if banks else "Banque A"
     selected_bank = request.GET.get('bank', default_bank)
     
-    # Récupérer les visualisations pour la banque sélectionnée
-    output_dir = Path("output")
-    charts = []
+    # Récupérer les données pour la banque sélectionnée
+    cursor.execute("""
+        SELECT semaine_id, MOY_GLOBAL, OCC_PART, OCC_PRO, RANG_GLOBAL
+        FROM bank_data_enriched
+        WHERE agence = ?
+        ORDER BY semaine_id DESC
+        LIMIT 20
+    """, (selected_bank,))
     
-    if output_dir.exists():
-        # Récupérer les dernières visualisations pour la banque sélectionnée
-        # Format des fichiers: evolution_montants_Banque A_20250514_151324.png
-        
-        # Trouver tous les timestamps uniques pour cette banque
-        timestamps = set()
-        for file in output_dir.glob(f"*_{selected_bank}_*.png"):
-            parts = file.stem.split('_')
-            if len(parts) >= 4:
-                timestamps.add(parts[-2] + '_' + parts[-1])
-        
-        # Pour chaque timestamp, récupérer toutes les visualisations
-        for timestamp in sorted(timestamps, reverse=True):
-            timestamp_charts = []
-            
-            # Chercher les visualisations pour ce timestamp
-            for file in output_dir.glob(f"*_{selected_bank}_{timestamp}.png"):
-                chart_type = file.stem.split('_')[0]
-                if chart_type == "evolution":
-                    chart_type = file.stem.split('_')[0] + '_' + file.stem.split('_')[1]
-                
-                timestamp_charts.append({
-                    'file': str(file),
-                    'type': chart_type,
-                    'url': f"/static/output/{file.name}"
-                })
-            
-            if timestamp_charts:
-                try:
-                    date = datetime.strptime(timestamp.split('_')[0], "%Y%m%d").strftime("%d/%m/%Y")
-                except ValueError:
-                    date = timestamp
-                
-                charts.append({
-                    'date': date,
-                    'timestamp': timestamp,
-                    'charts': timestamp_charts
-                })
-        
-        # Limiter à 5 ensembles de visualisations
-        charts = charts[:5]
+    data = cursor.fetchall()
+    
+    # Préparer les données pour les graphiques
+    charts = {
+        'labels': [],
+        'moy_global': [],
+        'occ_part': [],
+        'occ_pro': [],
+        'rang_global': []
+    }
+    
+    for row in data:
+        charts['labels'].append(row['semaine_id'])
+        charts['moy_global'].append(row['MOY_GLOBAL'] or 0)
+        charts['occ_part'].append(row['OCC_PART'] or 0)
+        charts['occ_pro'].append(row['OCC_PRO'] or 0)
+        charts['rang_global'].append(row['RANG_GLOBAL'] or 0)
     
     conn.close()
     

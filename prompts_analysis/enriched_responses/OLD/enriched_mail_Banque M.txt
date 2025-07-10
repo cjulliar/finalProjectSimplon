@@ -1,0 +1,8 @@
+[RAPPORT À COMPLÉTER AVEC L'IA]
+
+AGENCE: Banque M
+SEMAINE: 2025-W07
+DONNÉES HISTORIQUES: 5 semaines
+ANALYSES PRÉCÉDENTES: 1
+
+Ce fichier doit être rempli avec la réponse du LLM après traitement du prompt enrichi.

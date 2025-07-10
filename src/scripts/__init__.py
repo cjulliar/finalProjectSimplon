@@ -1,1 +1,3 @@
-# Package de scripts utilitaires 
+"""
+Scripts utilitaires pour le système de rapports bancaires.
+""" 

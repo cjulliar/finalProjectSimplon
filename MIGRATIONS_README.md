@@ -9,6 +9,24 @@ Ce projet utilise Alembic pour gérer les migrations de base de données. Ce doc
 - SQLAlchemy (`pip install sqlalchemy`)
 - PostgreSQL (pour la production) ou SQLite (pour le développement)
 
+## 🗄️ Architecture Hybride des Bases de Données
+
+Ce projet utilise un **système de fallback automatique** :
+
+- **🐘 PostgreSQL** : Base principale (production, performance)
+- **🗄️ SQLite** : Fallback automatique (développement, résilience)
+
+### Vérification de la base utilisée
+```bash
+# Vérifier quelle base de données est actuellement utilisée
+python check_database_status.py
+
+# Ou via l'API
+curl http://localhost:8000/api/database-info
+```
+
+Les migrations fonctionnent automatiquement sur la base de données active (PostgreSQL ou SQLite selon la disponibilité).
+
 ## Scripts disponibles
 
 ### Initialisation de la base de données

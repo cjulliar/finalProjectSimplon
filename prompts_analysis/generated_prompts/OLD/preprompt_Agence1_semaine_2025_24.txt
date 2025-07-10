@@ -1,0 +1,7 @@
+
+=== PRÉ-PROMPT D'ANALYSE IA ===
+AGENCE: Agence1
+STATUT: AUCUNE DONNÉE DISPONIBLE
+
+Aucune donnée n'est disponible pour cette agence dans la période analysée.
+Ce prompt ne peut pas être envoyé à un LLM car il n'y a pas de données à analyser.

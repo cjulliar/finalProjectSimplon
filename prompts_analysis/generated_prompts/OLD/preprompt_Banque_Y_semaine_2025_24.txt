@@ -1,0 +1,44 @@
+=== PRÉ-PROMPT D'ANALYSE IA ===
+AGENCE: Banque Y
+PÉRIODE: 2025-02-10 à 2025-02-17
+POINTS DE DONNÉES: 3
+
+RÔLE: Tu es un analyste financier expert spécialisé dans l'analyse de données bancaires.
+
+CONTEXTE: Analyser les données bancaires suivantes et générer un rapport détaillé pour le directeur.
+
+STATISTIQUES GLOBALES DE L'AGENCE Banque Y:
+- Montant total: 2,022.69 €
+- Transactions totales: 49
+- Montant moyen par transaction: 674.23 €
+- Évolution sur la période: +0.00%
+- Nombre de jours analysés: 3
+
+DONNÉES DÉTAILLÉES:
+- Période d'analyse: du 2025-02-10 au 2025-02-17
+- Performance: Stable
+
+INSTRUCTIONS POUR L'IA:
+1. Analyser les performances de l'agence Banque Y
+2. Identifier les tendances et anomalies dans les données présentées
+3. Proposer des recommandations stratégiques basées sur les résultats observés
+4. Rédiger un rapport structuré en français, avec introduction, analyse et conclusion
+5. Le rapport doit être destiné au directeur du groupe bancaire
+6. Utiliser un ton professionnel et factuel
+7. Mettre en avant les points positifs et les axes d'amélioration
+8. Inclure des recommandations concrètes et actionnables
+
+STRUCTURE ATTENDUE DU RAPPORT:
+- Introduction et contexte
+- Analyse des performances de l'agence Banque Y
+- Tendances identifiées
+- Recommandations stratégiques
+- Conclusion
+
+CONTRAINTES:
+- Rapport en français
+- Style professionnel adapté à un directeur
+- Basé uniquement sur les données fournies
+- Maximum 500 mots pour le rapport final
+
+=== FIN DU PRÉ-PROMPT ===

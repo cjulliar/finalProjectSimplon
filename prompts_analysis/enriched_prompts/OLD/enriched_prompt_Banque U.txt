@@ -1,0 +1,76 @@
+=== PRÉ-PROMPT D'ANALYSE IA ENRICHI ===
+AGENCE: Banque U
+PÉRIODE ANALYSÉE: 2025-02-17 à 2025-02-17
+DATE GÉNÉRATION: 2025-06-11 14:50:32
+
+RÔLE: Tu es un analyste financier expert spécialisé dans l'analyse bancaire avec accès à l'historique.
+
+CONTEXTE: Analyser les données bancaires actuelles ET historiques pour générer un rapport directorial complet avec perspectives temporelles.
+
+📊 DONNÉES ACTUELLES - SEMAINE 2025-W07:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Montant total: 1,234.00 €
+• Transactions totales: 22
+• Montant moyen/jour: 617.00 €
+• Transactions moyennes/jour: 11.0
+• Jours d'activité: 2
+• Pic montant: 617.00 €
+• Creux montant: 617.00 €
+
+📈 ANALYSE COMPARATIVE ET TENDANCES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Évolution montant vs historique: +83.4%
+• Évolution transactions vs historique: +54.9%
+• Tendance globale: Forte croissance
+• Performance relative: Excellente
+• Moyenne historique montant: 672.78 €
+• Moyenne historique transactions: 14
+
+📚 HISTORIQUE DES 5 DERNIÈRES SEMAINES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Semaine 1 (2025-W06): 756.00 € | 11 transactions
+Semaine 2 (2025-W05): 676.91 € | 10 transactions
+Semaine 3 (2025-W04): 726.00 € | 10 transactions
+Semaine 4 (2025-W03): 563.00 € | 20 transactions
+
+🧠 ANALYSES IA PRÉCÉDENTES (1 disponibles):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Analyse 1 (du 2025-06-11):
+"Rapport d’analyse – Agence Banque U
+Période : du 10 au 17 février 2025
+Destinataire : Direction Générale
+
+Introduction et contexte
+Ce rapport présente une analyse détaillée des performances de l’agenc..."
+Statut: validated
+
+🎯 INSTRUCTIONS DÉTAILLÉES POUR L'ANALYSE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. ANALYSER LA PERFORMANCE ACTUELLE de Banque U (semaine 2025-W07)
+2. COMPARER avec l'historique des 5 semaines précédentes
+3. IDENTIFIER les tendances, variations et anomalies significatives
+4. ÉVALUER la performance relative (Excellente) et expliquer les causes
+5. INTÉGRER les insights des analyses précédentes si disponibles
+6. PROPOSER des recommandations stratégiques basées sur l'ensemble des données
+7. RÉDIGER un rapport exécutif structuré en français professionnel
+
+📋 STRUCTURE OBLIGATOIRE DU RAPPORT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• RÉSUMÉ EXÉCUTIF (3 lignes maximum)
+• PERFORMANCE SEMAINE ACTUELLE
+• ANALYSE COMPARATIVE HISTORIQUE
+• TENDANCES ET INSIGHTS CLÉS
+• RECOMMANDATIONS STRATÉGIQUES  
+• CONCLUSION ET PROCHAINES ÉTAPES
+
+⚠️ CONTRAINTES IMPORTANTES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Rapport en français professionnel
+• Destiné au directeur général du groupe
+• Maximum 600 mots
+• Utiliser uniquement les données fournies
+• Ton factuel et constructif
+• Chiffres précis avec contexte
+• Recommandations concrètes et actionnables
+
+=== FIN DU PRÉ-PROMPT ENRICHI ===

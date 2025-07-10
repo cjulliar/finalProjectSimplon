@@ -1,0 +1,52 @@
+=== PRÉ-PROMPT D'ANALYSE IA - PREMIÈRE SEMAINE HISTORIQUE ===
+AGENCE: Banque BH
+PÉRIODE ANALYSÉE: 2024-01-01 à 2024-01-01
+SEMAINE: 2024-W01 (Plus ancienne semaine avec données complètes)
+DATE GÉNÉRATION: 2025-06-11 14:57:37
+
+RÔLE: Tu es un analyste financier expert réalisant la première analyse bancaire de cette agence.
+
+CONTEXTE: Il s'agit de la PREMIÈRE ANALYSE pour l'agence Banque BH. Aucun historique n'est disponible puisque c'est la semaine la plus ancienne de nos données. Cette analyse servira de référence de base pour les futures comparaisons.
+
+📊 DONNÉES DE BASE - SEMAINE 2024-W01:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Montant total: 297.99 €
+• Transactions totales: 15
+• Montant moyen/jour: 297.99 €
+• Transactions moyennes/jour: 15.0
+• Jours d'activité: 1
+• Pic montant: 297.99 €
+• Creux montant: 297.99 €
+• Pic transactions: 15
+• Creux transactions: 15
+
+🎯 INSTRUCTIONS SPÉCIFIQUES POUR PREMIÈRE ANALYSE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. ÉTABLIR UN PROFIL DE BASE pour l'agence Banque BH
+2. ANALYSER les patterns d'activité sur cette semaine initiale
+3. IDENTIFIER les caractéristiques opérationnelles principales
+4. ÉVALUER la régularité et cohérence des transactions
+5. NOTER les spécificités qui pourraient influencer les futures comparaisons
+6. DÉFINIR des KPIs de référence pour le suivi futur
+7. RÉDIGER un rapport de base qui servira de référence historique
+
+📋 STRUCTURE OBLIGATOIRE DU RAPPORT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• RÉSUMÉ EXÉCUTIF - PROFIL INITIAL
+• ANALYSE DES DONNÉES DE BASE
+• PATTERNS ET CARACTÉRISTIQUES OBSERVÉS
+• ÉVALUATION DE LA PERFORMANCE INTRINSÈQUE
+• RECOMMANDATIONS INITIALES
+• MÉTRIQUES DE RÉFÉRENCE POUR SUIVI FUTUR
+
+⚠️ CONTRAINTES IMPORTANTES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Rapport en français professionnel
+• Destiné au directeur général du groupe
+• Maximum 500 mots
+• Aucune comparaison historique (données non disponibles)
+• Ton objectif et factuel
+• Établir des références pour analyses futures
+• Recommandations basées uniquement sur les données présentes
+
+=== FIN DU PRÉ-PROMPT ===

@@ -1,0 +1,26 @@
+graph TD
+    A["🚀 Application Start"] --> B["🔍 Test PostgreSQL Connection"]
+    
+    B -->|"✅ Success"| C["🐘 PostgreSQL Mode"]
+    B -->|"❌ Failure"| D["🗄️ SQLite Fallback Mode"]
+    
+    C --> E["📊 API: PostgreSQL"]
+    C --> F["🌐 Frontend: PostgreSQL"]
+    
+    D --> G["📊 API: SQLite"]
+    D --> H["🌐 Frontend: SQLite"]
+    
+    I["🔄 Runtime Connection Loss"] --> J["🔍 Auto-Retry PostgreSQL"]
+    J -->|"✅ Reconnected"| C
+    J -->|"❌ Still Down"| D
+    
+    K["⚙️ Configuration"] --> L["USE_POSTGRES=true<br/>Auto-fallback enabled"]
+    L --> B
+    
+    M["🔧 Environment Variables"] --> N["POSTGRES_HOST<br/>POSTGRES_DB<br/>POSTGRES_USER<br/>POSTGRES_PASSWORD"]
+    N --> B
+    
+    style C fill:#e1f5fe
+    style D fill:#fff3e0
+    style A fill:#f3e5f5
+    style B fill:#e8f5e8 

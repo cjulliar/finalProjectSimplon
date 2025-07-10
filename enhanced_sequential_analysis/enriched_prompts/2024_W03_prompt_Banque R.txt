@@ -1,0 +1,103 @@
+=== PRÉ-PROMPT SÉQUENTIEL ENRICHI - OPTION B ===
+AGENCE: Banque R
+PÉRIODE ANALYSÉE: 2024-01-15 à 2024-01-15
+SEMAINE ACTUELLE: 2024-W03
+SEMAINE DE RÉFÉRENCE: 2024-W02
+DATE GÉNÉRATION: 2025-06-11 16:26:04
+
+RÔLE: Tu es un analyste financier expert spécialisé dans l'analyse bancaire séquentielle enrichie.
+
+CONTEXTE: Analyser l'évolution de l'agence Banque R avec focus principal sur l'évolution récente (2024-W02 → 2024-W03) tout en intégrant le contexte tendanciel à moyen terme.
+
+📊 SECTION PRINCIPALE (70%) - DONNÉES ACTUELLES vs PRÉCÉDENTES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📈 SEMAINE ACTUELLE (2024-W03):
+• Montant total: 383.00 €
+• Transactions totales: 19
+• Montant moyen/jour: 383.00 €
+• Transactions moyennes/jour: 19.0
+• Jours d'activité: 1
+• Pic montant: 383.00 €
+• Creux montant: 383.00 €
+
+📊 SEMAINE PRÉCÉDENTE (2024-W02):
+• Montant total: 391.00 €
+• Transactions totales: 6
+• Montant moyen/jour: 391.00 €
+• Transactions moyennes/jour: 6.0
+
+🔄 ÉVOLUTION IMMÉDIATE (2024-W02 → 2024-W03):
+• Évolution montant total: -2.0%
+• Évolution nb transactions: +216.7%
+• Évolution montant/jour: -2.0%
+• Évolution transactions/jour: +216.7%
+• Tendance immédiate: Stabilité relative
+• Performance: Performance stable
+
+📈 SECTION CONTEXTUELLE (20%) - TENDANCE À MOYEN TERME:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 CONTEXTE MOBILE (3 semaines):
+Période analysée: 2024-W01 à 2024-W03
+• Moyenne montant: 390.67 €
+• Moyenne transactions: 13
+• Moyenne montant/jour: 390.67 €
+• Moyenne transactions/jour: 13.3
+
+📊 POSITIONNEMENT vs MOYENNE MOBILE:
+• Position montant: -2.0% vs moyenne
+• Position transactions: +42.5% vs moyenne
+
+🎯 INDICATEUR DE TENDANCE GLOBALE:
+• Tendance 3 semaines: Stabilité
+• Évolution tendancielle: -1.9%/semaine
+
+📚 SECTION HISTORIQUE (10%) - ANALYSE PRÉCÉDENTE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 ANALYSE SEMAINE 2024-W02:
+Date: 2025-06-11
+Extrait: "RAPPORT D'ANALYSE SÉQUENTIELLE ENRICHIE - AGENCE Banque R
+Période : 2024-01-08 à 2024-01-08 (Semaine 2024-W02)
+Référence immédiate : Semaine 2024-W01
+..."
+Statut: Analyse de référence établie
+
+🎯 INSTRUCTIONS POUR ANALYSE SÉQUENTIELLE ENRICHIE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. FOCUS PRINCIPAL (70% du rapport) : Évolution 2024-W02 → 2024-W03
+   - Analyser la performance actuelle de Banque R
+   - Expliquer les changements immédiats observés
+   - Identifier les facteurs de cette évolution récente
+
+2. CONTEXTE ENRICHI (20% du rapport) : Perspective à moyen terme
+   - Positionner l'évolution dans la tendance générale
+   - Évaluer si l'évolution s'inscrit dans la tendance ou la rompt
+   - Analyser la cohérence avec la moyenne mobile
+
+3. COHÉRENCE HISTORIQUE (10% du rapport) : Suivi des recommandations
+   - Évaluer l'efficacité des recommandations précédentes
+   - Ajuster les préconisations basées sur les résultats observés
+
+📋 STRUCTURE OBLIGATOIRE DU RAPPORT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• RÉSUMÉ EXÉCUTIF - ÉVOLUTION IMMÉDIATE 2024-W02→2024-W03
+• PERFORMANCE SEMAINE 2024-W03 (données actuelles)
+• ANALYSE COMPARATIVE IMMÉDIATE (vs 2024-W02)
+• CONTEXTUALISATION TENDANCIELLE (positionnement vs moyenne mobile)
+• ÉVALUATION DES RECOMMANDATIONS PRÉCÉDENTES
+• NOUVELLES RECOMMANDATIONS ADAPTÉES
+• CONCLUSION ET OBJECTIFS SEMAINE SUIVANTE
+
+⚠️ CONTRAINTES IMPORTANTES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Rapport en français professionnel
+• Destiné au directeur général du groupe
+• Maximum 700 mots
+• Équilibrer focus immédiat (70%) et contexte (30%)
+• Recommandations concrètes basées sur l'approche enrichie
+• Ton constructif et orienté solutions
+
+=== FIN DU PRÉ-PROMPT SÉQUENTIEL ENRICHI ===

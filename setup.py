@@ -1,30 +1,39 @@
 from setuptools import setup, find_packages
 
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
+with open("requirements.txt", "r", encoding="utf-8") as fh:
+    requirements = [line.strip() for line in fh if line.strip() and not line.startswith("#")]
+
 setup(
-    name="bank-reports",
+    name="bank-reports-system",
     version="1.0.0",
-    description="Système d'Automatisation des Rapports Bancaires",
-    author="Simplon",
-    author_email="contact@simplon.co",
+    author="Cyril Julliard",
+    author_email="cyril.julliard@example.com",
+    description="Système d'analyse et de génération de rapports bancaires",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/cyriljulliard/bank-reports-system",
     packages=find_packages(),
-    python_requires=">=3.10",
-    install_requires=[
-        "fastapi>=0.103.1",
-        "uvicorn>=0.23.2",
-        "sqlalchemy>=2.0.20",
-        "pandas>=2.1.0",
-        "openpyxl>=3.1.2",
-        "python-jose>=3.3.0",
-        "passlib>=1.7.4",
-        "python-multipart>=0.0.6",
-        "pytest>=7.4.0",
-        "httpx>=0.24.1",
-    ],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Financial and Insurance Industry",
         "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
     ],
+    python_requires=">=3.10",
+    install_requires=requirements,
+    entry_points={
+        "console_scripts": [
+            "bank-reports=src.main:main",
+        ],
+    },
+    include_package_data=True,
+    package_data={
+        "": ["*.md", "*.txt", "*.yml", "*.yaml"],
+    },
 ) 

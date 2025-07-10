@@ -424,55 +424,49 @@ class AIAgent:
     
     def _create_analysis_prompt(self, stats: Dict[str, Any]) -> str:
         """
-        Créer un prompt pour l'agent basé sur les statistiques.
-        
-        Args:
-            stats: Statistiques calculées par l'outil d'analyse
-            
-        Returns:
-            str: Prompt formaté pour l'agent
+        Créer un prompt pour l'agent basé sur les statistiques, au format mail de compte rendu d'analyse.
         """
-        # Formater les statistiques globales
         global_stats = stats["global"]
         formatted_montant = f"{global_stats['total_montant']:,.2f} €"
         formatted_evolution = f"{global_stats['evolution_percentage']:.2f}%"
-        
-        # Formater les statistiques par agence
-        agency_stats_text = ""
+        subject = f"Compte rendu hebdomadaire – Semaine en cours"
+        mail_body = f"""
+Objet : {subject}
+
+Bonjour,
+
+Veuillez trouver ci-dessous le compte rendu détaillé de l'activité pour la semaine analysée.
+
+---
+
+**Synthèse des résultats :**
+- Montant total : {formatted_montant}
+- Transactions totales : {global_stats['total_transactions']}
+- Montant moyen par transaction : {global_stats['moyenne_montant']:,.2f} €
+- Évolution sur la semaine : {formatted_evolution}
+
+**Détail par agence :**
+"""
         for agence, data in stats["by_agency"].items():
-            agency_stats_text += f"""
-        {agence}:
-        - Montant total: {data['total_montant']:,.2f} €
-        - Transactions totales: {data['total_transactions']}
-        - Montant moyen par transaction: {data['moyenne_montant']:,.2f} €
+            mail_body += f"""
+Agence : {agence}
+- Montant total : {data['total_montant']:,.2f} €
+- Transactions totales : {data['total_transactions']}
+- Montant moyen par transaction : {data['moyenne_montant']:,.2f} €
         """
-        
-        # Construire le prompt
-        prompt = f"""
-        En tant qu'analyste financier expert, analyser les données bancaires suivantes et générer un rapport détaillé pour le directeur.
-        
-        STATISTIQUES GLOBALES:
-        - Montant total: {formatted_montant}
-        - Transactions totales: {global_stats['total_transactions']}
-        - Montant moyen par transaction: {global_stats['moyenne_montant']:,.2f} €
-        - Évolution sur la semaine: {formatted_evolution}
-        
-        STATISTIQUES PAR AGENCE:
-        {agency_stats_text}
-        
-        INSTRUCTIONS:
-        1. Analyser les performances de chaque agence
-        2. Identifier les tendances et anomalies
-        3. Proposer des recommandations stratégiques basées sur les données
-        4. Rédiger un rapport structuré en français, avec introduction, analyse et conclusion
-        5. Le rapport doit être destiné au directeur du groupe bancaire
-        6. Utiliser un ton professionnel et factuel
-        7. Inclure des comparaisons entre les agences
-        
-        Générer un rapport complet qui sera envoyé directement au directeur.
-        """
-        
-        return prompt
+        mail_body += """
+---
+
+**Analyse et recommandations :**
+- [L'IA ou l'analyste doit ici synthétiser les points forts, les axes d'amélioration, les alertes éventuelles, et proposer des recommandations concrètes.]
+
+---
+Cordialement,
+La Direction
+
+*Ce mail est généré automatiquement à partir des données consolidées de la semaine. Pour toute question, contactez le service reporting.*
+"""
+        return mail_body
     
     def _generate_fallback_response(self, df: pd.DataFrame) -> Dict[str, Any]:
         """

@@ -1,0 +1,524 @@
+{% extends "bankapp/base.html" %}
+{% load static %}
+
+{% block title %}Gestion des Tâches Automatisées{% endblock %}
+
+{% block extra_css %}
+<style>
+    .task-card {
+        transition: all 0.3s ease;
+        border-left: 4px solid #007bff;
+    }
+    .task-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .status-badge {
+        font-size: 0.8em;
+        padding: 0.3em 0.6em;
+    }
+    .status-connected { background-color: #28a745; }
+    .status-disconnected { background-color: #dc3545; }
+    .status-error { background-color: #ffc107; color: #212529; }
+    .task-form {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    .log-container {
+        background-color: #1e1e1e;
+        color: #00ff00;
+        font-family: 'Courier New', monospace;
+        font-size: 12px;
+        max-height: 300px;
+        overflow-y: auto;
+        border-radius: 4px;
+        padding: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1><i class="fas fa-cogs"></i> Gestion des Tâches Automatisées</h1>
+                <button class="btn btn-primary" onclick="refreshStatus()">
+                    <i class="fas fa-sync-alt"></i> Actualiser
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statut du Système -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5><i class="fas fa-heartbeat"></i> Statut du Système Celery</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center">
+                                <div class="mr-3">
+                                    <span id="status-badge" class="badge status-badge">
+                                        <i class="fas fa-spinner fa-spin"></i> Vérification...
+                                    </span>
+                                </div>
+                                <div>
+                                    <strong>Connexion Celery</strong><br>
+                                    <small id="status-message" class="text-muted">Vérification en cours...</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h4 id="active-tasks-count" class="mb-0">-</h4>
+                                <small class="text-muted">Tâches actives</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h4 id="workers-count" class="mb-0">-</h4>
+                                <small class="text-muted">Workers en ligne</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions Rapides -->
+    <div class="row mb-4">
+        <div class="col-lg-6">
+            <div class="task-form">
+                <h5><i class="fas fa-chart-line"></i> Génération de Rapport</h5>
+                <form id="report-form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="agence">Agence</label>
+                                <select class="form-control" id="agence" name="agence">
+                                    <option value="">Toutes les agences</option>
+                                    <option value="Agence1">Agence1</option>
+                                    <option value="Paris">Paris</option>
+                                    <option value="Lyon">Lyon</option>
+                                    <option value="Marseille">Marseille</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="period">Période</label>
+                                <select class="form-control" id="period" name="period">
+                                    <option value="last_week">Semaine dernière</option>
+                                    <option value="last_month">Mois dernier</option>
+                                    <option value="custom">Personnalisée</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="custom-dates" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="start_date">Date de début</label>
+                                    <input type="date" class="form-control" id="start_date" name="start_date">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="end_date">Date de fin</label>
+                                    <input type="date" class="form-control" id="end_date" name="end_date">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipients">Destinataires (optionnel)</label>
+                        <input type="email" class="form-control" id="recipients" name="recipients" 
+                               placeholder="email1@example.com, email2@example.com" multiple>
+                        <small class="form-text text-muted">Séparez plusieurs emails par des virgules</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-play"></i> Générer le Rapport
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="task-form">
+                <h5><i class="fas fa-broom"></i> Maintenance</h5>
+                <p class="text-muted">Nettoyer les anciens rapports pour libérer de l'espace disque.</p>
+                
+                <div class="form-group">
+                    <label for="cleanup-days">Supprimer les fichiers plus anciens que :</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="cleanup-days" value="30" min="1" max="365">
+                        <div class="input-group-append">
+                            <span class="input-group-text">jours</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="cleanupReports()" class="btn btn-warning">
+                    <i class="fas fa-trash-alt"></i> Nettoyer
+                </button>
+
+                <button onclick="testCelery()" class="btn btn-info ml-2">
+                    <i class="fas fa-vial"></i> Test Connectivité
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tâches en Cours -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5><i class="fas fa-tasks"></i> Tâches en Cours</h5>
+                </div>
+                <div class="card-body">
+                    <div id="active-tasks">
+                        <div class="text-center text-muted">
+                            <i class="fas fa-circle-notch fa-spin fa-2x mb-3"></i>
+                            <p>Chargement des tâches...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logs et Historique -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <h5><i class="fas fa-terminal"></i> Logs des Tâches</h5>
+                    <button class="btn btn-sm btn-secondary" onclick="clearLogs()">
+                        <i class="fas fa-eraser"></i> Effacer
+                    </button>
+                </div>
+                <div class="card-body p-0">
+                    <div id="task-logs" class="log-container">
+                        Prêt pour l'affichage des logs...<br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmation -->
+<div class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-message">
+                Êtes-vous sûr de vouloir effectuer cette action ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" id="confirm-action">Confirmer</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Configuration API
+const API_BASE = 'http://localhost:8001/api/celery';
+let refreshInterval;
+
+// Initialisation
+document.addEventListener('DOMContentLoaded', function() {
+    refreshStatus();
+    setupEventListeners();
+    startAutoRefresh();
+});
+
+function setupEventListeners() {
+    // Gestion du formulaire de rapport
+    document.getElementById('report-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        generateReport();
+    });
+
+    // Gestion de l'affichage des dates personnalisées
+    document.getElementById('period').addEventListener('change', function(e) {
+        const customDates = document.getElementById('custom-dates');
+        if (e.target.value === 'custom') {
+            customDates.style.display = 'block';
+        } else {
+            customDates.style.display = 'none';
+        }
+    });
+}
+
+function startAutoRefresh() {
+    refreshInterval = setInterval(refreshStatus, 10000); // Refresh toutes les 10 secondes
+}
+
+function stopAutoRefresh() {
+    if (refreshInterval) {
+        clearInterval(refreshInterval);
+    }
+}
+
+async function refreshStatus() {
+    try {
+        addLog('🔄 Vérification du statut Celery...');
+        
+        // Statut général
+        const statusResponse = await fetch(`${API_BASE}/status`);
+        const statusData = await statusResponse.json();
+        
+        updateStatusDisplay(statusData);
+        
+        // Tâches actives
+        const tasksResponse = await fetch(`${API_BASE}/tasks`);
+        const tasksData = await tasksResponse.json();
+        
+        updateActiveTasks(tasksData);
+        
+        // Workers
+        const workersResponse = await fetch(`${API_BASE}/workers`);
+        const workersData = await workersResponse.json();
+        
+        updateWorkersCount(workersData);
+        
+        addLog('✅ Statut mis à jour avec succès');
+        
+    } catch (error) {
+        console.error('Erreur lors de la récupération du statut:', error);
+        addLog(`❌ Erreur: ${error.message}`);
+        
+        // Affichage d'erreur
+        document.getElementById('status-badge').className = 'badge status-badge status-error';
+        document.getElementById('status-badge').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erreur';
+        document.getElementById('status-message').textContent = 'Impossible de contacter l\'API';
+    }
+}
+
+function updateStatusDisplay(data) {
+    const badge = document.getElementById('status-badge');
+    const message = document.getElementById('status-message');
+    
+    if (data.status === 'connected') {
+        badge.className = 'badge status-badge status-connected';
+        badge.innerHTML = '<i class="fas fa-check"></i> Connecté';
+        message.textContent = 'Celery et Redis opérationnels';
+    } else if (data.status === 'disconnected') {
+        badge.className = 'badge status-badge status-disconnected';
+        badge.innerHTML = '<i class="fas fa-times"></i> Déconnecté';
+        message.textContent = 'Redis non disponible (mode standalone)';
+    } else {
+        badge.className = 'badge status-badge status-error';
+        badge.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erreur';
+        message.textContent = data.message || 'Erreur inconnue';
+    }
+}
+
+function updateActiveTasks(data) {
+    const container = document.getElementById('active-tasks');
+    const countElement = document.getElementById('active-tasks-count');
+    
+    let totalTasks = 0;
+    
+    if (data.active_tasks && Object.keys(data.active_tasks).length > 0) {
+        let html = '';
+        for (const [worker, tasks] of Object.entries(data.active_tasks)) {
+            totalTasks += tasks.length;
+            if (tasks.length > 0) {
+                html += `<h6>Worker: ${worker}</h6>`;
+                tasks.forEach(task => {
+                    html += `
+                        <div class="task-card card mb-2">
+                            <div class="card-body py-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>${task.name}</strong>
+                                        <small class="text-muted d-block">ID: ${task.id}</small>
+                                    </div>
+                                    <span class="badge badge-primary">En cours</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        }
+        container.innerHTML = html || '<div class="text-center text-muted">Aucune tâche active</div>';
+    } else {
+        container.innerHTML = '<div class="text-center text-muted">Aucune tâche active</div>';
+    }
+    
+    countElement.textContent = totalTasks;
+}
+
+function updateWorkersCount(data) {
+    document.getElementById('workers-count').textContent = data.total_workers || 0;
+}
+
+async function generateReport() {
+    const form = document.getElementById('report-form');
+    const formData = new FormData(form);
+    
+    // Calcul des dates
+    let startDate, endDate;
+    const period = formData.get('period');
+    
+    if (period === 'custom') {
+        startDate = formData.get('start_date');
+        endDate = formData.get('end_date');
+    } else if (period === 'last_week') {
+        const today = new Date();
+        endDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+        startDate = new Date(endDate.getTime() - 6 * 24 * 60 * 60 * 1000);
+        startDate = startDate.toISOString().split('T')[0];
+        endDate = endDate.toISOString().split('T')[0];
+    } else if (period === 'last_month') {
+        const today = new Date();
+        endDate = new Date(today.getFullYear(), today.getMonth(), 0);
+        startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+        startDate = startDate.toISOString().split('T')[0];
+        endDate = endDate.toISOString().split('T')[0];
+    }
+    
+    const requestData = {
+        agence: formData.get('agence') || null,
+        start_date: startDate,
+        end_date: endDate
+    };
+    
+    // Gestion des destinataires
+    const recipients = formData.get('recipients');
+    if (recipients && recipients.trim()) {
+        requestData.recipients = recipients.split(',').map(email => email.trim());
+    }
+    
+    try {
+        addLog(`🚀 Lancement de la génération de rapport: ${requestData.agence || 'Toutes agences'} (${startDate} - ${endDate})`);
+        
+        const response = await fetch(`${API_BASE}/reports/generate`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            addLog(`✅ Tâche de rapport programmée: ID ${result.task_id}`);
+            showAlert('Succès', 'La génération du rapport a été lancée avec succès!', 'success');
+            
+            // Refresh pour voir la nouvelle tâche
+            setTimeout(refreshStatus, 1000);
+        } else {
+            addLog(`❌ Erreur lors de la programmation: ${result.detail}`);
+            showAlert('Erreur', `Erreur: ${result.detail}`, 'error');
+        }
+    } catch (error) {
+        addLog(`❌ Erreur réseau: ${error.message}`);
+        showAlert('Erreur', `Erreur de connexion: ${error.message}`, 'error');
+    }
+}
+
+async function cleanupReports() {
+    const days = document.getElementById('cleanup-days').value;
+    
+    if (!confirm(`Supprimer tous les rapports plus anciens que ${days} jours ?`)) {
+        return;
+    }
+    
+    try {
+        addLog(`🧹 Lancement du nettoyage (${days} jours)`);
+        
+        const response = await fetch(`${API_BASE}/cleanup?days_old=${days}`, {
+            method: 'POST'
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            addLog(`✅ Tâche de nettoyage programmée: ID ${result.task_id}`);
+            showAlert('Succès', 'Le nettoyage a été lancé avec succès!', 'success');
+        } else {
+            addLog(`❌ Erreur nettoyage: ${result.detail}`);
+            showAlert('Erreur', `Erreur: ${result.detail}`, 'error');
+        }
+    } catch (error) {
+        addLog(`❌ Erreur nettoyage: ${error.message}`);
+        showAlert('Erreur', `Erreur: ${error.message}`, 'error');
+    }
+}
+
+async function testCelery() {
+    try {
+        addLog('🧪 Test de connectivité Celery...');
+        
+        const response = await fetch(`${API_BASE}/test`, {
+            method: 'POST'
+        });
+        
+        const result = await response.json();
+        
+        if (result.connectivity === 'success') {
+            addLog(`✅ Test réussi: ${result.message}`);
+            showAlert('Succès', 'Test de connectivité réussi!', 'success');
+        } else {
+            addLog(`⚠️ Test échoué: ${result.message}`);
+            showAlert('Attention', `Test échoué: ${result.message}`, 'warning');
+        }
+    } catch (error) {
+        addLog(`❌ Erreur test: ${error.message}`);
+        showAlert('Erreur', `Erreur de test: ${error.message}`, 'error');
+    }
+}
+
+function addLog(message) {
+    const logsContainer = document.getElementById('task-logs');
+    const timestamp = new Date().toLocaleTimeString();
+    logsContainer.innerHTML += `[${timestamp}] ${message}<br>`;
+    logsContainer.scrollTop = logsContainer.scrollHeight;
+}
+
+function clearLogs() {
+    document.getElementById('task-logs').innerHTML = 'Logs effacés...<br>';
+}
+
+function showAlert(title, message, type) {
+    // Simple alert pour l'instant, peut être amélioré avec des toasts
+    let icon = '💡';
+    if (type === 'success') icon = '✅';
+    if (type === 'error') icon = '❌';
+    if (type === 'warning') icon = '⚠️';
+    
+    alert(`${icon} ${title}\n\n${message}`);
+}
+
+// Nettoyage à la fermeture
+window.addEventListener('beforeunload', function() {
+    stopAutoRefresh();
+});
+</script>
+{% endblock %} 
