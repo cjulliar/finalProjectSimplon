@@ -1,125 +1,123 @@
-# Système d'Analyse et de Génération de Rapports Bancaires
+# 🏦 Système d'Analyse et de Génération de Rapports Bancaires
 
 Un système complet d'automatisation pour l'analyse et la génération de rapports bancaires utilisant FastAPI, Django, Celery et l'IA.
 
-## 🚀 Fonctionnalités
+## 🚀 Démarrage Rapide
 
-- **API REST** avec FastAPI pour la gestion des données bancaires
-- **Interface web** avec Django pour la visualisation et l'administration
-- **Traitement asynchrone** avec Celery pour les tâches en arrière-plan
-- **Intégration IA** pour l'analyse automatique des données
-- **Base de données** PostgreSQL avec migrations Alembic
-- **Monitoring** avec Prometheus et Grafana
-- **Déploiement** avec Docker et CI/CD GitHub Actions
+### Option 1: Installation complète (recommandée)
+```bash
+git clone https://github.com/cjulliar/finalProjectSimplon.git
+cd finalProjectSimplon
+chmod +x install_and_run.sh
+./install_and_run.sh
+```
 
-## 📋 Prérequis
+### Option 2: Lancement rapide avec Docker
+```bash
+git clone https://github.com/cjulliar/finalProjectSimplon.git
+cd finalProjectSimplon
+chmod +x quick_start.sh
+./quick_start.sh
+```
 
-- Python 3.10+
-- Docker et Docker Compose
-- Git
-
-## 🛠️ Installation
-
-### Option 1: Développement local
-
-1. **Cloner le repository**
-   ```bash
-   git clone https://github.com/cjulliar/finalProjectSimplon.git
-   cd finalProjectSimplon
-   ```
-
-2. **Créer un environnement virtuel**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Linux/Mac
-   # ou
-   venv\Scripts\activate  # Windows
-   ```
-
-3. **Installer les dépendances**
-   ```bash
-   pip install -r requirements.txt
-   pip install -e .
-   ```
-
-4. **Configurer la base de données**
-   ```bash
-   # Créer les tables
-   python src/main.py
-   
-   # Créer un utilisateur administrateur
-   python src/scripts/setup_admin.py --username admin --password admin123
-   ```
-
-5. **Démarrer l'API**
-   ```bash
-   python src/scripts/run_api.py
-   ```
-
-### Option 2: Docker (Recommandé)
-
-1. **Cloner le repository**
-   ```bash
-   git clone https://github.com/cjulliar/finalProjectSimplon.git
-   cd finalProjectSimplon
-   ```
-
-2. **Démarrer avec Docker Compose**
-   ```bash
-   docker-compose up -d
-   ```
-
-3. **Créer un utilisateur administrateur**
-   ```bash
-   docker-compose exec api python src/scripts/setup_admin.py --username admin --password admin123
-   ```
+### Option 3: Développement local
+```bash
+git clone https://github.com/cjulliar/finalProjectSimplon.git
+cd finalProjectSimplon
+chmod +x dev_start.sh
+./dev_start.sh
+```
 
 ## 🌐 Accès aux services
 
-- **API FastAPI**: http://localhost:8000
-  - Documentation Swagger: http://localhost:8000/docs
-  - Documentation ReDoc: http://localhost:8000/redoc
+Une fois le projet lancé, vous pouvez accéder aux services suivants :
 
-- **Interface Django**: http://localhost:8080
-  - Admin: http://localhost:8080/admin
+- **Frontend Django**: http://localhost:8080
+- **API FastAPI**: http://localhost:8000 (Docker) ou http://localhost:8001 (Local)
+- **Documentation API**: http://localhost:8000/docs (Docker) ou http://localhost:8001/docs (Local)
+- **Monitoring Prometheus**: http://localhost:9090 (Docker uniquement)
+- **Dashboard Grafana**: http://localhost:3000 (admin/admin) (Docker uniquement)
 
-- **Monitoring**:
-  - Prometheus: http://localhost:9090
-  - Grafana: http://localhost:3000 (admin/admin)
+## 🔐 Identifiants de test
 
-## 📊 Utilisation
+- **Email**: cyrjulliard@gmail.com
+- **Mot de passe**: directeur123
+- **Exemples d'utilisateurs**:
+  - directeurBanqueA
+  - directeurBanqueBG
+  - directeurBanqueC
 
-### 1. Import de données
+## 📊 Fonctionnalités
 
-```bash
-# Importer des données Excel
-python src/main.py --import-excel --file docs/DonneeBanque.xlsx
-```
+- **Dashboard personnalisé** par agence bancaire
+- **74 directeurs d'agence** configurés avec données réelles
+- **Données bancaires enrichies** avec analyses automatiques
+- **Rapports automatiques** générés par IA
+- **Analyses prédictives** et insights business
+- **Interface responsive** et moderne
+- **API REST complète** avec documentation Swagger
+- **Monitoring en temps réel** avec Prometheus et Grafana
+- **Traitement asynchrone** avec Celery et Redis
 
-### 2. API REST
+## 🛠️ Architecture
 
-```bash
-# Authentification
-curl -X POST "http://localhost:8000/api/token" \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=admin&password=admin123"
+Le projet utilise une architecture microservices moderne :
 
-# Récupérer les données
-curl -H "Authorization: Bearer <token>" \
-  "http://localhost:8000/api/bank-data"
-```
+- **Frontend**: Django 4.2 avec interface moderne et responsive
+- **API**: FastAPI avec documentation automatique
+- **Base de données**: PostgreSQL avec migrations Alembic
+- **Cache et tâches**: Redis + Celery pour le traitement asynchrone
+- **Monitoring**: Prometheus + Grafana
+- **Conteneurisation**: Docker + Docker Compose
+- **IA**: Intégration OpenAI et HuggingFace
 
-### 3. Interface web
+## 📋 Prérequis
 
-1. Accédez à http://localhost:8080
-2. Connectez-vous avec les identifiants admin/admin123
-3. Naviguez dans l'interface pour visualiser les données
+### Pour le mode Docker (recommandé)
+- Docker
+- Docker Compose
+
+### Pour le mode local
+- Python 3.10+
+- pip3
+
+## 🚀 Scripts de lancement
+
+### `install_and_run.sh`
+Script complet qui :
+- Vérifie les prérequis
+- Installe toutes les dépendances
+- Configure la base de données
+- Crée les utilisateurs de test
+- Propose le choix entre Docker et local
+- Lance le projet
+
+### `quick_start.sh`
+Script rapide pour Docker qui :
+- Vérifie Docker
+- Arrête les conteneurs existants
+- Construit et démarre tous les services
+- Affiche les URLs d'accès
+
+### `dev_start.sh`
+Script pour le développement local qui :
+- Crée l'environnement virtuel
+- Installe les dépendances
+- Configure la base de données
+- Lance les services en mode développement
+- Active le rechargement automatique
+
+### `start_project.sh`
+Script de lancement existant (mode local uniquement)
+
+### `stop_project.sh`
+Script pour arrêter tous les services
 
 ## 🔧 Configuration
 
 ### Variables d'environnement
 
-Créez un fichier `.env` à la racine du projet :
+Le projet utilise des variables d'environnement par défaut pour le développement. Pour la production, créez un fichier `.env` :
 
 ```env
 # Base de données
@@ -152,6 +150,32 @@ SMTP_SERVER=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USERNAME=your-email@gmail.com
 SMTP_PASSWORD=your-app-password
+```
+
+## 📁 Structure du projet
+
+```
+finalProjectSimplon/
+├── src/                    # Code source principal
+│   ├── api/               # API FastAPI
+│   ├── db/                # Modèles et configuration DB
+│   ├── ia/                # Services d'IA
+│   ├── scripts/           # Scripts utilitaires
+│   └── tasks/             # Tâches Celery
+├── frontend/              # Interface Django
+│   ├── bankapp/          # Application principale
+│   ├── dashboard/        # Dashboard personnalisé
+│   ├── ai_reports/       # Rapports IA
+│   └── templates/        # Templates HTML
+├── docker/                # Configuration Docker
+├── scripts/               # Scripts de lancement
+├── migrations/            # Migrations Alembic
+├── requirements.txt       # Dépendances Python
+├── docker-compose.yml     # Configuration Docker Compose
+├── install_and_run.sh     # Script d'installation complet
+├── quick_start.sh         # Script de lancement rapide
+├── dev_start.sh           # Script de développement
+└── README.md             # Ce fichier
 ```
 
 ## 🧪 Tests
@@ -190,26 +214,6 @@ export API_SECRET_KEY=your-secure-secret-key
 export LLM_API_KEY=your-production-openai-key
 ```
 
-## 📁 Structure du projet
-
-```
-finalProjectSimplon/
-├── src/                    # Code source principal
-│   ├── api/               # API FastAPI
-│   ├── db/                # Modèles et configuration DB
-│   ├── ia/                # Services d'IA
-│   ├── scripts/           # Scripts utilitaires
-│   └── tasks/             # Tâches Celery
-├── frontend/              # Interface Django
-├── docker/                # Configuration Docker
-├── tests/                 # Tests
-├── docs/                  # Documentation
-├── migrations/            # Migrations Alembic
-├── requirements.txt       # Dépendances Python
-├── docker-compose.yml     # Configuration Docker Compose
-└── README.md             # Ce fichier
-```
-
 ## 🤝 Contribution
 
 1. Fork le projet
@@ -234,7 +238,7 @@ Pour toute question ou problème :
 
 ```bash
 # Mettre à jour le code
-git pull origin develop
+git pull origin main
 
 # Mettre à jour les dépendances
 pip install -r requirements.txt --upgrade
@@ -242,3 +246,21 @@ pip install -r requirements.txt --upgrade
 # Redémarrer les services Docker
 docker-compose down && docker-compose up -d
 ```
+
+## 📊 Données
+
+Le projet inclut :
+- **Base de données SQLite** avec données bancaires enrichies
+- **74 directeurs d'agence** avec profils complets
+- **Données de transactions** réelles
+- **Analyses prédictives** générées par IA
+- **Rapports automatiques** personnalisés
+
+## 🎯 Objectifs du projet
+
+Ce système permet aux directeurs d'agence de :
+- Visualiser leurs performances en temps réel
+- Recevoir des analyses prédictives
+- Générer des rapports automatiques
+- Comparer leurs résultats avec d'autres agences
+- Prendre des décisions basées sur l'IA
