@@ -13,6 +13,7 @@ services:
     environment:
       - DEBUG=True
       - PYTHONPATH=/app
+      - DATABASE_TYPE=SQLite
     command: ["python", "-m", "uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
   # API FastAPI - développement
@@ -28,14 +29,11 @@ services:
       - ./migrations:/app/migrations
       - ./alembic.ini:/app/alembic.ini
       - ./requirements.txt:/app/requirements.txt
+      - ./bankreports.db:/app/bankreports.db
     environment:
       - DEBUG=True
       - PYTHONPATH=/app
-      - POSTGRES_HOST=db
-      - POSTGRES_DB=bankreports
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - USE_POSTGRES=true
+      - DATABASE_TYPE=SQLite
       - API_SECRET_KEY=dev-secret-key-change-in-production
       - API_ALGORITHM=HS256
       - API_ACCESS_TOKEN_EXPIRE_MINUTES=30
@@ -48,8 +46,6 @@ services:
       - USE_OPENAI=false
       - USE_FALLBACK_MODE=true
     command: ["python", "-m", "uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
-    depends_on:
-      - db
 
   # Frontend Django - développement
   frontend:
@@ -69,19 +65,11 @@ services:
       - SECRET_KEY=django-insecure-change-in-production
       - API_URL=http://api:8000
       - API_SECRET_KEY=secret-key-change-in-production
-      - POSTGRES_HOST=db
-      - POSTGRES_DB=bankreports
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - USE_POSTGRES=true
+      - DATABASE_TYPE=SQLite
       - ALLOWED_HOSTS=localhost,127.0.0.1,frontend,0.0.0.0
       - ADMIN_USERNAME=admin
       - ADMIN_PASSWORD=hBtH_apEj3dP_baa
       - BANKREPORTS_DB_PATH=/app/bankreports.db
-    # command: ["python", "manage.py", "runserver", "0.0.0.0:8080"]
-    depends_on:
-      - api
-      - db
 
   # Celery Worker - développement
   celery-worker:
@@ -95,14 +83,11 @@ services:
       - ./alembic.ini:/app/alembic.ini
       - ./output:/app/output
       - ./requirements.txt:/app/requirements.txt
+      - ./bankreports.db:/app/bankreports.db
     environment:
       - DEBUG=True
       - PYTHONPATH=/app
-      - POSTGRES_HOST=db
-      - POSTGRES_DB=bankreports
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - USE_POSTGRES=true
+      - DATABASE_TYPE=SQLite
       - REDIS_URL=redis://redis:6379/0
       - API_SECRET_KEY=dev-secret-key-change-in-production
       - ADMIN_USERNAME=admin
@@ -116,7 +101,6 @@ services:
     command: ["celery", "-A", "src.celery_app", "worker", "--loglevel=info"]
     depends_on:
       - redis
-      - db
 
   # Celery Beat - développement
   celery-beat:
@@ -130,14 +114,11 @@ services:
       - ./alembic.ini:/app/alembic.ini
       - ./output:/app/output
       - ./requirements.txt:/app/requirements.txt
+      - ./bankreports.db:/app/bankreports.db
     environment:
       - DEBUG=True
       - PYTHONPATH=/app
-      - POSTGRES_HOST=db
-      - POSTGRES_DB=bankreports
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - USE_POSTGRES=true
+      - DATABASE_TYPE=SQLite
       - REDIS_URL=redis://redis:6379/0
       - API_SECRET_KEY=dev-secret-key-change-in-production
       - ADMIN_USERNAME=admin
@@ -150,5 +131,4 @@ services:
       - USE_FALLBACK_MODE=true
     command: ["celery", "-A", "src.celery_app", "beat", "--loglevel=info"]
     depends_on:
-      - redis
-      - db 
+      - redis 

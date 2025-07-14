@@ -21,7 +21,8 @@ def get_user_agence(username):
         # Enlever 'directeurBanque' et retourner le reste
         agence = username.replace('directeurBanque', '')
         return f"Banque {agence}"
-    return "Banque A"  # Fallback par défaut
+    # Pour les utilisateurs de test, retourner "A" pour correspondre aux bank_name dans la base
+    return "A"  # Fallback par défaut
 
 def get_agence_data(agence_name):
     """Récupère les données de l'agence depuis la base SQLite"""
@@ -93,8 +94,8 @@ def dernier_rapport_view(request):
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         
-        # Convertir le nom d'agence au format des emails (espace -> underscore)
-        email_agence_name = agence_name.replace(' ', '_')
+        # Utiliser directement le nom d'agence (sans préfixe "Banque ")
+        email_agence_name = agence_name.replace('Banque ', '')
         
         # Récupérer les emails pour cette agence
         cursor.execute("""
@@ -186,8 +187,8 @@ def historique_rapports_view(request):
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         
-        # Convertir le nom d'agence au format des emails (espace -> underscore)
-        email_agence_name = agence_name.replace(' ', '_')
+        # Utiliser directement le nom d'agence (sans préfixe "Banque ")
+        email_agence_name = agence_name.replace('Banque ', '')
         
         # Récupérer tous les emails pour cette agence
         cursor.execute("""

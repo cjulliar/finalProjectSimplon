@@ -10,24 +10,7 @@ services:
       - ./src:/app/src
       - ./docs:/app/docs
     environment:
-      - POSTGRES_HOST=db
-      - POSTGRES_DB=bankreports
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    depends_on:
-      - db
-
-  # Base de données PostgreSQL
-  db:
-    image: postgres:14-alpine
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=bankreports
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - "5432:5432"
+      - DATABASE_TYPE=SQLite
 
   # API FastAPI
   api:
@@ -41,12 +24,9 @@ services:
       - ./src:/app/src
       - ./migrations:/app/migrations
       - ./alembic.ini:/app/alembic.ini
+      - ./bankreports.db:/app/bankreports.db
     environment:
-      - POSTGRES_HOST=db
-      - POSTGRES_DB=bankreports
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - USE_POSTGRES=true
+      - DATABASE_TYPE=SQLite
       - API_SECRET_KEY=secret-key-change-in-production
       - API_ALGORITHM=HS256
       - API_ACCESS_TOKEN_EXPIRE_MINUTES=30
@@ -58,8 +38,6 @@ services:
       - USE_HUGGINGFACE=false
       - USE_OPENAI=false
       - USE_FALLBACK_MODE=true
-    depends_on:
-      - db
 
   # Frontend Django
   frontend:
@@ -70,7 +48,6 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      # - ./frontend:/app/frontend
       - ./frontend/static:/app/frontend/static
       - ./frontend/media:/app/frontend/media
       - ./bankreports.db:/app/bankreports.db
@@ -79,18 +56,13 @@ services:
       - SECRET_KEY=django-insecure-change-in-production
       - API_URL=http://api:8000
       - API_SECRET_KEY=secret-key-change-in-production
-      - POSTGRES_HOST=db
-      - POSTGRES_DB=bankreports
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - USE_POSTGRES=true
+      - DATABASE_TYPE=SQLite
       - ALLOWED_HOSTS=localhost,127.0.0.1,frontend,0.0.0.0
       - ADMIN_USERNAME=admin
       - ADMIN_PASSWORD=hBtH_apEj3dP_baa
       - BANKREPORTS_DB_PATH=/app/bankreports.db
     depends_on:
       - api
-      - db
 
   # Monitoring Prometheus
   prometheus:
@@ -136,7 +108,7 @@ services:
       - redis_data:/data
     command: redis-server --appendonly yes
 
-  # Celery Worker pour les tâches en arrière-plan
+  # Celery Worker
   celery-worker:
     build:
       context: .
@@ -147,12 +119,9 @@ services:
       - ./migrations:/app/migrations
       - ./alembic.ini:/app/alembic.ini
       - ./output:/app/output
+      - ./bankreports.db:/app/bankreports.db
     environment:
-      - POSTGRES_HOST=db
-      - POSTGRES_DB=bankreports
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - USE_POSTGRES=true
+      - DATABASE_TYPE=SQLite
       - REDIS_URL=redis://redis:6379/0
       - API_SECRET_KEY=secret-key-change-in-production
       - ADMIN_USERNAME=admin
@@ -165,7 +134,6 @@ services:
       - USE_FALLBACK_MODE=true
     depends_on:
       - redis
-      - db
 
   # Celery Beat pour la planification des tâches
   celery-beat:
@@ -178,12 +146,9 @@ services:
       - ./migrations:/app/migrations
       - ./alembic.ini:/app/alembic.ini
       - ./output:/app/output
+      - ./bankreports.db:/app/bankreports.db
     environment:
-      - POSTGRES_HOST=db
-      - POSTGRES_DB=bankreports
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - USE_POSTGRES=true
+      - DATABASE_TYPE=SQLite
       - REDIS_URL=redis://redis:6379/0
       - API_SECRET_KEY=secret-key-change-in-production
       - ADMIN_USERNAME=admin
@@ -197,10 +162,8 @@ services:
     command: celery -A src.celery_app beat --loglevel=info
     depends_on:
       - redis
-      - db
 
 volumes:
-  postgres_data:
   prometheus_data:
   grafana_data:
   redis_data: 

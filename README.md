@@ -1,71 +1,14 @@
-# 🏦 Système d'Analyse et de Génération de Rapports Bancaires
+# 🏦 Système de Rapports Bancaires Intelligents
 
-Un système complet d'automatisation pour l'analyse et la génération de rapports bancaires utilisant FastAPI, Django, Celery et l'IA.
+Un système moderne de génération de rapports bancaires utilisant l'intelligence artificielle pour analyser les données financières et générer des insights automatisés.
 
-## 🚀 Démarrage Rapide
+## 🚀 Technologies
 
-### Option 1: Installation complète (recommandée)
-```bash
-git clone https://github.com/cjulliar/finalProjectSimplon.git
-cd finalProjectSimplon
-chmod +x install_and_run.sh
-./install_and_run.sh
-```
-
-### Option 2: Lancement rapide avec Docker
-```bash
-git clone https://github.com/cjulliar/finalProjectSimplon.git
-cd finalProjectSimplon
-chmod +x quick_start.sh
-./quick_start.sh
-```
-
-### Option 3: Développement local
-```bash
-git clone https://github.com/cjulliar/finalProjectSimplon.git
-cd finalProjectSimplon
-chmod +x dev_start.sh
-./dev_start.sh
-```
-
-## 🌐 Accès aux services
-
-Une fois le projet lancé, vous pouvez accéder aux services suivants :
-
-- **Frontend Django**: http://localhost:8080
-- **API FastAPI**: http://localhost:8000 (Docker) ou http://localhost:8001 (Local)
-- **Documentation API**: http://localhost:8000/docs (Docker) ou http://localhost:8001/docs (Local)
-- **Monitoring Prometheus**: http://localhost:9090 (Docker uniquement)
-- **Dashboard Grafana**: http://localhost:3000 (admin/admin) (Docker uniquement)
-
-## 🔐 Identifiants de test
-
-- **Email**: cyrjulliard@gmail.com
-- **Mot de passe**: directeur123
-- **Exemples d'utilisateurs**:
-  - directeurBanqueA
-  - directeurBanqueBG
-  - directeurBanqueC
-
-## 📊 Fonctionnalités
-
-- **Dashboard personnalisé** par agence bancaire
-- **74 directeurs d'agence** configurés avec données réelles
-- **Données bancaires enrichies** avec analyses automatiques
-- **Rapports automatiques** générés par IA
-- **Analyses prédictives** et insights business
-- **Interface responsive** et moderne
-- **API REST complète** avec documentation Swagger
-- **Monitoring en temps réel** avec Prometheus et Grafana
-- **Traitement asynchrone** avec Celery et Redis
-
-## 🛠️ Architecture
-
-Le projet utilise une architecture microservices moderne :
+Le projet utilise une architecture moderne :
 
 - **Frontend**: Django 4.2 avec interface moderne et responsive
 - **API**: FastAPI avec documentation automatique
-- **Base de données**: PostgreSQL avec migrations Alembic
+- **Base de données**: SQLite consolidée
 - **Cache et tâches**: Redis + Celery pour le traitement asynchrone
 - **Monitoring**: Prometheus + Grafana
 - **Conteneurisation**: Docker + Docker Compose
@@ -120,12 +63,6 @@ Script pour arrêter tous les services
 Le projet utilise des variables d'environnement par défaut pour le développement. Pour la production, créez un fichier `.env` :
 
 ```env
-# Base de données
-POSTGRES_HOST=localhost
-POSTGRES_DB=bankreports
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-
 # API
 API_SECRET_KEY=your-secret-key
 API_ALGORITHM=HS256
@@ -143,124 +80,103 @@ REDIS_URL=redis://localhost:6379/0
 
 ### Configuration SMTP
 
-Pour l'envoi d'emails, créez un fichier `smtp_config.env` :
+Pour l'envoi d'emails, configurez les variables SMTP :
 
 ```env
-SMTP_SERVER=smtp.gmail.com
+SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USERNAME=your-email@gmail.com
+SMTP_USER=your-email@gmail.com
 SMTP_PASSWORD=your-app-password
 ```
 
-## 📁 Structure du projet
+## 📊 Fonctionnalités
 
-```
-finalProjectSimplon/
-├── src/                    # Code source principal
-│   ├── api/               # API FastAPI
-│   ├── db/                # Modèles et configuration DB
-│   ├── ia/                # Services d'IA
-│   ├── scripts/           # Scripts utilitaires
-│   └── tasks/             # Tâches Celery
-├── frontend/              # Interface Django
-│   ├── bankapp/          # Application principale
-│   ├── dashboard/        # Dashboard personnalisé
-│   ├── ai_reports/       # Rapports IA
-│   └── templates/        # Templates HTML
-├── docker/                # Configuration Docker
-├── scripts/               # Scripts de lancement
-├── migrations/            # Migrations Alembic
-├── requirements.txt       # Dépendances Python
-├── docker-compose.yml     # Configuration Docker Compose
-├── install_and_run.sh     # Script d'installation complet
-├── quick_start.sh         # Script de lancement rapide
-├── dev_start.sh           # Script de développement
-└── README.md             # Ce fichier
-```
+### 🎯 Rapports Automatisés
+- Génération automatique de rapports hebdomadaires
+- Analyse des tendances et performances
+- Détection d'anomalies
+- Recommandations personnalisées
 
-## 🧪 Tests
+### 🤖 Intelligence Artificielle
+- Intégration OpenAI GPT pour l'analyse de texte
+- Modèles HuggingFace pour le traitement spécialisé
+- Génération automatique de contenu
+- Analyse sémantique des données
 
-```bash
-# Exécuter tous les tests
-python tests/run_all_tests.py
+### 📈 Dashboard Interactif
+- Visualisations en temps réel
+- Graphiques interactifs
+- Filtres dynamiques
+- Export de données
 
-# Tests avec pytest
-pytest tests/ -v
+### 🔐 Sécurité
+- Authentification JWT
+- Gestion des rôles et permissions
+- Chiffrement des données sensibles
+- Audit trail complet
 
-# Tests de l'API
-python -m pytest tests/test_api.py -v
-```
+## 🗄️ Base de données
 
-## 🚀 Déploiement
+Le projet utilise une base SQLite consolidée (`bankreports.db`) qui contient :
+- Données bancaires enrichies
+- Rapports générés par IA
+- Utilisateurs et authentification
+- Historique des analyses
 
-### CI/CD
+## 🚀 Démarrage rapide
 
-Le projet utilise GitHub Actions pour le CI/CD :
+1. **Cloner le projet** :
+   ```bash
+   git clone <repository-url>
+   cd finalProjectSimplon
+   ```
 
-1. **Tests automatiques** sur chaque push
-2. **Build Docker** automatique
-3. **Déploiement staging** sur la branche `develop`
-4. **Déploiement production** sur la branche `main`
+2. **Lancer avec Docker** :
+   ```bash
+   ./quick_start.sh
+   ```
 
-### Production
+3. **Ou lancer en local** :
+   ```bash
+   ./dev_start.sh
+   ```
 
-```bash
-# Build pour la production
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+4. **Accéder à l'application** :
+   - Frontend : http://localhost:8080
+   - API : http://localhost:8001
+   - Documentation API : http://localhost:8001/docs
 
-# Variables d'environnement de production
-export ADMIN_PASSWORD=your-secure-password
-export API_SECRET_KEY=your-secure-secret-key
-export LLM_API_KEY=your-production-openai-key
-```
+## 👥 Utilisateurs par défaut
+
+- **Admin** : `admin` / `admin123`
+- **Directeurs** : `directeurBanqueX` / `directeur123` (où X = A, B, C, etc.)
+- **Test** : `testuser` / `test123`
+
+## 📚 Documentation
+
+- [Guide de production](PRODUCTION_README.md)
+- [Architecture technique](DEVELOPER.md)
+- [API Documentation](http://localhost:8001/docs)
 
 ## 🤝 Contribution
 
 1. Fork le projet
-2. Créez une branche feature (`git checkout -b feature/AmazingFeature`)
-3. Committez vos changements (`git commit -m 'Add some AmazingFeature'`)
+2. Créer une branche feature (`git checkout -b feature/AmazingFeature`)
+3. Commit les changements (`git commit -m 'Add some AmazingFeature'`)
 4. Push vers la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrez une Pull Request
+5. Ouvrir une Pull Request
 
-## 📝 Licence
+## 📄 Licence
 
 Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
-## 🆘 Support
+## 📞 Support
 
 Pour toute question ou problème :
+1. Consulter la [documentation](PRODUCTION_README.md)
+2. Vérifier les [issues](https://github.com/your-repo/issues)
+3. Créer une nouvelle issue si nécessaire
 
-1. Consultez la [documentation de l'API](http://localhost:8000/docs)
-2. Vérifiez les [issues GitHub](https://github.com/cjulliar/finalProjectSimplon/issues)
-3. Créez une nouvelle issue si nécessaire
+---
 
-## 🔄 Mises à jour
-
-```bash
-# Mettre à jour le code
-git pull origin main
-
-# Mettre à jour les dépendances
-pip install -r requirements.txt --upgrade
-
-# Redémarrer les services Docker
-docker-compose down && docker-compose up -d
-```
-
-## 📊 Données
-
-Le projet inclut :
-- **Base de données SQLite** avec données bancaires enrichies
-- **74 directeurs d'agence** avec profils complets
-- **Données de transactions** réelles
-- **Analyses prédictives** générées par IA
-- **Rapports automatiques** personnalisés
-
-## 🎯 Objectifs du projet
-
-Ce système permet aux directeurs d'agence de :
-- Visualiser leurs performances en temps réel
-- Recevoir des analyses prédictives
-- Générer des rapports automatiques
-- Comparer leurs résultats avec d'autres agences
-- Prendre des décisions basées sur l'IA
+**Développé avec ❤️ pour Simplon**

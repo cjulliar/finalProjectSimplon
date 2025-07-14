@@ -73,71 +73,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'frontend.wsgi.application'
 
-# Test de connexion PostgreSQL automatique
-def test_postgres_connection():
-    """Test la connexion PostgreSQL pour Django."""
-    try:
-        import psycopg2
-    except ImportError:
-        logger.info("🐘❌ psycopg2 non disponible - Django utilise SQLite")
-        return False
-    
-    postgres_host = os.environ.get('POSTGRES_HOST')
-    postgres_db = os.environ.get('POSTGRES_DB')
-    postgres_user = os.environ.get('POSTGRES_USER')
-    postgres_password = os.environ.get('POSTGRES_PASSWORD')
-    
-    if not all([postgres_host, postgres_db, postgres_user, postgres_password]):
-        logger.info("🐘➡️🗄️ Variables PostgreSQL manquantes - Django utilise SQLite")
-        return False
-    
-    try:
-        # Test de connexion
-        conn = psycopg2.connect(
-            host=postgres_host,
-            database=postgres_db,
-            user=postgres_user,
-            password=postgres_password,
-            connect_timeout=5
-        )
-        conn.close()
-        logger.info(f"🐘✅ Django: Connexion PostgreSQL réussie ({postgres_host})")
-        return True
-    except Exception as e:
-        logger.warning(f"🐘❌ Django: Connexion PostgreSQL échouée: {e}")
-        logger.info("🐘➡️🗄️ Django: Basculement automatique vers SQLite")
-        return False
-
-# Configuration automatique de la base de données
-USE_POSTGRES = os.environ.get('USE_POSTGRES', 'true').lower() == 'true'
-
-if USE_POSTGRES and test_postgres_connection():
-    # PostgreSQL disponible
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('POSTGRES_DB'),
-            'USER': os.environ.get('POSTGRES_USER'),
-            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-            'HOST': os.environ.get('POSTGRES_HOST'),
-            'PORT': os.environ.get('POSTGRES_PORT', '5432'),
-            'OPTIONS': {
-                'connect_timeout': 10,
-            },
-        }
+# Configuration de la base de données SQLite
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR.parent / 'bankreports.db',  # Base consolidée à la racine
     }
-    DATABASE_TYPE = "PostgreSQL"
-    logger.info(f"🐘 Django: Base de données PostgreSQL ({os.environ.get('POSTGRES_HOST')})")
-else:
-    # SQLite comme fallback
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-    DATABASE_TYPE = "SQLite"
-    logger.info(f"🗄️ Django: Base de données SQLite ({BASE_DIR / 'db.sqlite3'})")
+}
+DATABASE_TYPE = "SQLite"
+logger.info(f"🗄️ Django: Base de données SQLite consolidée ({BASE_DIR.parent / 'bankreports.db'})")
 
 # Validation du mot de passe
 AUTH_PASSWORD_VALIDATORS = [
