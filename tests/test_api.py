@@ -54,6 +54,10 @@ def setup_test_db():
     """
     # Créer les tables
     Base.metadata.create_all(bind=engine)
+    ...
+    yield headers
+    ...
+    Base.metadata.drop_all(bind=engine)
     
     # Créer un utilisateur de test
     db = TestingSessionLocal()
@@ -126,6 +130,13 @@ def test_login(setup_test_db):
         data={"username": "testuser", "password": "wrongpassword"}
     )
     assert response.status_code == 401
+
+def test_root():
+    """Tester la route racine."""
+    response = client.get("/")
+    assert response.status_code == 200
+    assert "message" in response.json()
+    assert "version" in response.json()
 
 
 def test_get_user_me(setup_test_db):

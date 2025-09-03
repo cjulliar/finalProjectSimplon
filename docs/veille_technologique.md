@@ -107,7 +107,8 @@ Pour les fonctionnalités d'intelligence artificielle, nous avons intégré Lang
 - **Flexibilité** : Possibilité de combiner différents modèles selon les besoins spécifiques.
 - **Traitement contextuel** : LlamaIndex permet d'indexer et d'interroger des données métier spécifiques.
 
-**Veille technologique :** La version 0.1.9 de LangChain représente une évolution majeure avec l'amélioration des chaînes de raisonnement. L'intégration d'Azure OpenAI offre une alternative conforme au RGPD pour les données sensibles.
+**Veille technologique :** La version 0.1.9 de LangChain représente une évolution majeure avec l'amélioration des chaînes de raisonnement.
+L'intégration d'Azure OpenAI offre une alternative conforme au RGPD pour les données sensibles.
 
 ## Sécurité
 

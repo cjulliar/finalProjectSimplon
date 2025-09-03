@@ -74,6 +74,9 @@ def get_last_week_data():
         db.close()
 
 
+from src.ia.ai_service import AIAnalysisService
+from src.db.database import SessionLocal
+
 def analyze_data(df):
     """
     Analyser les données avec le service d'IA.

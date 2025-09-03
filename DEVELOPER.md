@@ -8,7 +8,7 @@ Ce guide contient toutes les informations techniques nécessaires pour contribue
 
 - **Backend API**: FastAPI (Python 3.11)
 - **Frontend**: Django 4.2 (Python 3.11)
-- **Base de données**: PostgreSQL + SQLite (développement)
+- **Base de données**: SQLite (développement et production)
 - **Cache & Tâches**: Redis + Celery
 - **Monitoring**: Prometheus + Grafana
 - **Conteneurisation**: Docker + Docker Compose
@@ -20,7 +20,7 @@ Ce guide contient toutes les informations techniques nécessaires pour contribue
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Frontend      │    │   API FastAPI   │    │   Base de       │
 │   Django        │◄──►│   (Port 8000)   │◄──►│   Données       │
-│   (Port 8080)   │    │                 │    │   PostgreSQL    │
+│   (Port 8080)   │    │                 │    │   SQLite        │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          │                       │                       │
@@ -167,11 +167,8 @@ Créez un fichier `.env` à la racine :
 
 ```env
 # Base de données
-POSTGRES_HOST=localhost
-POSTGRES_DB=bankreports
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-USE_POSTGRES=false  # true pour PostgreSQL, false pour SQLite
+SQLITE_DB=bankreports.db
+DATABASE_URL=sqlite:///./bankreports.db
 
 # API
 API_SECRET_KEY=your-secret-key-here
@@ -410,6 +407,7 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 export ADMIN_PASSWORD=your-secure-password
 export API_SECRET_KEY=your-secure-secret-key
 export LLM_API_KEY=your-production-openai-key
+export DATABASE_URL=sqlite:///./bankreports.db
 ```
 
 ### Production sans Docker

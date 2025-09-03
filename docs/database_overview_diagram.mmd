@@ -1,27 +1,25 @@
 graph LR
     subgraph "🏭 Production Environment"
-        A["🐘 PostgreSQL<br/>Base Principale"] --> B["📊 API FastAPI"]
+        A["🗄️ SQLite<br/>Base de Données Unifiée"] --> B["📊 API FastAPI"]
         A --> C["🌐 Frontend Django"]
-    end
-    
-    subgraph "🔄 Fallback System"
-        D["🗄️ SQLite<br/>Base Secours"] --> B
-        D --> C
-    end
-    
-    subgraph "🔧 Auto-Detection"
-        E["🔍 Connection Test"] --> F{PostgreSQL<br/>Available?}
-        F -->|Yes| A
-        F -->|No| D
     end
     
     subgraph "🛠️ Management Tools"
         G["check_database_status.py"] --> H["📊 Current Status"]
-        I["database_utils.sh"] --> J["🧪 Test Fallback"]
+        I["database_utils.sh"] --> J["🧪 Test Database"]
     end
     
-    style A fill:#e1f5fe,stroke:#01579b,stroke-width:3px
-    style D fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    subgraph "🔧 Database Operations"
+        K["📥 Import Data"] --> A
+        L["📤 Export Data"] --> A
+        M["🔄 Migrations"] --> A
+    end
+    
+    style A fill:#e8f5e8,stroke:#1b5e20,stroke-width:3px
     style B fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
     style C fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    style E fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px 
+    style G fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style I fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style K fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style L fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style M fill:#fff3e0,stroke:#e65100,stroke-width:2px 

@@ -104,6 +104,8 @@ def test_ai_api(host, token, agence=None):
                 "Content-Type": "application/json"
             }
         )
+
+        return response.json()
         
         if response.status_code == 200:
             result = response.json()

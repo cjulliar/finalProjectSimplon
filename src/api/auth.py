@@ -24,7 +24,18 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("API_ACCESS_TOKEN_EXPIRE_MINUTES", "
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/token")
 
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    """Créer un token d'accès JWT."""
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
 
+    
 def verify_password(plain_password, hashed_password):
     """Vérifier si le mot de passe correspond au hash."""
     return pwd_context.verify(plain_password, hashed_password)
@@ -48,7 +59,15 @@ def authenticate_user(db: Session, username: str, password: str):
     if not verify_password(password, user.hashed_password):
         return False
     return user
+    
+# Configuration
+SECRET_KEY = os.getenv("API_SECRET_KEY", "secret-key-for-dev-only-change-in-production")
+ALGORITHM = os.getenv("API_ALGORITHM", "HS256")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("API_ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
 
+# Outils de sécurité
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/token")
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     """Créer un token d'accès JWT."""

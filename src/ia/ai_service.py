@@ -95,6 +95,16 @@ SMTP_USERNAME = os.environ.get("SMTP_USERNAME", "")
 SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD", "")
 EMAIL_FROM = os.environ.get("EMAIL_FROM", "noreply@example.com")
 
+# Configuration de l'API OpenAI ou autre API LLM
+API_KEY = os.getenv("LLM_API_KEY", "")
+HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY", "")
+
+# Par défaut, utiliser le mode de secours sans LLM pour éviter les coûts
+USE_HUGGINGFACE = os.getenv("USE_HUGGINGFACE", "false").lower() == "true"
+USE_OPENAI = os.getenv("USE_OPENAI", "false").lower() == "true"
+USE_FALLBACK_MODE = os.getenv("USE_FALLBACK_MODE", "true").lower() == "true"
+USE_ALTERNATIVE_API = os.getenv("USE_ALTERNATIVE_API", "false").lower() == "true"
+
 class AIAnalysisService:
     """Service d'analyse par IA des données bancaires."""
     

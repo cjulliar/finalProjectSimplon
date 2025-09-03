@@ -9,8 +9,7 @@ import argparse
 import pandas as pd
 from pathlib import Path
 from datetime import datetime
-from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import text
 
 # Ajouter le répertoire parent au chemin de recherche Python
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
